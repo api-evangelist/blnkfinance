@@ -1,0 +1,109 @@
+name: Blnk Finance
+description: >-
+  Open-source double-entry ledger for financial products (wallets, loans, payouts, escrow, cards). Available as
+  self-hosted Blnk Core (OSS engine) and Blnk Cloud (managed), plus Blnk Watch for transaction monitoring. Exposes REST
+  APIs with a public OpenAPI spec, hosted MCP servers, llms.txt, and installable agent skills.
+url: >-
+  https://raw.githubusercontent.com/api-evangelist/open-source-ledger-for-financial-products-blnk-finance/refs/heads/main/apis.yml
+created: '2026-08-26'
+modified: '2026-08-26'
+specificationVersion: '0.21'
+tags:
+  - fintech
+  - financial-services
+  - ledger
+  - double-entry-accounting
+  - payments
+  - wallets
+  - lending
+  - banking-infrastructure
+  - open-source
+  - mcp
+  - ai-agents
+  - developer-tools
+apis:
+  - name: Blnk Core API
+    description: >-
+      Primary open-source ledger REST API (ledgers, balances, transactions, inflight, refunds, balance monitors,
+      identities, accounts, backup). Self-hosted; default server is localhost:5001 with no fixed public host. Auth via
+      X-Blnk-Key header.
+    humanURL: https://docs.blnkfinance.com/reference/overview.md
+    baseURL: http://localhost:5001
+    tags:
+      - fintech
+      - financial-services
+      - ledger
+      - double-entry-accounting
+      - payments
+      - wallets
+      - lending
+      - banking-infrastructure
+      - open-source
+      - mcp
+      - ai-agents
+      - developer-tools
+    properties:
+      - type: OpenAPI
+        url: https://docs.blnkfinance.com/openapi.json
+      - type: Documentation
+        url: https://docs.blnkfinance.com/reference/overview.md
+  - name: Blnk Cloud API
+    description: >-
+      Managed Cloud REST surface covering OAuth auth, a Proxy API to a Core instance, Data API, Filters API, Alerts API,
+      and the MCP endpoint. Auth via API keys or OAuth.
+    humanURL: https://docs.blnkfinance.com/cloud/reference/overview.md
+    baseURL: https://api.cloud.blnkfinance.com
+    tags:
+      - fintech
+      - financial-services
+      - ledger
+      - double-entry-accounting
+      - payments
+      - wallets
+      - lending
+      - banking-infrastructure
+      - open-source
+      - mcp
+      - ai-agents
+      - developer-tools
+    properties:
+      - type: Documentation
+        url: https://docs.blnkfinance.com/cloud/reference/overview.md
+      - type: MCPServer
+        url: https://docs.blnkfinance.com/mcp
+      - type: LLMsTxt
+        url: https://blnkfinance.com/llms.txt
+      - type: LLMsTxt
+        url: https://docs.blnkfinance.com/llms.txt
+      - type: AgentSkill
+        url: https://docs.blnkfinance.com/home/llms.md
+  - name: Blnk Watch API
+    description: >-
+      Rule-based transaction monitoring API (transaction evaluation, instruction management, Git-backed rule sync).
+      Beta.
+    humanURL: https://docs.blnkfinance.com/watch/reference/overview.md
+    baseURL: https://api.cloud.blnkfinance.com
+    tags:
+      - fintech
+      - financial-services
+      - ledger
+      - double-entry-accounting
+      - payments
+      - wallets
+      - lending
+      - banking-infrastructure
+      - open-source
+      - mcp
+      - ai-agents
+      - developer-tools
+    properties:
+      - type: Documentation
+        url: https://docs.blnkfinance.com/watch/reference/overview.md
+maintainers:
+  - FN: Blnk Finance
+    url: https://blnkfinance.com
+generated:
+  by: apis.io/add
+  model: claude-opus-4-8
+  confidence: 95
+  at: '2026-08-26T22:58:17.366Z'
