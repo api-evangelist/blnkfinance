@@ -21,57 +21,10 @@ tags:
 - ai-agents
 - developer-tools
 apis:
-- name: Blnk Core API
-  description: Primary open-source ledger REST API (ledgers, balances, transactions, inflight, refunds, balance monitors,
-    identities, accounts, backup). Self-hosted; default server is localhost:5001 with no fixed public host. Auth via X-Blnk-Key
-    header.
-  humanURL: https://docs.blnkfinance.com/reference/overview.md
-  baseURL: http://localhost:5001
-  tags:
-  - fintech
-  - financial-services
-  - ledger
-  - double-entry-accounting
-  - payments
-  - wallets
-  - lending
-  - banking-infrastructure
-  - open-source
-  - mcp
-  - ai-agents
-  - developer-tools
-  properties:
-  - type: OpenAPI
-    url: https://docs.blnkfinance.com/openapi.json
-  - type: Documentation
-    url: https://docs.blnkfinance.com/reference/overview.md
-  - type: LLMsTxt
-    url: https://blnkfinance.com/llms.txt
-  - type: LLMsTxt
-    url: https://docs.blnkfinance.com/llms.txt
-  - type: OpenAPI
-    url: openapi/blnkfinance-core-openapi.json
-    description: Verbatim copy of https://docs.blnkfinance.com/openapi.json (HTTP 200, 2026-08-27). OpenAPI 3.0.0, 15 paths,
-      18 operations.
-  - type: APIReference
-    url: https://docs.blnkfinance.com/reference/overview
-  - type: Overlay
-    url: overlays/blnkfinance-core-overlay.yaml
-  - type: DataModel
-    url: data-model/blnkfinance-data-model.yml
-  - type: Webhooks
-    url: asyncapi/blnkfinance-webhooks.yml
-  - type: ErrorCatalog
-    url: errors/blnkfinance-error-codes.yml
-  - type: AgentSkill
-    url: skills/_index.yml
-  - type: MCPServer
-    url: mcp/blnkfinance-mcp.yml
-    description: Replaces the /.well-known/mcp.json pointer, which advertises a mintlify.me preview host rather than a blnkfinance.com
-      one.
 - name: Blnk Cloud API
-  description: Managed Cloud REST surface covering OAuth auth, a Proxy API to a Core instance, Data API, Filters API, Alerts
-    API, and the MCP endpoint. Auth via API keys or OAuth.
+  description: >-
+    Managed Cloud REST surface covering OAuth auth, a Proxy API to a Core instance, Data API, Filters
+    API, Alerts API, and the MCP endpoint. Auth via API keys or OAuth.
   humanURL: https://docs.blnkfinance.com/cloud/reference/overview.md
   baseURL: https://api.cloud.blnkfinance.com
   tags:
@@ -92,22 +45,25 @@ apis:
     url: https://docs.blnkfinance.com/cloud/reference/overview.md
   - type: MCPServer
     url: https://docs.blnkfinance.com/mcp
-    description: 'Open, no-auth Mintlify DOCUMENTATION-SEARCH MCP on a first-party host. Probed live 2026-08-27: initialize
-      + tools/list returned 200, serverInfo "Blnk Finance", protocolVersion 2025-11-25, 3 tools. It is NOT the ledger MCP
-      -- that is https://api.cloud.blnkfinance.com/mcp/{instance_id}.'
+    description: >-
+      Open, no-auth Mintlify DOCUMENTATION-SEARCH MCP on a first-party host. Probed live 2026-08-27: initialize
+      + tools/list returned 200, serverInfo "Blnk Finance", protocolVersion 2025-11-25, 3 tools. It is
+      NOT the ledger MCP -- that is https://api.cloud.blnkfinance.com/mcp/{instance_id}.
   - type: LLMsTxt
     url: https://blnkfinance.com/llms.txt
   - type: LLMsTxt
     url: https://docs.blnkfinance.com/llms.txt
   - type: AgentSkill
     url: https://docs.blnkfinance.com/home/llms.md
-    description: 'Blnk''s "Build with LLMs" page: documents installing the 14 provider-authored Agent Skills via "npx skills
-      add https://docs.blnkfinance.com". Verified 200 on 2026-08-27.'
+    description: >-
+      Blnk's "Build with LLMs" page: documents installing the 14 provider-authored Agent Skills via "npx
+      skills add https://docs.blnkfinance.com". Verified 200 on 2026-08-27.
   - type: APIReference
     url: https://docs.blnkfinance.com/cloud/reference/overview
   - type: MCPServer
     url: mcp/blnkfinance-mcp.yml
-    description: 'Cloud ledger MCP: https://api.cloud.blnkfinance.com/mcp/{instance_id}, 33 tools, Bearer + mcp:read/mcp:write.'
+    description: >-
+      Cloud ledger MCP: https://api.cloud.blnkfinance.com/mcp/{instance_id}, 33 tools, Bearer + mcp:read/mcp:write.
   - type: ToolCrosswalk
     url: mcp/blnkfinance-tool-crosswalk.yml
   - type: OAuthScopes
@@ -115,8 +71,9 @@ apis:
   - type: AgentSkill
     url: skills/_index.yml
 - name: Blnk Watch API
-  description: Rule-based transaction monitoring API (transaction evaluation, instruction management, Git-backed rule sync).
-    Beta.
+  description: >-
+    Rule-based transaction monitoring API (transaction evaluation, instruction management, Git-backed
+    rule sync). Beta.
   humanURL: https://docs.blnkfinance.com/watch/reference/overview.md
   baseURL: https://api.cloud.blnkfinance.com
   tags:
@@ -137,6 +94,198 @@ apis:
     url: https://docs.blnkfinance.com/watch/reference/overview.md
   - type: APIReference
     url: https://docs.blnkfinance.com/watch/reference/overview
+- aid: blnkfinance:blnkfinance-accounts-api
+  name: Blnk Finance Accounts API
+  description: The Accounts API from Blnk Finance — 2 operation(s) for accounts.
+  humanURL: https://docs.blnkfinance.com/reference/overview.md
+  baseURL: http://localhost:5001
+  tags:
+  - Accounts
+  properties:
+  - type: OpenAPI
+    url: openapi/blnkfinance-accounts-api-openapi.yml
+  - type: Documentation
+    url: https://docs.blnkfinance.com/reference/overview.md
+  - type: LLMsTxt
+    url: https://blnkfinance.com/llms.txt
+  - type: LLMsTxt
+    url: https://docs.blnkfinance.com/llms.txt
+  - type: APIReference
+    url: https://docs.blnkfinance.com/reference/overview
+  - type: DataModel
+    url: data-model/blnkfinance-data-model.yml
+  - type: Webhooks
+    url: asyncapi/blnkfinance-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/blnkfinance-error-codes.yml
+- aid: blnkfinance:blnkfinance-backup-api
+  name: Blnk Finance Backup API
+  description: The Backup API from Blnk Finance — 2 operation(s) for backup.
+  humanURL: https://docs.blnkfinance.com/reference/overview.md
+  baseURL: http://localhost:5001
+  tags:
+  - Backup
+  properties:
+  - type: OpenAPI
+    url: openapi/blnkfinance-backup-api-openapi.yml
+  - type: Documentation
+    url: https://docs.blnkfinance.com/reference/overview.md
+  - type: LLMsTxt
+    url: https://blnkfinance.com/llms.txt
+  - type: LLMsTxt
+    url: https://docs.blnkfinance.com/llms.txt
+  - type: APIReference
+    url: https://docs.blnkfinance.com/reference/overview
+  - type: DataModel
+    url: data-model/blnkfinance-data-model.yml
+  - type: Webhooks
+    url: asyncapi/blnkfinance-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/blnkfinance-error-codes.yml
+- aid: blnkfinance:blnkfinance-balance-monitors-api
+  name: Blnk Finance Balance Monitors API
+  description: The Balance Monitors API from Blnk Finance — 2 operation(s) for balance monitors.
+  humanURL: https://docs.blnkfinance.com/reference/overview.md
+  baseURL: http://localhost:5001
+  tags:
+  - Balance Monitors
+  properties:
+  - type: OpenAPI
+    url: openapi/blnkfinance-balance-monitors-api-openapi.yml
+  - type: Documentation
+    url: https://docs.blnkfinance.com/reference/overview.md
+  - type: LLMsTxt
+    url: https://blnkfinance.com/llms.txt
+  - type: LLMsTxt
+    url: https://docs.blnkfinance.com/llms.txt
+  - type: APIReference
+    url: https://docs.blnkfinance.com/reference/overview
+  - type: DataModel
+    url: data-model/blnkfinance-data-model.yml
+  - type: Webhooks
+    url: asyncapi/blnkfinance-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/blnkfinance-error-codes.yml
+- aid: blnkfinance:blnkfinance-balances-api
+  name: Blnk Finance Balances API
+  description: The Balances API from Blnk Finance — 2 operation(s) for balances.
+  humanURL: https://docs.blnkfinance.com/reference/overview.md
+  baseURL: http://localhost:5001
+  tags:
+  - Balances
+  properties:
+  - type: OpenAPI
+    url: openapi/blnkfinance-balances-api-openapi.yml
+  - type: Documentation
+    url: https://docs.blnkfinance.com/reference/overview.md
+  - type: LLMsTxt
+    url: https://blnkfinance.com/llms.txt
+  - type: LLMsTxt
+    url: https://docs.blnkfinance.com/llms.txt
+  - type: APIReference
+    url: https://docs.blnkfinance.com/reference/overview
+  - type: DataModel
+    url: data-model/blnkfinance-data-model.yml
+  - type: Webhooks
+    url: asyncapi/blnkfinance-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/blnkfinance-error-codes.yml
+- aid: blnkfinance:blnkfinance-identities-api
+  name: Blnk Finance Identities API
+  description: The Identities API from Blnk Finance — 2 operation(s) for identities.
+  humanURL: https://docs.blnkfinance.com/reference/overview.md
+  baseURL: http://localhost:5001
+  tags:
+  - Identities
+  properties:
+  - type: OpenAPI
+    url: openapi/blnkfinance-identities-api-openapi.yml
+  - type: Documentation
+    url: https://docs.blnkfinance.com/reference/overview.md
+  - type: LLMsTxt
+    url: https://blnkfinance.com/llms.txt
+  - type: LLMsTxt
+    url: https://docs.blnkfinance.com/llms.txt
+  - type: APIReference
+    url: https://docs.blnkfinance.com/reference/overview
+  - type: DataModel
+    url: data-model/blnkfinance-data-model.yml
+  - type: Webhooks
+    url: asyncapi/blnkfinance-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/blnkfinance-error-codes.yml
+- aid: blnkfinance:blnkfinance-ledgers-api
+  name: Blnk Finance Ledgers API
+  description: The Ledgers API from Blnk Finance — 2 operation(s) for ledgers.
+  humanURL: https://docs.blnkfinance.com/reference/overview.md
+  baseURL: http://localhost:5001
+  tags:
+  - Ledgers
+  properties:
+  - type: OpenAPI
+    url: openapi/blnkfinance-ledgers-api-openapi.yml
+  - type: Documentation
+    url: https://docs.blnkfinance.com/reference/overview.md
+  - type: LLMsTxt
+    url: https://blnkfinance.com/llms.txt
+  - type: LLMsTxt
+    url: https://docs.blnkfinance.com/llms.txt
+  - type: APIReference
+    url: https://docs.blnkfinance.com/reference/overview
+  - type: DataModel
+    url: data-model/blnkfinance-data-model.yml
+  - type: Webhooks
+    url: asyncapi/blnkfinance-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/blnkfinance-error-codes.yml
+- aid: blnkfinance:blnkfinance-refund-transaction-api
+  name: Blnk Finance Refund Transaction API
+  description: The Refund Transaction API from Blnk Finance — 1 operation(s) for refund transaction.
+  humanURL: https://docs.blnkfinance.com/reference/overview.md
+  baseURL: http://localhost:5001
+  tags:
+  - Refund Transaction
+  properties:
+  - type: OpenAPI
+    url: openapi/blnkfinance-refund-transaction-api-openapi.yml
+  - type: Documentation
+    url: https://docs.blnkfinance.com/reference/overview.md
+  - type: LLMsTxt
+    url: https://blnkfinance.com/llms.txt
+  - type: LLMsTxt
+    url: https://docs.blnkfinance.com/llms.txt
+  - type: APIReference
+    url: https://docs.blnkfinance.com/reference/overview
+  - type: DataModel
+    url: data-model/blnkfinance-data-model.yml
+  - type: Webhooks
+    url: asyncapi/blnkfinance-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/blnkfinance-error-codes.yml
+- aid: blnkfinance:blnkfinance-transactions-api
+  name: Blnk Finance Transactions API
+  description: The Transactions API from Blnk Finance — 2 operation(s) for transactions.
+  humanURL: https://docs.blnkfinance.com/reference/overview.md
+  baseURL: http://localhost:5001
+  tags:
+  - Transactions
+  properties:
+  - type: OpenAPI
+    url: openapi/blnkfinance-transactions-api-openapi.yml
+  - type: Documentation
+    url: https://docs.blnkfinance.com/reference/overview.md
+  - type: LLMsTxt
+    url: https://blnkfinance.com/llms.txt
+  - type: LLMsTxt
+    url: https://docs.blnkfinance.com/llms.txt
+  - type: APIReference
+    url: https://docs.blnkfinance.com/reference/overview
+  - type: DataModel
+    url: data-model/blnkfinance-data-model.yml
+  - type: Webhooks
+    url: asyncapi/blnkfinance-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/blnkfinance-error-codes.yml
 maintainers:
 - FN: Blnk Finance
   url: https://blnkfinance.com
