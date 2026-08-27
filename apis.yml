@@ -1,14 +1,33 @@
 name: Blnk Finance
-description: >-
-  Open-source double-entry ledger for financial products (wallets, loans, payouts, escrow, cards). Available as
-  self-hosted Blnk Core (OSS engine) and Blnk Cloud (managed), plus Blnk Watch for transaction monitoring. Exposes REST
-  APIs with a public OpenAPI spec, hosted MCP servers, llms.txt, and installable agent skills.
-url: >-
-  https://raw.githubusercontent.com/api-evangelist/open-source-ledger-for-financial-products-blnk-finance/refs/heads/main/apis.yml
+aid: blnkfinance
+description: Open-source double-entry ledger for financial products (wallets, loans, payouts, escrow, cards). Available as
+  self-hosted Blnk Core (OSS engine) and Blnk Cloud (managed), plus Blnk Watch for transaction monitoring. Exposes REST APIs
+  with a public OpenAPI spec, hosted MCP servers, llms.txt, and installable agent skills.
+url: https://raw.githubusercontent.com/api-evangelist/open-source-ledger-for-financial-products-blnk-finance/refs/heads/main/apis.yml
 created: '2026-08-26'
-modified: '2026-08-26'
+modified: '2026-08-27'
 specificationVersion: '0.21'
 tags:
+- fintech
+- financial-services
+- ledger
+- double-entry-accounting
+- payments
+- wallets
+- lending
+- banking-infrastructure
+- open-source
+- mcp
+- ai-agents
+- developer-tools
+apis:
+- name: Blnk Core API
+  description: Primary open-source ledger REST API (ledgers, balances, transactions, inflight, refunds, balance monitors,
+    identities, accounts, backup). Self-hosted; default server is localhost:5001 with no fixed public host. Auth via X-Blnk-Key
+    header.
+  humanURL: https://docs.blnkfinance.com/reference/overview.md
+  baseURL: http://localhost:5001
+  tags:
   - fintech
   - financial-services
   - ledger
@@ -21,89 +40,232 @@ tags:
   - mcp
   - ai-agents
   - developer-tools
-apis:
-  - name: Blnk Core API
-    description: >-
-      Primary open-source ledger REST API (ledgers, balances, transactions, inflight, refunds, balance monitors,
-      identities, accounts, backup). Self-hosted; default server is localhost:5001 with no fixed public host. Auth via
-      X-Blnk-Key header.
-    humanURL: https://docs.blnkfinance.com/reference/overview.md
-    baseURL: http://localhost:5001
-    tags:
-      - fintech
-      - financial-services
-      - ledger
-      - double-entry-accounting
-      - payments
-      - wallets
-      - lending
-      - banking-infrastructure
-      - open-source
-      - mcp
-      - ai-agents
-      - developer-tools
-    properties:
-      - type: OpenAPI
-        url: https://docs.blnkfinance.com/openapi.json
-      - type: Documentation
-        url: https://docs.blnkfinance.com/reference/overview.md
-  - name: Blnk Cloud API
-    description: >-
-      Managed Cloud REST surface covering OAuth auth, a Proxy API to a Core instance, Data API, Filters API, Alerts API,
-      and the MCP endpoint. Auth via API keys or OAuth.
-    humanURL: https://docs.blnkfinance.com/cloud/reference/overview.md
-    baseURL: https://api.cloud.blnkfinance.com
-    tags:
-      - fintech
-      - financial-services
-      - ledger
-      - double-entry-accounting
-      - payments
-      - wallets
-      - lending
-      - banking-infrastructure
-      - open-source
-      - mcp
-      - ai-agents
-      - developer-tools
-    properties:
-      - type: Documentation
-        url: https://docs.blnkfinance.com/cloud/reference/overview.md
-      - type: MCPServer
-        url: https://docs.blnkfinance.com/mcp
-      - type: LLMsTxt
-        url: https://blnkfinance.com/llms.txt
-      - type: LLMsTxt
-        url: https://docs.blnkfinance.com/llms.txt
-      - type: AgentSkill
-        url: https://docs.blnkfinance.com/home/llms.md
-  - name: Blnk Watch API
-    description: >-
-      Rule-based transaction monitoring API (transaction evaluation, instruction management, Git-backed rule sync).
-      Beta.
-    humanURL: https://docs.blnkfinance.com/watch/reference/overview.md
-    baseURL: https://api.cloud.blnkfinance.com
-    tags:
-      - fintech
-      - financial-services
-      - ledger
-      - double-entry-accounting
-      - payments
-      - wallets
-      - lending
-      - banking-infrastructure
-      - open-source
-      - mcp
-      - ai-agents
-      - developer-tools
-    properties:
-      - type: Documentation
-        url: https://docs.blnkfinance.com/watch/reference/overview.md
+  properties:
+  - type: OpenAPI
+    url: https://docs.blnkfinance.com/openapi.json
+  - type: Documentation
+    url: https://docs.blnkfinance.com/reference/overview.md
+  - type: LLMsTxt
+    url: https://blnkfinance.com/llms.txt
+  - type: LLMsTxt
+    url: https://docs.blnkfinance.com/llms.txt
+  - type: OpenAPI
+    url: openapi/blnkfinance-core-openapi.json
+    description: Verbatim copy of https://docs.blnkfinance.com/openapi.json (HTTP 200, 2026-08-27). OpenAPI 3.0.0, 15 paths,
+      18 operations.
+  - type: APIReference
+    url: https://docs.blnkfinance.com/reference/overview
+  - type: Overlay
+    url: overlays/blnkfinance-core-overlay.yaml
+  - type: DataModel
+    url: data-model/blnkfinance-data-model.yml
+  - type: Webhooks
+    url: asyncapi/blnkfinance-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/blnkfinance-error-codes.yml
+  - type: AgentSkill
+    url: skills/_index.yml
+  - type: MCPServer
+    url: mcp/blnkfinance-mcp.yml
+    description: Replaces the /.well-known/mcp.json pointer, which advertises a mintlify.me preview host rather than a blnkfinance.com
+      one.
+- name: Blnk Cloud API
+  description: Managed Cloud REST surface covering OAuth auth, a Proxy API to a Core instance, Data API, Filters API, Alerts
+    API, and the MCP endpoint. Auth via API keys or OAuth.
+  humanURL: https://docs.blnkfinance.com/cloud/reference/overview.md
+  baseURL: https://api.cloud.blnkfinance.com
+  tags:
+  - fintech
+  - financial-services
+  - ledger
+  - double-entry-accounting
+  - payments
+  - wallets
+  - lending
+  - banking-infrastructure
+  - open-source
+  - mcp
+  - ai-agents
+  - developer-tools
+  properties:
+  - type: Documentation
+    url: https://docs.blnkfinance.com/cloud/reference/overview.md
+  - type: MCPServer
+    url: https://docs.blnkfinance.com/mcp
+    description: 'Open, no-auth Mintlify DOCUMENTATION-SEARCH MCP on a first-party host. Probed live 2026-08-27: initialize
+      + tools/list returned 200, serverInfo "Blnk Finance", protocolVersion 2025-11-25, 3 tools. It is NOT the ledger MCP
+      -- that is https://api.cloud.blnkfinance.com/mcp/{instance_id}.'
+  - type: LLMsTxt
+    url: https://blnkfinance.com/llms.txt
+  - type: LLMsTxt
+    url: https://docs.blnkfinance.com/llms.txt
+  - type: AgentSkill
+    url: https://docs.blnkfinance.com/home/llms.md
+    description: 'Blnk''s "Build with LLMs" page: documents installing the 14 provider-authored Agent Skills via "npx skills
+      add https://docs.blnkfinance.com". Verified 200 on 2026-08-27.'
+  - type: APIReference
+    url: https://docs.blnkfinance.com/cloud/reference/overview
+  - type: MCPServer
+    url: mcp/blnkfinance-mcp.yml
+    description: 'Cloud ledger MCP: https://api.cloud.blnkfinance.com/mcp/{instance_id}, 33 tools, Bearer + mcp:read/mcp:write.'
+  - type: ToolCrosswalk
+    url: mcp/blnkfinance-tool-crosswalk.yml
+  - type: OAuthScopes
+    url: scopes/blnkfinance-scopes.yml
+  - type: AgentSkill
+    url: skills/_index.yml
+- name: Blnk Watch API
+  description: Rule-based transaction monitoring API (transaction evaluation, instruction management, Git-backed rule sync).
+    Beta.
+  humanURL: https://docs.blnkfinance.com/watch/reference/overview.md
+  baseURL: https://api.cloud.blnkfinance.com
+  tags:
+  - fintech
+  - financial-services
+  - ledger
+  - double-entry-accounting
+  - payments
+  - wallets
+  - lending
+  - banking-infrastructure
+  - open-source
+  - mcp
+  - ai-agents
+  - developer-tools
+  properties:
+  - type: Documentation
+    url: https://docs.blnkfinance.com/watch/reference/overview.md
+  - type: APIReference
+    url: https://docs.blnkfinance.com/watch/reference/overview
 maintainers:
-  - FN: Blnk Finance
-    url: https://blnkfinance.com
+- FN: Blnk Finance
+  url: https://blnkfinance.com
+  email: support@blnkfinance.com
 generated:
   by: apis.io/add
   model: claude-opus-4-8
   confidence: 95
   at: '2026-08-26T22:58:17.366Z'
+common:
+- type: DomainSecurity
+  url: security/blnkfinance-domain-security.yml
+- type: Authentication
+  url: authentication/blnkfinance-authentication.yml
+- type: DeveloperPortal
+  url: https://docs.blnkfinance.com/
+  description: Blnk developer documentation hub. Verified 200 on 2026-08-27.
+- type: Documentation
+  url: https://docs.blnkfinance.com/
+  description: Verified 200 on 2026-08-27.
+- type: APIReference
+  url: https://docs.blnkfinance.com/reference/overview
+  description: Blnk Core REST reference. Verified 200 on 2026-08-27.
+- type: GettingStarted
+  url: https://docs.blnkfinance.com/home/install
+  description: Install Blnk Core (Docker Compose) or start a Cloud Sandbox. Verified 200 on 2026-08-27.
+- type: Support
+  url: https://blnkfinance.com/contact/us
+  description: Contact / book a demo; support@blnkfinance.com and Discord https://discord.gg/7WNv94zPpx. Verified 200 on 2026-08-27.
+- type: Blog
+  url: https://blnkfinance.com/blog
+  description: Verified 200 on 2026-08-27. No RSS/Atom feed served (/rss.xml and /feed.xml both 404).
+- type: GitHubOrganization
+  url: https://github.com/blnkfinance
+  description: '9 public repos: blnk (Core), watch, blnk-docs, and the four SDKs. Verified 200 on 2026-08-27.'
+- type: Pricing
+  url: https://blnkfinance.com/pricing
+  description: Verified 200 on 2026-08-27.
+- type: SignUp
+  url: https://cloud.blnkfinance.com/auth/sign-up
+  description: Blnk Cloud sign-up, 5-day Sandbox trial. Verified 200 on 2026-08-27.
+- type: TermsOfService
+  url: https://blnkfinance.com/legal/terms
+  description: Verified 200 on 2026-08-27.
+- type: PrivacyPolicy
+  url: https://blnkfinance.com/legal/privacy
+  description: Verified 200 on 2026-08-27.
+- type: StatusPage
+  url: https://status.blnkfinance.com/
+  description: Atlassian Statuspage, all components operational. Verified 200 on 2026-08-27.
+- type: Packages
+  url: packages/blnkfinance-packages.yml
+- type: SDKs
+  url: packages/blnkfinance-packages.yml
+  description: Four first-party SDKs -- TypeScript, Go, Python, Java -- all at 1.3.0.
+- type: CLI
+  url: cli/blnkfinance-cli.yml
+  description: '@blnkfinance/blnk-cli 1.8.3, npm.'
+- type: WellKnown
+  url: well-known/blnkfinance-well-known.yml
+  description: 'Real hits: RFC 8414 OAuth metadata + openid-configuration on api.cloud.blnkfinance.com, and an MCP discovery
+    document on docs.blnkfinance.com.'
+- type: AgentCard
+  url: a2a/blnkfinance-a2a.yml
+  description: Live A2A agent card at docs.blnkfinance.com/.well-known/agent-card.json (HTTP 200, 14 skills). Graded flavored
+    against A2A 1.0.0.
+- type: AgentSkill
+  url: skills/_index.yml
+  description: 14 provider-authored Agent Skills, saved verbatim from /.well-known/agent-skills/<id>/skill.md.
+- type: LLMsTxt
+  url: llms/blnkfinance-llms.txt
+  description: Verbatim copy of https://blnkfinance.com/llms.txt.
+- type: Overlay
+  url: overlays/blnkfinance-core-overlay.yaml
+- type: Conformance
+  url: conformance/blnkfinance-conformance.yml
+- type: Compliance
+  url: conformance/blnkfinance-conformance.yml
+  description: ISO/IEC 27001 certified ISMS and GDPR compliance, published at https://blnkfinance.com/security.
+- type: ErrorCatalog
+  url: errors/blnkfinance-error-codes.yml
+  description: 72 stable domain-prefixed error codes from https://docs.blnkfinance.com/advanced/error-codes.
+- type: Lifecycle
+  url: lifecycle/blnkfinance-lifecycle.yml
+- type: Deprecation
+  url: lifecycle/blnkfinance-lifecycle.yml
+  description: Per-release migration guides for every breaking change plus a published upgrade policy. No RFC 8594 Sunset/Deprecation
+    headers.
+- type: OAuthScopes
+  url: scopes/blnkfinance-scopes.yml
+  description: resource:action API key scopes plus the Cloud OAuth mcp:read / mcp:write scopes.
+- type: VulnerabilityDisclosure
+  url: security/blnkfinance-vulnerability-disclosure.yml
+- type: Security
+  url: security/blnkfinance-vulnerability-disclosure.yml
+  description: Coordinated disclosure to security@blnkfinance.com, CVSS 4.0+ threshold, scoped program at https://blnkfinance.com/report-vulnerability.
+- type: TrustCenter
+  url: security/blnkfinance-trust-center.yml
+- type: Sandbox
+  url: sandbox/blnkfinance-sandbox.yml
+  description: Free local Core via Docker Compose, plus a paid managed Cloud Sandbox with a 5-day trial.
+- type: Conventions
+  url: conventions/blnkfinance-conventions.yml
+- type: Idempotency
+  url: conventions/blnkfinance-conventions.yml
+  description: Caller-supplied transaction `reference` with a unique database index since Core 0.13.2; duplicates rejected
+    409 TXN_DUPLICATE_REFERENCE.
+- type: ChangeLog
+  url: changelog/blnkfinance-changelog.yml
+  description: Six dated changelogs -- Core, Cloud, Watch, CLI and four SDKs.
+- type: DataModel
+  url: data-model/blnkfinance-data-model.yml
+- type: Webhooks
+  url: asyncapi/blnkfinance-webhooks.yml
+  description: 15 documented events, HMAC-SHA256 signed with X-Blnk-Signature since Core 0.13.0. No AsyncAPI document published.
+- type: Plans
+  url: plans/blnkfinance-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/blnkfinance-rate-limits.yml
+- type: MCPServer
+  url: mcp/blnkfinance-mcp.yml
+  description: 'Two servers: the Cloud ledger MCP (33 tools, remote, OAuth/API-key gated) and the open docs-search MCP (3
+    tools, probed live).'
+- type: ToolCrosswalk
+  url: mcp/blnkfinance-tool-crosswalk.yml
+  description: 33 MCP tools bound against the 18 published OpenAPI operations; 12 bound, 21 MCP-only, 8 REST-only.
+image: https://blnkfinance.com/_astro/og-default.4FpZOtzr.png
+x-enrichment:
+  date: '2026-08-27'
+  status: enriched
+  artifacts_added: 45
+  pass: local-v1

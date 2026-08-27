@@ -1,0 +1,101 @@
+generated: '2026-08-27'
+method: searched
+source: >-
+  https://docs.blnkfinance.com/home/sdks + registry metadata endpoints (registry.npmjs.org,
+  pypi.org/pypi/*/json, proxy.golang.org, repo1.maven.org maven-metadata.xml) + github.com/blnkfinance
+note: >-
+  Four first-party SDKs (TypeScript, Go, Python, Java) all sit at 1.3.0 and were published within three
+  weeks of each other (2026-06-29 to 2026-07-20), so the client fleet is version-locked and current
+  against Blnk Core 0.15.x. The CLI is a separate release train. Blnk Core itself is published as a Go
+  module and a Docker image, not only as source.
+packages:
+- language: typescript
+  registry: npm
+  name: '@blnkfinance/blnk-typescript'
+  url: https://www.npmjs.com/package/@blnkfinance/blnk-typescript
+  install: npm install @blnkfinance/blnk-typescript
+  official: true
+  license: MIT
+  repo: https://github.com/blnkfinance/blnk-ts
+  docs: https://docs.blnkfinance.com/sdks/typescript
+  version: 1.3.0
+  published: '2026-07-10'
+- language: go
+  registry: go
+  name: github.com/blnkfinance/blnk-go
+  url: https://pkg.go.dev/github.com/blnkfinance/blnk-go
+  install: go get github.com/blnkfinance/blnk-go
+  official: true
+  repo: https://github.com/blnkfinance/blnk-go
+  docs: https://docs.blnkfinance.com/sdks/go
+  version: v1.3.0
+  published: '2026-06-29'
+- language: python
+  registry: pypi
+  name: blnk-python
+  url: https://pypi.org/project/blnk-python/
+  install: pip install blnk-python
+  official: true
+  repo: https://github.com/blnkfinance/blnk-python
+  docs: https://docs.blnkfinance.com/sdks/python
+  version: 1.3.0
+  published: '2026-07-09'
+- language: java
+  registry: maven
+  name: com.blnkfinance:blnk-sdk
+  url: https://central.sonatype.com/artifact/com.blnkfinance/blnk-sdk
+  install: implementation("com.blnkfinance:blnk-sdk:1.3.0")
+  official: true
+  repo: https://github.com/blnkfinance/blnk-java
+  docs: https://docs.blnkfinance.com/sdks/java
+  version: 1.3.0
+  published: '2026-07-20'
+  note: >-
+    Requires JDK 17+. Only 1.3.0 is on Maven Central; the artifact has no earlier releases.
+    maven-metadata.xml lastUpdated 20260720130728.
+- language: javascript
+  registry: npm
+  name: '@blnkfinance/blnk-cli'
+  url: https://www.npmjs.com/package/@blnkfinance/blnk-cli
+  install: npm i -g @blnkfinance/blnk-cli
+  official: true
+  kind: cli
+  docs: https://docs.blnkfinance.com/cli/install
+  version: 1.8.3
+  published: '2026-08-20'
+  note: >-
+    The CLI binary; command surface is catalogued in cli/blnkfinance-cli.yml. The docs install page
+    still states "Latest version: v1.8.2" while npm has shipped 1.8.3 (2026-08-20) -- a one-release
+    docs lag, not an abandonment signal.
+- language: go
+  registry: go
+  name: github.com/blnkfinance/blnk
+  url: https://pkg.go.dev/github.com/blnkfinance/blnk
+  install: go get github.com/blnkfinance/blnk
+  official: true
+  kind: server
+  repo: https://github.com/blnkfinance/blnk
+  version: v0.15.3
+  published: '2026-08-24'
+  note: >-
+    Blnk Core itself, the open-source ledger server -- not a client library. The documented install
+    path is Docker Compose (git clone github.com/blnkfinance/blnk && docker compose up).
+sdk_count: 4
+registries_checked:
+- npm
+- pypi
+- maven-central
+- go-proxy
+- rubygems
+- packagist
+- crates.io
+- nuget
+not_found:
+- registry: rubygems
+  note: no first-party Ruby SDK; the docs list only TypeScript, Go, Python and Java.
+- registry: packagist
+  note: no first-party PHP SDK.
+- registry: crates.io
+  note: no first-party Rust SDK.
+- registry: nuget
+  note: no first-party .NET SDK.

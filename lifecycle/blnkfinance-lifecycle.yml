@@ -1,0 +1,75 @@
+generated: '2026-08-27'
+method: searched
+source: >-
+  https://docs.blnkfinance.com/changelog/blnk-core, https://docs.blnkfinance.com/changelog/upgrade,
+  https://status.blnkfinance.com/, https://blnkfinance.com/legal/deploy-sla,
+  https://blnkfinance.com/pricing
+versioning:
+  scheme: semver-ish (0.MAJOR.MINOR on Core)
+  current:
+    blnk_core: 0.15.3
+    blnk_core_released: '2026-08-25'
+    blnk_watch: v0.1.3
+    blnk_watch_released: '2026-06-30'
+    blnk_cli: 1.8.3
+    sdks: 1.3.0
+  transport: >-
+    No version in the URL path and no version header. The deployed Core binary IS the version, which
+    follows from the self-hosted open-source model.
+  upgrade_policy: https://docs.blnkfinance.com/changelog/upgrade
+deprecation:
+  policy_published: true
+  style: per-release migration guides
+  sunset_header: false
+  deprecation_header: false
+  note: >-
+    Blnk does not publish an RFC 8594 Sunset/Deprecation header policy or a dated deprecation calendar.
+    What it does publish -- and publishes well -- is a named migration guide for every breaking release,
+    each stating what changed, the blast radius, and the remediation steps. For a self-hosted ledger
+    that is the operative deprecation contract: nothing is withdrawn from under a consumer, because the
+    consumer chooses when to upgrade the binary.
+  migration_guides:
+  - {version: 0.15.1, url: 'https://docs.blnkfinance.com/changelog/v15-1-migration', subject: transaction lock duration overflow}
+  - {version: 0.15.0, url: 'https://docs.blnkfinance.com/changelog/v15-migration', subject: 'structured error codes, HTTP status changes, removed rate/currency_multiplier/modification_ref response fields, bulk inflight commit/void'}
+  - {version: 0.14.3, url: 'https://docs.blnkfinance.com/changelog/v14-3-migration', subject: master-key-only hook management, owner-scoped API key limits}
+  - {version: 0.14.0, url: 'https://docs.blnkfinance.com/changelog/v14-migration', subject: 'update-metadata response field renamed metadata -> meta_data'}
+  - {version: 0.13.2, url: 'https://docs.blnkfinance.com/changelog/v13-2-migration', subject: unique database constraint on transactions.reference}
+  - {version: 0.12.0, url: 'https://docs.blnkfinance.com/changelog/v12-migration', subject: API key hashing}
+  - {version: 0.11.0, url: 'https://docs.blnkfinance.com/changelog/v11-migration', subject: Typesense upgrade}
+  - {version: 0.10.5, url: 'https://docs.blnkfinance.com/changelog/v10-5-migration', subject: bulk transactions default to the queue}
+  removed_in_0_15_0:
+  - {field: rate, note: request rate no longer applies an exchange rate}
+  - {field: currency_multiplier}
+  - {field: modification_ref}
+  deprecated_operations_in_spec: []
+  deprecated_operations_note: >-
+    No operation in openapi/blnkfinance-core-openapi.json carries deprecated: true.
+status_page:
+  url: https://status.blnkfinance.com/
+  provider: Atlassian Statuspage
+  http_status: 200
+  verified: '2026-08-27'
+  note: All components reported operational at probe time.
+sla:
+  published: true
+  documents:
+  - {name: Cloud Production SLA, url: 'https://blnkfinance.com/legal/deploy-sla'}
+  - {name: Dedicated Pro Support SLA, url: 'https://blnkfinance.com/legal/support-sla'}
+  - {name: Enterprise License, url: 'https://blnkfinance.com/legal/license-sla'}
+  uptime_commitment: 99.9% on the Production tier
+  incident_response: 30-minute SEV-1 response on the Production tier
+  no_sla_tiers:
+  - open-source
+  - Sandbox ("No SLA on uptime and data retention")
+support:
+  email: support@blnkfinance.com
+  security_email: security@blnkfinance.com
+  sales_email: sales@blnkfinance.com
+  discord: https://discord.gg/7WNv94zPpx
+  github_issues: https://github.com/blnkfinance/blnk/issues
+  paid_support: Dedicated Pro Support, flat $5,000/yr (not hourly)
+product_status:
+  - {product: Blnk Core, status: GA, license: open-source}
+  - {product: Blnk Cloud, status: GA}
+  - {product: Blnk Watch, status: beta, version: v0.1.3}
+  - {product: Blnk Maps, status: available, url: 'https://map.blnkfinance.com'}

@@ -1,0 +1,97 @@
+generated: '2026-08-27'
+method: probed
+source: live GET of /.well-known/* on every apis.yml host and OpenAPI servers[] host
+note: >-
+  blnkfinance.com (Astro) and cloud.blnkfinance.com (Next.js) both answer every /.well-known/* path
+  with an HTML shell -- a control probe of /.well-known/blnk-nonexistent-probe-9931 returned the same
+  45,854-byte body on blnkfinance.com, so nothing on those two hosts is a document. api.cloud.blnkfinance.com
+  requires an Authorization header on every path except the two OAuth metadata documents, which it serves
+  anonymously and correctly. docs.blnkfinance.com serves a real A2A agent card and an MCP discovery
+  document. Core's OpenAPI servers[] host is http://localhost:5001 (self-hosted OSS) and has no probeable
+  well-known surface.
+hit_count: 4
+hosts:
+- host: https://api.cloud.blnkfinance.com
+  documents:
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: blnkfinance-oauth-authorization-server.json
+  - path: /.well-known/openid-configuration
+    status: 200
+    file: blnkfinance-openid-configuration.json
+  - path: /.well-known/oauth-protected-resource
+    status: 401
+  - path: /.well-known/security.txt
+    status: 401
+  - path: /.well-known/api-catalog
+    status: 401
+  - path: /.well-known/ai-plugin.json
+    status: 401
+  - path: /.well-known/agent-card.json
+    status: 401
+  - path: /.well-known/agent.json
+    status: 401
+- host: https://docs.blnkfinance.com
+  documents:
+  - path: /.well-known/agent-card.json
+    status: 200
+    file: ../a2a/blnkfinance-agent-card.json
+  - path: /.well-known/mcp.json
+    status: 200
+    file: blnkfinance-mcp.json
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://blnkfinance.com
+  soft_404_control:
+    path: /.well-known/blnk-nonexistent-probe-9931
+    status: 404
+    bytes: 45854
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://cloud.blnkfinance.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+security_txt:
+  served: false
+  note: >-
+    No RFC 9116 security.txt on any host, but Blnk does run a published vulnerability-disclosure
+    program at https://blnkfinance.com/report-vulnerability (security@blnkfinance.com). See
+    security/blnkfinance-vulnerability-disclosure.yml.

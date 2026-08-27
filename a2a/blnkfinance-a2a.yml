@@ -1,0 +1,75 @@
+generated: '2026-08-27'
+method: probed
+source: https://docs.blnkfinance.com/.well-known/agent-card.json
+discovery:
+  path: /.well-known/agent-card.json
+  canonical: true
+  host: docs.blnkfinance.com
+x-evidence:
+  fetched: '2026-08-27'
+  url: https://docs.blnkfinance.com/.well-known/agent-card.json
+  http_status: 200
+  content_type: application/json
+  bytes: 6830
+  probed_hosts:
+  - host: blnkfinance.com
+    agent_card_json: 404
+    agent_json: 404
+  - host: cloud.blnkfinance.com
+    agent_card_json: 404
+    agent_json: 404
+  - host: api.cloud.blnkfinance.com
+    agent_card_json: 401
+    agent_json: 401
+card:
+  name: Blnk Finance
+  url: https://docs.blnkfinance.com/
+  version: '1.0.0'
+  protocol_version: '0.3'
+  preferred_transport: HTTP+JSON
+  provider_organization: Blnk Finance
+  documentation_url: https://docs.blnkfinance.com/
+  capabilities:
+    streaming: false
+    pushNotifications: false
+  skill_count: 14
+  skills:
+  - core
+  - documentation
+  - fx
+  - implementation
+  - inflight
+  - ledger-architecture
+  - naming-patterns
+  - precision
+  - queueing
+  - sdks
+  - support
+  - transactions
+  - watch
+  - webhooks
+conformance:
+  spec: A2A 1.0.0
+  grade: flavored
+  protocol_version: '0.3'
+  preferred_transport: HTTP+JSON
+  hard_checks:
+    capabilities_is_object: true
+    protocol_version_present: true
+    skills_is_array: true
+  deviations:
+  - no-description
+  - supportedInterfaces-instead-of-additionalInterfaces
+  - protocolVersion-0.3-not-a-full-semver
+  deviation_notes: >-
+    All three A2A hard checks pass, but the card omits the REQUIRED top-level `description` field and
+    names its interface list `supportedInterfaces` rather than the spec's `additionalInterfaces`, which
+    is the documented flavored pattern. Graded flavored rather than near-conformant because a missing
+    required field is a genuine spec failure, not an omitted optional one.
+note: >-
+  The card is served from docs.blnkfinance.com, a host Blnk Finance controls, and self-identifies as
+  organization "Blnk Finance" with documentationUrl on the same host. It describes the DOCUMENTATION
+  agent surface (each of its 14 skills resolves to a real published Agent Skill markdown file under
+  /.well-known/agent-skills/<id>/skill.md, all of which returned 200 and are saved verbatim in skills/).
+  It is not a card for the ledger REST API itself; the callable ledger agent surface is the Cloud MCP
+  endpoint recorded in mcp/blnkfinance-mcp.yml.

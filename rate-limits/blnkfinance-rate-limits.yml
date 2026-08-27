@@ -1,0 +1,68 @@
+generated: '2026-08-27'
+method: searched
+source: >-
+  https://docs.blnkfinance.com/advanced/configuration/server-security#rate-limiting,
+  https://docs.blnkfinance.com/advanced/error-codes, https://blnkfinance.com/pricing
+limit_count: 2
+note: >-
+  Blnk Core does not impose a vendor rate limit -- it ships a rate limiter the OPERATOR configures, with
+  defaults set so high (5,000,000 rps) that they are effectively off. That is the honest answer for a
+  self-hosted open-source ledger, and it is different from "undocumented": the mechanism, the knobs, the
+  derivation rules and the exhaustion code are all published. What IS a vendor-imposed ceiling is the
+  Blnk Cloud throughput cap, expressed in transactions per minute per tier. No rate-limit response
+  headers are documented on either surface, which is the real gap for an agent: it can be throttled but
+  cannot see how close it is.
+limits:
+- scope: per-client (Blnk Core, self-hosted)
+  surface: Blnk Core REST API
+  window: 1 second
+  limit: 5000000
+  limit_unit: requests per second
+  burst: 10000000
+  configurable: true
+  config_keys:
+  - {key: BLNK_RATE_LIMIT_RPS, json: rate_limit.requests_per_second, default: 5000000}
+  - {key: BLNK_RATE_LIMIT_BURST, json: rate_limit.burst, default: 10000000}
+  - {key: BLNK_RATE_LIMIT_CLEANUP_INTERVAL_SEC, json: rate_limit.cleanup_interval_sec, default: 10800}
+  derivation: >-
+    If only RPS is set, burst defaults to 2 * RPS. If only burst is set, RPS defaults to burst / 2. If
+    neither is set, Blnk applies its built-in defaults.
+  docs: https://docs.blnkfinance.com/advanced/configuration/server-security#rate-limiting
+- scope: per-instance (Blnk Cloud)
+  surface: Blnk Cloud managed instance
+  window: 1 minute
+  limit: 5000
+  limit_unit: transactions per minute (Sandbox tier)
+  tiers:
+  - {tier: Sandbox, throughput_tpm: 5000}
+  - {tier: Production, throughput_tpm: 100000}
+  configurable: false
+  docs: https://blnkfinance.com/pricing
+response_headers:
+  documented: false
+  ratelimit_headers: []
+  retry_after: false
+  note: >-
+    No X-RateLimit-*, RateLimit-* (RFC 9331 draft) or Retry-After headers appear anywhere in the Blnk
+    documentation. An agent has no runtime budget signal; it learns it is throttled only by receiving a
+    429.
+exhaustion:
+  status: 429
+  error_code: GEN_RATE_LIMITED
+  envelope: error_detail.code
+  legacy_code: RATE_LIMITED
+  docs: https://docs.blnkfinance.com/advanced/error-codes
+related_backpressure:
+  status: 503
+  error_code: QUEUE_BACKPRESSURE
+  since: 0.15.2
+  note: >-
+    Distinct from rate limiting. Blnk rejects new queue enqueues when Redis memory or pending task count
+    exceeds configured limits. Enabled by default, so this is the throttle an agent is most likely to
+    meet in practice.
+  docs: https://docs.blnkfinance.com/advanced/configuration/queue
+payload_limits:
+  max_request_body_mb: 5
+  max_upload_mb: 256
+  bulk_max_items: 10000
+  on_exceeded: {status: 400, code: GEN_MALFORMED_REQUEST}

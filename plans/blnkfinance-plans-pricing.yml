@@ -1,0 +1,113 @@
+generated: '2026-08-27'
+method: searched
+source: https://blnkfinance.com/pricing
+currency: USD
+plan_count: 4
+note: >-
+  Blnk prices the MANAGED product, not the API. Blnk Core, the ledger REST API itself, is open source and
+  free forever -- there is no per-call price and no quota, because the operator runs the binary. The
+  paid tiers buy hosting, a back-office, an SLA and (materially for agent buyers) the MCP surface, which
+  the comparison table marks "Not included" on the free tier. Metering is per RECORD stored, not per API
+  call, plus a throughput ceiling expressed in TPM.
+plans:
+- name: Open-source
+  price: 0
+  currency: USD
+  period: forever
+  self_hosted: true
+  signup: https://docs.blnkfinance.com/home/install
+  included:
+  - Open-source license to install Blnk Core in your environment
+  - Detailed developer documentation
+  - Community support
+  - Connect a self-hosted instance to Blnk Cloud
+  excluded:
+  - Back-office, reports and insights
+  - MCP
+  - Audit logs
+  - Reconciliation UI
+  - Alerts
+  - SLA
+  limits:
+    records: unlimited (operator's own database)
+    throughput: operator-configured
+- name: Sandbox
+  price: 100
+  currency: USD
+  period: month
+  trial: 5-day free trial
+  signup: https://cloud.blnkfinance.com
+  description: Shared infrastructure for small to low-risk workloads.
+  included:
+  - Shared infrastructure
+  - 100,000 records included
+  - Back-office, reconciliation, audit logs, alerts, custom apps
+  - MCP
+  - Built-in data lake and custom insights
+  - Unlimited seats
+  overage:
+    unit: record
+    price: 0.00135
+    currency: USD
+  limits:
+    records_included: 100000
+    throughput_tpm: 5000
+    sla: none
+    note: No SLA on uptime or data retention.
+  addons:
+  - {name: Additional sandbox instance, price: 50, period: month}
+- name: Production
+  price: 1000
+  currency: USD
+  period: month
+  signup: https://cloud.blnkfinance.com/auth/sign-up
+  description: Dedicated infrastructure with high availability and SLA support for production workloads.
+  included:
+  - Dedicated production-grade infrastructure
+  - 200,000 records included
+  - High availability, auto-backups, multi-region
+  - IP whitelisting
+  - MCP
+  - Built-in data lake for audits, reporting and insights
+  - Guided migration and deployment
+  overage:
+    unit: record
+    price: 0.00175
+    currency: USD
+  limits:
+    records_included: 200000
+    throughput_tpm: 100000
+    uptime_sla: 99.9%
+    sev1_response: 30 minutes
+  addons:
+  - {name: Additional production instance, price: 1000, period: month}
+  - {name: Additional sandbox instance, price: 50, period: month}
+- name: Enterprise
+  price: null
+  pricing_model: contact-sales
+  contact: https://blnkfinance.com/contact/us
+  contact_email: sales@blnkfinance.com
+  description: Self-host Blnk Cloud on-prem or bring your own cloud.
+  included:
+  - Enterprise license (https://blnkfinance.com/legal/license-sla)
+  - On-prem hosting of Blnk Cloud
+  - Bring your own Cloud (BYOC)
+  - Dedicated account manager
+  - Setup and deployment support
+  - Dedicated Slack support channel
+  - Migration support and onboarding
+addon_services:
+- name: Dedicated Pro Support
+  price: 5000
+  currency: USD
+  period: year
+  billing: flat subscription, not hourly
+  sla: https://blnkfinance.com/legal/support-sla
+  contact: sales@blnkfinance.com
+- name: Free ledger audit
+  price: 0
+  contact: https://blnkfinance.com/contact/us
+calculator:
+  present: true
+  url: https://blnkfinance.com/pricing
+  note: Interactive cost calculator by instance type, feature selection and monthly record volume.

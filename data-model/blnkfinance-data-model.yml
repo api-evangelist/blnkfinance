@@ -1,0 +1,108 @@
+generated: '2026-08-27'
+method: derived
+source: >-
+  openapi/blnkfinance-core-openapi.json ($ref graph + *_id reference fields), enriched from
+  https://docs.blnkfinance.com/ledgers/introduction and https://docs.blnkfinance.com/balances/introduction
+note: >-
+  Blnk is a double-entry ledger, so the entity graph is small and the semantics are in the edges, not
+  the field count. A Transaction is the only entity that touches two Balances at once (source and
+  destination) and it is append-only: refunds, commits and voids all create NEW child transactions
+  linked back by parent_transaction rather than mutating a record. The published spec covers 5 of the
+  documented entities; reconciliation, hooks, API keys and Cloud-side views/visualizations exist in the
+  product but not in this contract.
+id_prefixes:
+- {entity: Ledger, prefix: 'ldg_', field: ledger_id, note: 'observed in docs examples; general_ledger_id is the reserved built-in'}
+- {entity: Balance, prefix: 'bln_', field: balance_id}
+- {entity: Transaction, prefix: 'txn_', field: transaction_id}
+- {entity: Identity, prefix: 'idt_', field: identity_id}
+- {entity: Account, prefix: 'acc_', field: account_id}
+internal_balances:
+  convention: '@'
+  note: >-
+    Balances whose indicator starts with @ are internal / General Ledger balances (for example
+    @WorldUSD, @Revenue). Since 0.15.3 they can be created explicitly by posting ledger_id
+    "general_ledger_id" with an indicator.
+entities:
+- name: Ledger
+  schema: Ledger
+  description: A grouping of balances. The organizing container in the ledger hierarchy.
+  key: ledger_id
+  fields: [ledger_id, name, created_at, meta_data]
+  relationships:
+  - {type: has_many, target: Balance, via: ledger_id}
+- name: Balance
+  schema: Balance
+  description: An account balance inside a ledger, carrying credit, debit and net amounts in one currency.
+  key: balance_id
+  fields: [balance_id, balance, credit_balance, debit_balance, currency, ledger_id, identity_id, created_at, meta_data]
+  relationships:
+  - {type: belongs_to, target: Ledger, via: ledger_id}
+  - {type: belongs_to, target: Identity, via: identity_id, optional: true}
+  - {type: has_many, target: BalanceMonitor, via: balance_id}
+  - {type: has_many, target: Transaction, via: 'source / destination'}
+- name: Transaction
+  schema: RecordTransaction
+  description: >-
+    A money movement between a source balance and a destination balance. Amounts are carried as
+    precise_amount + precision (integer minor units) rather than a float.
+  key: transaction_id
+  fields: [transaction_id, parent_transaction, amount, precise_amount, precision, reference, currency, source, destination, sources, destinations, description, status, allow_overdraft, inflight, inflight_expiry_date, inflight_commit_date, created_at, meta_data]
+  unique: [reference]
+  relationships:
+  - {type: belongs_to, target: Balance, via: source}
+  - {type: belongs_to, target: Balance, via: destination}
+  - {type: belongs_to, target: Transaction, via: parent_transaction, note: 'refunds, queued children, and inflight commit/void children point at their parent'}
+  - {type: has_many, target: Transaction, via: parent_transaction, note: multi-source/multi-destination transactions fan out into child legs}
+  statuses: [QUEUED, APPLIED, INFLIGHT, VOID, SCHEDULED, REJECTED]
+  immutable: true
+- name: Identity
+  schema: Identity
+  description: A person or organization that balances can be attached to. Individual and organization variants share one schema.
+  key: identity_id
+  fields: [identity_id, identity_type, organization_name, category, first_name, last_name, other_names, gender, dob, email_address, phone_number, nationality, street, country, state, post_code, city, created_at, meta_data]
+  relationships:
+  - {type: has_many, target: Balance, via: identity_id}
+  - {type: has_many, target: Account, via: identity_id}
+  pii: true
+  pii_note: >-
+    Identity is the PII-bearing entity. Blnk supports field-level tokenization (AES-GCM standard, or
+    HMAC-seeded format-preserving) gated on BLNK_TOKENIZATION_SECRET being exactly 32 bytes.
+- name: Account
+  schema: GetAccount
+  description: A bank-account representation bound to a balance and an identity. Optional convenience layer over Balance.
+  key: account_id
+  fields: [account_id, name, number, bank_name, currency, created_at, balance_id, identity_id, ledger_id, meta_data]
+  relationships:
+  - {type: belongs_to, target: Balance, via: balance_id}
+  - {type: belongs_to, target: Identity, via: identity_id}
+  - {type: belongs_to, target: Ledger, via: ledger_id}
+  embeds: [ledger, balance, identity]
+- name: BalanceMonitor
+  schema: CreateBalanceMonitor
+  description: A condition watched against a balance that fires a callback when met.
+  key: monitor_id
+  fields: [monitor_id, balance_id, condition, call_back_url, created_at]
+  relationships:
+  - {type: belongs_to, target: Balance, via: balance_id}
+  emits_event: balance.monitor
+entities_not_in_spec:
+- {name: Reconciliation, note: 'Runs, matching rules and external transaction uploads. Documented, absent from the published OpenAPI.'}
+- {name: Hook, note: 'PRE_TRANSACTION / POST_TRANSACTION transaction hooks. Master-key managed. Absent from the published OpenAPI.'}
+- {name: APIKey, note: 'Scoped keys with owner context and expiry. Absent from the published OpenAPI.'}
+- {name: View, note: 'Blnk Cloud saved filter configuration. Cloud-only, MCP-exposed.'}
+- {name: Visualization, note: 'Blnk Cloud Insights chart definition. Cloud-only, MCP-exposed.'}
+- {name: Alert, note: 'Blnk Cloud alert with custom statuses. Cloud REST + MCP.'}
+- {name: Instruction, note: 'Blnk Watch compiled WatchScript rule, Git-synced.'}
+metadata_pattern:
+  field: meta_data
+  present_on: [Ledger, Balance, Transaction, Identity, Account]
+  note: >-
+    Free-form JSON on every core entity, updatable via POST /{id}/metadata (metadata:write scope). Blnk's
+    own naming-patterns skill recommends using meta_data keys as the join key back into the operator's
+    own systems.
+amount_encoding:
+  fields: [precise_amount, precision]
+  note: >-
+    Amounts are integer minor units plus a precision divisor (e.g. precise_amount 10000 with precision
+    100 = 100.00). The `amount` float field exists for convenience; the ledger truth is precise_amount.
+    Blnk's blnk-precision skill treats a single precision source of truth as the top correctness rule.

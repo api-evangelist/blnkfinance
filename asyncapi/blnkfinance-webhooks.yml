@@ -1,0 +1,82 @@
+generated: '2026-08-27'
+method: searched
+source: >-
+  https://docs.blnkfinance.com/webhooks/overview, https://docs.blnkfinance.com/webhooks/events,
+  https://docs.blnkfinance.com/webhooks/global-webhooks,
+  https://docs.blnkfinance.com/webhooks/transaction-hooks,
+  https://docs.blnkfinance.com/advanced/configuration/webhooks
+asyncapi_spec:
+  published: false
+  probed:
+  - {url: 'https://docs.blnkfinance.com/asyncapi.yaml', status: 404}
+  - {url: 'https://docs.blnkfinance.com/asyncapi.json', status: 404}
+  note: >-
+    Blnk publishes no AsyncAPI document. Its event surface is real and well documented in prose, so the
+    catalog below is captured verbatim from the docs rather than being synthesised into an AsyncAPI
+    file API Evangelist would have authored. Emitting a Webhooks pointer, not an AsyncAPI one.
+event_surface:
+  kinds:
+  - name: Global webhooks
+    since: 0.8.4
+    configuration: Blnk Core configuration (BLNK_WEBHOOK_URL / notification.webhook in blnk.json)
+    scope: All named lifecycle events, ledger-wide
+    docs: https://docs.blnkfinance.com/webhooks/global-webhooks
+  - name: Transaction hooks
+    configuration: Hooks API (create/update/list/delete)
+    scope: Transaction events only
+    types: [PRE_TRANSACTION, POST_TRANSACTION]
+    management_auth: master key only (since Core 0.14.3; scoped keys get AUTH_MASTER_KEY_REQUIRED 403)
+    docs: https://docs.blnkfinance.com/webhooks/transaction-hooks
+  transport: HTTPS POST to a customer-configured endpoint
+  payload: 'JSON with an `event` discriminator and a `data` object'
+security:
+  signed_since: 0.13.0
+  algorithm: HMAC-SHA256, hex-encoded
+  signed_payload: timestamp + "." + rawRequestBody
+  secret: BLNK_SERVER_SECRET_KEY (also the master API key)
+  headers:
+  - {header: X-Blnk-Signature, description: Hex-encoded HMAC-SHA256 of the signed payload}
+  - {header: X-Blnk-Timestamp, description: Unix timestamp in seconds, used in the signed payload and for replay protection}
+  - {header: X-Hook-ID, description: Hook identifier (transaction hooks only)}
+  - {header: X-Hook-Type, description: PRE_TRANSACTION or POST_TRANSACTION (transaction hooks only)}
+  custom_headers:
+    supported: true
+    config: BLNK_WEBHOOK_HEADERS (JSON-encoded object) or notification.webhook.headers in blnk.json
+  verification_warning: >-
+    Verify against the EXACT raw request bytes before JSON parsing; a re-serialised body fails
+    verification.
+  replay_protection: via X-Blnk-Timestamp
+event_count: 15
+events:
+- {event: ledger.created, resource: ledger, description: When a ledger is created.}
+- {event: balance.created, resource: balance, description: When a balance is created.}
+- {event: balance.monitor, resource: balance-monitor, description: When a balance monitor is triggered because its conditions are met.}
+- {event: transaction.applied, resource: transaction, description: When a transaction is applied or committed.}
+- {event: transaction.inflight, resource: transaction, description: When a transaction is inflight.}
+- {event: transaction.void, resource: transaction, description: When an inflight transaction is voided.}
+- {event: transaction.scheduled, resource: transaction, description: When a transaction is successfully scheduled.}
+- {event: transaction.rejected, resource: transaction, description: When a transaction is rejected.}
+- {event: bulk_transaction.applied, resource: transaction, description: When all items in a bulk transaction have been applied.}
+- {event: bulk_transaction.inflight, resource: transaction, description: When all items in a bulk transaction are successfully inflight.}
+- {event: bulk_transaction.failed, resource: transaction, description: When a bulk transaction fails.}
+- {event: identity.created, resource: identity, description: When an identity is created.}
+- {event: reconciliation.completed, resource: reconciliation, since: 0.15.0, description: When a reconciliation run completes successfully.}
+- {event: reconciliation.failed, resource: reconciliation, since: 0.15.0, description: When a reconciliation run fails.}
+- {event: system.error, resource: system, since: 0.12.0, description: 'When a system error occurs (e.g. duplicate reference).'}
+example_payload:
+  event: system.error
+  data:
+    error: reference 0x8fa3c1a2b7d9_q has already been used
+    time: '2025-12-08T10:30:45Z'
+consumer_guidance:
+  note: >-
+    Blnk's own agent skill blnk-webhooks tells consumers to verify the signature, allowlist the events
+    they need (especially transaction.applied / transaction.rejected), and dedupe by event/transaction
+    id before updating state.
+  critical: >-
+    Reconciliation start endpoints return only reconciliation_id since 0.15.0 -- status, match counts
+    and timestamps arrive ONLY via the reconciliation.completed webhook. A consumer that does not
+    subscribe cannot learn the outcome of a reconciliation run.
+alerts_note: >-
+  Blnk Cloud additionally exposes alert webhooks (ALERT_WEBHOOK_*) for Watch verdicts; see
+  https://docs.blnkfinance.com/cloud/alerts.

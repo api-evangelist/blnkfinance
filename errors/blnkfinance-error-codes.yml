@@ -1,0 +1,157 @@
+generated: '2026-08-27'
+method: searched
+source: https://docs.blnkfinance.com/advanced/error-codes
+format: proprietary-envelope
+note: >-
+  Not RFC 9457. Blnk returns application/json with a nested `error_detail` object carrying a stable
+  domain-prefixed `code`, a display `message`, and optional structured `details`. Legacy top-level
+  `error` / `errors` strings are retained for backwards compatibility and the docs are explicit that
+  clients must branch on `error_detail.code` and never parse message text. Structured errors are
+  available from Blnk Core 0.15.0 onward. The PUBLISHED OpenAPI documents no 4xx/5xx responses at all
+  (18 operations, only 200/201 declared), so this catalog is harvested from the docs, not derived from
+  the spec -- that gap is the single largest contract-quality defect on this provider.
+envelope:
+  content_type: application/json
+  fields:
+  - field: error_detail.code
+    description: Stable code from the catalog. Branch on this.
+  - field: error_detail.message
+    description: Human-readable. May change between releases. Display only.
+  - field: error_detail.details
+    description: Optional structured context (filter parse errors, reindex progress, batch ids).
+  - field: error / errors
+    description: Backwards-compatible display strings. Do not build logic on these.
+  example:
+    error: transaction not found
+    error_detail:
+      code: TXN_NOT_FOUND
+      message: transaction not found
+      details: {}
+unclassified_failures:
+  status: 500
+  message: internal server error
+  note: Underlying error is logged server-side and never echoed to clients.
+prefixes:
+- prefix: GEN_
+  domain: Generic / platform
+- prefix: AUTH_
+  domain: Authentication and authorization
+- prefix: APIKEY_
+  domain: API key management
+- prefix: LGR_
+  domain: Ledgers
+- prefix: BAL_
+  domain: Balances and monitors
+- prefix: TXN_
+  domain: Transactions
+- prefix: IDT_
+  domain: Identities and tokenization
+- prefix: RECON_
+  domain: Reconciliation
+- prefix: META_
+  domain: Metadata
+- prefix: HOOK_
+  domain: Transaction hooks
+- prefix: QUEUE_
+  domain: Async queue
+- prefix: SRCH_
+  domain: Search / Typesense
+- prefix: ADMIN_
+  domain: Admin operations
+error_count: 72
+errors:
+- {code: GEN_MALFORMED_REQUEST, status: 400, domain: generic, meaning: Request body could not be parsed (invalid JSON, wrong types, or body too large)}
+- {code: GEN_VALIDATION_ERROR, status: 400, domain: generic, meaning: Request failed validation (invalid params, filters, fields)}
+- {code: GEN_MISSING_PARAMETER, status: 400, domain: generic, meaning: A required route or query parameter is missing}
+- {code: GEN_BAD_REQUEST, status: 400, domain: generic, meaning: Request rejected; no more specific code applies}
+- {code: GEN_NOT_FOUND, status: 404, domain: generic, meaning: Resource not found; no domain-specific code applies}
+- {code: GEN_CONFLICT, status: 409, domain: generic, meaning: Request conflicts with current resource state}
+- {code: GEN_RESOURCE_LOCKED, status: 423, domain: generic, meaning: A concurrent operation holds the lock; retry shortly, remediation: retry with backoff}
+- {code: GEN_RATE_LIMITED, status: 429, domain: generic, meaning: Too many requests, remediation: back off and retry}
+- {code: GEN_INTERNAL, status: 500, domain: generic, meaning: Unexpected server failure; message is sanitized}
+- {code: AUTH_MISSING_API_KEY, status: 401, domain: auth, meaning: No X-Blnk-Key header supplied}
+- {code: AUTH_INVALID_API_KEY, status: 401, domain: auth, meaning: API key is unknown}
+- {code: AUTH_EXPIRED_API_KEY, status: 401, domain: auth, meaning: API key is expired or revoked}
+- {code: AUTH_MISSING_PRINCIPAL, status: 401, domain: auth, meaning: Authenticated API key principal missing from request context}
+- {code: AUTH_INSUFFICIENT_PERMISSIONS, status: 403, domain: auth, meaning: 'API key lacks the required resource:action scope', remediation: Create a key carrying the scope the endpoint needs}
+- {code: AUTH_UNKNOWN_RESOURCE, status: 403, domain: auth, meaning: Request path maps to no known resource}
+- {code: AUTH_MASTER_KEY_REQUIRED, status: 403, domain: auth, meaning: Endpoint (hooks management) requires the master key}
+- {code: AUTH_CROSS_OWNER_ACCESS, status: 403, domain: auth, meaning: Attempt to manage another owner's API keys}
+- {code: AUTH_SCOPE_ESCALATION, status: 403, domain: auth, meaning: Attempt to grant scopes broader than the caller's}
+- {code: AUTH_METRICS_TOKEN_REQUIRED, status: 401, domain: auth, meaning: '/metrics requires Authorization: Bearer <token>'}
+- {code: AUTH_INVALID_BEARER_TOKEN, status: 401, domain: auth, meaning: /metrics bearer token mismatch}
+- {code: AUTH_METRICS_DISABLED, status: 403, domain: auth, meaning: Secure mode on but no metrics bearer token configured}
+- {code: APIKEY_NOT_FOUND, status: 404, domain: api-keys, meaning: API key does not exist}
+- {code: APIKEY_OWNER_REQUIRED, status: 400, domain: api-keys, meaning: owner is required when creating or listing with the master key}
+- {code: APIKEY_INVALID, status: 400, domain: api-keys, meaning: API key payload validation failure}
+- {code: LGR_NOT_FOUND, status: 404, domain: ledgers, meaning: Ledger does not exist}
+- {code: LGR_DUPLICATE, status: 409, domain: ledgers, meaning: Ledger with this name or ID already exists}
+- {code: BAL_NOT_FOUND, status: 404, domain: balances, meaning: Balance does not exist}
+- {code: BAL_HISTORY_NOT_FOUND, status: 404, domain: balances, meaning: No balance snapshot or history at the requested time}
+- {code: BAL_INVALID_TIMESTAMP, status: 400, domain: balances, meaning: Timestamp must be ISO 8601}
+- {code: BAL_VALIDATION_ERROR, status: 400, domain: balances, meaning: Balance (or linked identity) validation failure}
+- {code: BAL_MONITOR_NOT_FOUND, status: 404, domain: balances, meaning: Balance monitor does not exist}
+- {code: TXN_NOT_FOUND, status: 404, domain: transactions, meaning: Transaction, refundable transaction, or queued source was not found}
+- {code: TXN_INSUFFICIENT_FUNDS, status: 400, domain: transactions, meaning: Source balance cannot cover the transaction, remediation: Fund the source balance or choose another source}
+- {code: TXN_INVALID_AMOUNT, status: 400, domain: transactions, meaning: amount, precise_amount, or precision must not be negative}
+- {code: TXN_PRECISION_NOT_INTEGER, status: 400, domain: transactions, meaning: precision must be an integer value}
+- {code: TXN_INVALID_DISTRIBUTION, status: 400, domain: transactions, meaning: Multi-source or destination distribution is invalid}
+- {code: TXN_DUPLICATE_REFERENCE, status: 409, domain: transactions, meaning: The reference has already been used, remediation: 'Treat as a conflict; fetch the existing transaction by reference. This is the idempotency guard -- see conventions/blnkfinance-conventions.yml'}
+- {code: TXN_NOT_INFLIGHT, status: 400, domain: transactions, meaning: Transaction is not in INFLIGHT status}
+- {code: TXN_ALREADY_COMMITTED, status: 409, domain: transactions, meaning: Inflight transaction was already committed}
+- {code: TXN_ALREADY_VOIDED, status: 409, domain: transactions, meaning: Inflight transaction was already voided}
+- {code: TXN_COMMIT_AMOUNT_EXCEEDED, status: 400, domain: transactions, meaning: Commit exceeds the original or remaining inflight amount}
+- {code: TXN_INVALID_STATUS_ACTION, status: 400, domain: transactions, meaning: Inflight update status must be commit or void}
+- {code: TXN_BULK_EMPTY, status: 400, domain: transactions, meaning: Bulk payload contains no transactions or IDs}
+- {code: TXN_BULK_LIMIT_EXCEEDED, status: 400, domain: transactions, meaning: 'Bulk payload exceeds the per-request item limit (10,000 since 0.15.0)'}
+- {code: TXN_VALIDATION_ERROR, status: 400, domain: transactions, meaning: Transaction payload failed validation}
+- {code: IDT_NOT_FOUND, status: 404, domain: identities, meaning: Identity does not exist}
+- {code: IDT_VALIDATION_ERROR, status: 400, domain: identities, meaning: Identity payload validation failure}
+- {code: IDT_FIELD_NOT_TOKENIZABLE, status: 400, domain: identities, meaning: Field is not in the tokenizable set}
+- {code: IDT_FIELD_ALREADY_TOKENIZED, status: 409, domain: identities, meaning: Field is already tokenized}
+- {code: IDT_FIELD_NOT_TOKENIZED, status: 400, domain: identities, meaning: Field is not tokenized and cannot be detokenized}
+- {code: IDT_FIELD_NOT_FOUND, status: 400, domain: identities, meaning: Field does not exist on the identity}
+- {code: IDT_TOKENIZATION_DISABLED, status: 403, domain: identities, meaning: Tokenization is not configured on this server}
+- {code: RECON_NOT_FOUND, status: 404, domain: reconciliation, meaning: Reconciliation run does not exist}
+- {code: RECON_RULE_NOT_FOUND, status: 404, domain: reconciliation, meaning: Matching rule does not exist}
+- {code: RECON_UPLOAD_FAILED, status: 400, domain: reconciliation, meaning: External data file upload failed because of the request}
+- {code: RECON_UPLOAD_PROCESSING_FAILED, status: 500, domain: reconciliation, meaning: Server failed to process the uploaded file}
+- {code: RECON_RULE_INVALID, status: 400, domain: reconciliation, meaning: 'Matching rule failed validation (name, criteria, operator, field, or drift)'}
+- {code: RECON_MATCHING_RULES_REQUIRED, status: 400, domain: reconciliation, meaning: matching_rule_ids is required}
+- {code: RECON_EXTERNAL_TXNS_REQUIRED, status: 400, domain: reconciliation, meaning: external_transactions is required}
+- {code: RECON_START_FAILED, status: 500, domain: reconciliation, meaning: Reconciliation could not be started}
+- {code: META_ENTITY_NOT_FOUND, status: 404, domain: metadata, meaning: Entity for metadata update does not exist}
+- {code: META_UNSUPPORTED_ENTITY, status: 400, domain: metadata, meaning: Entity type does not support metadata}
+- {code: META_INVALID_ENTITY_ID, status: 400, domain: metadata, meaning: Entity ID is missing or malformed}
+- {code: HOOK_NOT_FOUND, status: 404, domain: hooks, meaning: Hook does not exist}
+- {code: HOOK_INVALID, status: 400, domain: hooks, meaning: Hook payload validation failure}
+- {code: HOOK_OPERATION_FAILED, status: 500, domain: hooks, meaning: Hook registration, update, list, or delete infrastructure failure}
+- {code: QUEUE_BACKPRESSURE, status: 503, domain: queue, meaning: Enqueue rejected because Redis memory or pending task count exceeded configured limits, remediation: Retry after backoff; backpressure is on by default since 0.15.2}
+- {code: SRCH_QUERY_INVALID, status: 400, domain: search, meaning: Search payload is invalid}
+- {code: SRCH_FAILED, status: 500, domain: search, meaning: Search backend failure}
+- {code: SRCH_REINDEX_IN_PROGRESS, status: 409, domain: search, meaning: A reindex is already running; details carries progress when available}
+- {code: SRCH_REINDEX_NOT_STARTED, status: 404, domain: search, meaning: No reindex has been started}
+- {code: ADMIN_BACKUP_FAILED, status: 500, domain: admin, meaning: Database backup failed}
+bulk_per_item_codes:
+  note: >-
+    Bulk commit / void return HTTP 200 with succeeded, failed and results[]. Branch on results[].code,
+    NOT on the HTTP status. These per-item codes are not part of the TXN_* catalog.
+  codes:
+  - {code: NOT_FOUND, meaning: Transaction ID does not exist}
+  - {code: ALREADY_COMMITTED, meaning: Inflight transaction was already committed}
+  - {code: ALREADY_VOIDED, meaning: Inflight transaction was already voided}
+  - {code: NOT_INFLIGHT, meaning: Transaction is not in INFLIGHT status}
+  - {code: INVALID_AMOUNT, meaning: Commit amount is invalid}
+  - {code: LOCKED, meaning: Concurrent operation on the same transaction, remediation: retry shortly with backoff}
+  - {code: INTERNAL_ERROR, meaning: Unexpected server failure for this item}
+  - {code: QUEUED, meaning: Item was queued for processing}
+  - {code: ALREADY_QUEUED, meaning: A commit or void is already queued for this transaction}
+legacy_normalization:
+  note: Blnk normalizes older generic names to canonical codes before the response leaves the server.
+  map:
+    NOT_FOUND: GEN_NOT_FOUND
+    CONFLICT: GEN_CONFLICT
+    BAD_REQUEST: GEN_BAD_REQUEST
+    INVALID_INPUT: GEN_VALIDATION_ERROR
+    INTERNAL_SERVER_ERROR: GEN_INTERNAL
+    RATE_LIMITED: GEN_RATE_LIMITED

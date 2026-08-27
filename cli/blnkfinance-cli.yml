@@ -1,0 +1,88 @@
+generated: '2026-08-27'
+method: searched
+source: https://docs.blnkfinance.com/cli/install + https://docs.blnkfinance.com/cli/* (command pages)
+name: Blnk CLI
+binary: blnk
+description: >-
+  First-party command-line client for a Blnk Core instance. Connects to a Core deployment and manages
+  ledgers, balances, transactions, identities, reconciliations and the Typesense reindex from the
+  terminal. It talks to Core only -- there is no CLI surface for Blnk Cloud or Blnk Watch.
+docs: https://docs.blnkfinance.com/home/cli
+version: 1.8.3
+version_published: '2026-08-20'
+version_note: >-
+  1.8.3 is what npm serves; https://docs.blnkfinance.com/cli/install still says "Latest version: v1.8.2".
+install:
+- method: npm
+  command: npm i -g @blnkfinance/blnk-cli
+  package: '@blnkfinance/blnk-cli'
+  requires: Node.js + npm
+verify: blnk --version
+connection:
+  commands:
+  - command: blnk connect
+    description: Link the CLI to a Blnk Core instance (base URL + key).
+  - command: blnk info
+    description: Show the currently connected instance.
+  docs: https://docs.blnkfinance.com/cli/using-blnk-core
+command_groups:
+- group: ledgers
+  docs: https://docs.blnkfinance.com/cli/ledgers
+  commands:
+  - blnk ledgers create
+  - blnk ledgers list
+- group: balances
+  docs: https://docs.blnkfinance.com/cli/balances
+  commands:
+  - blnk balances create
+  - blnk balances list
+  - blnk balances update
+- group: transactions
+  docs: https://docs.blnkfinance.com/cli/transactions
+  commands:
+  - blnk transactions create
+  - blnk transactions list
+  - blnk transactions update
+- group: identities
+  docs: https://docs.blnkfinance.com/cli/identities
+  commands:
+  - blnk identities create
+  - blnk identities list
+- group: reconciliations
+  docs: https://docs.blnkfinance.com/cli/reconciliations
+  commands:
+  - blnk reconciliations list
+- group: reindex
+  docs: https://docs.blnkfinance.com/cli/reindex
+  commands:
+  - blnk reindex create
+  - blnk reindex list
+- group: meta
+  docs: https://docs.blnkfinance.com/cli/help
+  commands:
+  - blnk --help
+  - blnk --version
+global_flags:
+- flag: '--json'
+  description: Emit the pretty-printed API object instead of the human view. Not available on every command.
+- flag: '--id'
+  description: Fetch one record by id instead of listing.
+- flag: '--page'
+  description: Page number for list commands.
+- flag: '--per-page'
+  description: Page size for list commands.
+- flag: '--currency'
+  description: Currency filter/selector on balance and transaction commands.
+- flag: '--help'
+- flag: '--version'
+output_formats:
+  docs: https://docs.blnkfinance.com/cli/output-formats
+  note: >-
+    There is no global --format switch. List commands render an ASCII table, create / list --id render a
+    labeled summary block, and --json (where supported) prints the raw API object. Tables are explicitly
+    documented as not for machine parsing -- agents should pass --json.
+  formats:
+  - table
+  - summary
+  - json
+changelog: https://docs.blnkfinance.com/changelog/blnk-cli

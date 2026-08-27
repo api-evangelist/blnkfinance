@@ -1,0 +1,128 @@
+generated: '2026-08-27'
+method: searched
+source: >-
+  https://blnkfinance.com/security, https://docs.blnkfinance.com/advanced/error-codes,
+  https://api.cloud.blnkfinance.com/.well-known/oauth-authorization-server,
+  https://docs.blnkfinance.com/api-keys/scopes, openapi/blnkfinance-core-openapi.json
+standards:
+- id: openapi
+  conforms: true
+  version: 3.0.0
+  evidence: >-
+    https://docs.blnkfinance.com/openapi.json parses as OpenAPI 3.0.0 with 15 paths / 18 operations.
+    Saved verbatim to openapi/blnkfinance-core-openapi.json.
+- id: oauth2
+  conforms: true
+  evidence: >-
+    Blnk Cloud implements OAuth 2.0 authorization-code with refresh tokens and PKCE (S256, plain).
+    Confirmed from the live RFC 8414 metadata document at
+    https://api.cloud.blnkfinance.com/.well-known/oauth-authorization-server (HTTP 200).
+- id: rfc8414
+  name: OAuth 2.0 Authorization Server Metadata
+  conforms: true
+  evidence: >-
+    /.well-known/oauth-authorization-server returns 200 with issuer, authorization_endpoint,
+    token_endpoint, grant_types_supported, response_types_supported, code_challenge_methods_supported
+    and token_endpoint_auth_methods_supported.
+- id: oidc
+  name: OpenID Connect Discovery
+  conforms: false
+  evidence: >-
+    /.well-known/openid-configuration returns 200 but is byte-identical to the OAuth metadata document:
+    no jwks_uri, no userinfo_endpoint, no id_token_signing_alg_values_supported, no scopes_supported.
+    Serving OAuth metadata at the OIDC path is a false positive for OIDC support, not OIDC.
+- id: rfc9457
+  name: Problem Details for HTTP APIs
+  conforms: false
+  evidence: >-
+    Errors use a proprietary application/json envelope with a nested error_detail{code,message,details}
+    object plus legacy error/errors strings. No application/problem+json, no type/title/status/detail
+    members. The catalog is nonetheless stable and machine-branchable -- see
+    errors/blnkfinance-error-codes.yml.
+- id: rfc9116
+  name: security.txt
+  conforms: false
+  evidence: 404 on blnkfinance.com, docs.blnkfinance.com and cloud.blnkfinance.com; 401 on api.cloud.blnkfinance.com (probed 2026-08-27).
+- id: rfc8594
+  name: Sunset HTTP Header
+  conforms: false
+  evidence: No Sunset or Deprecation header policy documented; deprecation is handled by per-release migration guides.
+- id: rfc9331
+  name: RateLimit header fields
+  conforms: false
+  evidence: No X-RateLimit-*, RateLimit-* or Retry-After headers documented; exhaustion signals only as 429 GEN_RATE_LIMITED.
+- id: idempotency
+  conforms: true
+  evidence: >-
+    Caller-supplied transaction `reference` with a unique database index
+    (idx_transactions_reference_unique, Core 0.13.2+); duplicates rejected 409 TXN_DUPLICATE_REFERENCE.
+    Blnk's own agent skill blnk-naming-patterns calls references "unique idempotency keys". Not the
+    header-based Idempotency-Key draft -- reject rather than replay. See
+    conventions/blnkfinance-conventions.yml.
+- id: pagination
+  conforms: true
+  evidence: 'Page-number pagination with page / per_page, exposed on the CLI (--page/--per-page) and the search surface. Absent from the published OpenAPI, which carries no list operations.'
+- id: mcp
+  name: Model Context Protocol
+  conforms: true
+  evidence: >-
+    Two servers. docs.blnkfinance.com/mcp answered a live initialize + tools/list on 2026-08-27
+    (protocolVersion 2025-11-25, serverInfo "Blnk Finance", 3 tools). The Cloud ledger MCP at
+    api.cloud.blnkfinance.com/mcp/{instance_id} is documented against MCP spec 2025-03-26 with 33 tools.
+- id: a2a
+  name: Agent2Agent
+  conforms: partial
+  evidence: >-
+    /.well-known/agent-card.json on docs.blnkfinance.com returns 200 with a real AgentCard (14 skills).
+    Graded FLAVORED against A2A 1.0.0 -- passes all three hard checks but omits the required
+    `description` and uses supportedInterfaces instead of additionalInterfaces. See a2a/blnkfinance-a2a.yml.
+- id: agent-skills
+  conforms: true
+  evidence: >-
+    14 provider-authored Agent Skills published at /.well-known/agent-skills/<id>/skill.md, all HTTP 200,
+    saved verbatim in skills/. Installable via "npx skills add https://docs.blnkfinance.com".
+- id: llmstxt
+  conforms: true
+  evidence: llms.txt served at both https://blnkfinance.com/llms.txt (3.9KB) and https://docs.blnkfinance.com/llms.txt (73KB), both HTTP 200.
+- id: iso-27001
+  name: ISO/IEC 27001
+  conforms: true
+  evidence: 'Blnk''s ISMS is certified to ISO/IEC 27001 per https://blnkfinance.com/security; certificate provided on request to sales@blnkfinance.com.'
+- id: gdpr
+  conforms: true
+  evidence: 'GDPR compliance claimed on https://blnkfinance.com/security with lawful basis, retention and SAR handling covered in https://blnkfinance.com/legal/privacy.'
+- id: soc2
+  conforms: false
+  evidence: Not claimed anywhere on the security page or in the pricing/enterprise material.
+- id: pci-dss
+  conforms: false
+  evidence: 'Not claimed. Blnk is a ledger, not a card acquirer; it stores no PAN and publishes no decline-code catalog.'
+- id: psd2
+  conforms: false
+  evidence: >-
+    Not claimed. Blnk is ledger infrastructure sold to regulated institutions rather than a licensed
+    payment institution, so PSD2/open-banking conformance sits with the customer, not with Blnk.
+domain_standard:
+  probed: true
+  conforms: false
+  candidates_checked:
+  - {standard: 'ISO 20022', found: false, note: 'No pacs/pain/camt message types, no ISO 20022 field names, no XML surface anywhere in the contract or docs.'}
+  - {standard: 'FDX (Financial Data Exchange)', found: false, note: 'No FDX resource shapes, no /fdx/v* paths, no FDX consent model.'}
+  - {standard: 'Open Banking / OBIE', found: false, note: 'No account-information or payment-initiation endpoints in OBIE shape.'}
+  - {standard: 'BIAN service domains', found: false, note: 'No BIAN service-domain naming in paths or schemas.'}
+  - {standard: 'XBRL / GL', found: false, note: 'No XBRL Global Ledger taxonomy in the transaction or ledger schemas.'}
+  - {standard: 'X12 / EDIFACT', found: false}
+  - {standard: 'SCIM', found: false, note: 'Identity resources are Blnk-native; no urn:ietf:params:scim:schemas:* URNs.'}
+  - {standard: 'OData', found: false, note: 'No $metadata surface; filtering is a POST body, not $filter.'}
+  note: >-
+    Blnk's contract is deliberately domain-NATIVE rather than standard-shaped: double-entry primitives
+    (ledgers, balances, transactions, inflight, precise_amount/precision) expressed in its own
+    vocabulary. That is a real product position for a ledger engine that sits BEHIND whatever
+    scheme-facing standard its operator speaks, and it is not penalised -- the domain_standard_conformance
+    check is reward-only. Recorded so the absence is a measured finding rather than an unexamined gap.
+gaps:
+- No RFC 9457 problem+json error format (the code catalog is strong, the media type is not standard).
+- No security.txt at any well-known location despite a real published disclosure program.
+- No rate-limit response headers on any surface.
+- The published OpenAPI declares no 4xx/5xx responses, no tags beyond a single "Misc", and applies no security requirement to any operation.
+- The published OpenAPI covers 18 of the documented Core operations; every list, filter, bulk and DELETE endpoint is missing from it.

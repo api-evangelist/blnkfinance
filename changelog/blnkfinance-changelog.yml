@@ -1,0 +1,98 @@
+generated: '2026-08-27'
+method: searched
+source: https://docs.blnkfinance.com/changelog/blnk-core
+note: >-
+  Blnk runs six separate dated changelogs -- Core, Cloud, Watch, CLI, and one per SDK. The Core log is
+  the contract-bearing one and is captured in full below for the recent window; the others are indexed
+  by URL. Every entry is dated and labelled with a version.
+scheme: semver
+channels:
+- {name: Blnk Core, url: 'https://docs.blnkfinance.com/changelog/blnk-core', current: 0.15.3, current_date: '2026-08-25'}
+- {name: Blnk Cloud, url: 'https://docs.blnkfinance.com/changelog/blnk-cloud'}
+- {name: Blnk Watch, url: 'https://docs.blnkfinance.com/changelog/blnk-watch', current: v0.1.3, current_date: '2026-06-30'}
+- {name: Blnk CLI, url: 'https://docs.blnkfinance.com/changelog/blnk-cli', current: 1.8.3, current_date: '2026-08-20'}
+- {name: TypeScript SDK, url: 'https://docs.blnkfinance.com/changelog/blnk-ts', current: 1.3.0}
+- {name: Go SDK, url: 'https://docs.blnkfinance.com/changelog/blnk-go', current: v1.3.0}
+- {name: Python SDK, url: 'https://docs.blnkfinance.com/changelog/blnk-py', current: 1.3.0}
+- {name: Java SDK, url: 'https://docs.blnkfinance.com/changelog/blnk-java', current: 1.3.0}
+current_version: 0.15.3
+current_version_date: '2026-08-25'
+entries:
+- version: 0.15.3
+  date: '2026-08-25'
+  breaking: false
+  highlights:
+  - Internal / General Ledger balances can now be created explicitly with an `indicator` on POST /balances.
+  - 'Dry-run transactions: set dry_run: true on create, bulk create, refund and inflight update to preview balance effects without writing.'
+  - Refunds accept description and meta_data.
+  - Listing hooks without a type returns all hooks.
+  - Negative amount/precision and source == destination are rejected before processing.
+  - Scoped keys with metadata:write can update metadata.
+  - Committed/voided transactions no longer report inflight true in response metadata.
+- version: 0.15.2
+  date: '2026-07-31'
+  breaking: false
+  highlights:
+  - 'Queue backpressure: enqueues rejected with 503 QUEUE_BACKPRESSURE when Redis memory or pending task count exceeds limits. On by default.'
+  - Typesense reindex/search retry gracefully under memory pressure.
+  - effective_date preserved when rebuilding the Typesense index.
+- version: 0.15.1
+  date: '2026-07-17'
+  breaking: true
+  migration_guide: https://docs.blnkfinance.com/changelog/v15-1-migration
+  highlights:
+  - Fixed a transaction lock duration overflow when applying BLNK_TRANSACTION_LOCK_DURATION.
+  - POST /transactions/filter returns parent_transaction instead of an empty string.
+  - Queued inflight commits against a multi-leg parent id now work.
+- version: 0.15.0
+  date: '2026-06-23'
+  breaking: true
+  migration_guide: https://docs.blnkfinance.com/changelog/v15-migration
+  highlights:
+  - 'Structured API errors: error_detail object with a stable code (see errors/blnkfinance-error-codes.yml).'
+  - Removed rate, currency_multiplier and modification_ref from transaction and balance responses; request rate no longer applies FX.
+  - Inflight commit and void now go through the queue by default; skip_queue restores synchronous behaviour.
+  - Optional transaction hash chain for tamper detection (blnk verify-chain).
+  - DELETE endpoints added for balance monitors and identities.
+  - reconciliation.completed / reconciliation.failed and system.error webhooks.
+  - Bulk create and instant reconciliation capped at 10,000 items per request.
+- version: 0.14.5
+  date: '2026-06-08'
+  breaking: false
+  highlights:
+  - Bulk transaction items validated individually with indexed 400 error messages.
+  - Workflow-progress logs moved from error to info level.
+- version: 0.14.4
+  date: '2026-06-06'
+  breaking: false
+  highlights:
+  - 'Remote monitoring exporter via BLNK_CLOUD_DSN (logs, traces, metrics; sensitive values redacted).'
+  - Fixed scheduled inflight commits not firing at inflight_commit_date.
+  - Fixed transactions not reliably indexing into Typesense.
+- version: 0.14.3
+  date: '2026-05-26'
+  breaking: true
+  migration_guide: https://docs.blnkfinance.com/changelog/v14-3-migration
+  highlights:
+  - Non-master keys are limited to their own owner_id and cannot grant scopes they do not hold.
+  - Hook management now requires the master key; scoped keys get 403.
+- version: 0.14.0
+  date: '2026-04-09'
+  breaking: true
+  migration_guide: https://docs.blnkfinance.com/changelog/v14-migration
+  highlights:
+  - 'Update Metadata response field renamed metadata -> meta_data.'
+- version: 0.13.2
+  date: '2026-02-12'
+  breaking: true
+  migration_guide: https://docs.blnkfinance.com/changelog/v13-2-migration
+  highlights:
+  - Unique database index idx_transactions_reference_unique on transactions.reference. Duplicate references now rejected at the database layer.
+  - Improved recovery of transactions stuck in QUEUED.
+- version: 0.12.0
+  date: '2025-12-08'
+  breaking: true
+  migration_guide: https://docs.blnkfinance.com/changelog/v12-migration
+  highlights:
+  - API key hashing.
+  - system.error webhook introduced.

@@ -1,0 +1,174 @@
+generated: '2026-08-27'
+method: derived
+source: >-
+  mcp/blnkfinance-mcp.yml (33 Cloud ledger tools, names from
+  https://docs.blnkfinance.com/cloud/integrations/mcp#supported-tools) bound against
+  openapi/blnkfinance-core-openapi.json (18 operationIds)
+note: >-
+  Mapped by name and documented semantics. The live MCP schema is auth-gated (Bearer + mcp:read/mcp:write
+  against a per-tenant instance_id), so no tool inputSchema was observed on the wire and no binding here
+  is confidence high on parameter shape -- only on which operation backs which tool. The published
+  OpenAPI is a partial projection of Blnk Core: it carries 18 of the operations the docs describe and
+  omits every list/filter endpoint, GET transaction, bulk transactions, and the DELETE endpoints added in
+  0.15.0. That gap, not an MCP-only feature set, is why most read tools land in mcp_only[].
+surfaces:
+- kind: openapi
+  url: https://docs.blnkfinance.com/openapi.json
+  file: openapi/blnkfinance-core-openapi.json
+  gated: false
+  operation_count: 18
+  note: servers[] is http://localhost:5001 -- correct for a self-hosted OSS ledger.
+- kind: mcp
+  url: https://api.cloud.blnkfinance.com/mcp/{instance_id}
+  gated: true
+  gate: Bearer token with mcp:read and/or mcp:write, on a paid Blnk Cloud plan
+  tool_count: 33
+- kind: mcp
+  url: https://docs.blnkfinance.com/mcp
+  gated: false
+  tool_count: 3
+  note: Documentation-search server. No ledger operations; excluded from the crosswalk rows below.
+- kind: graphql
+  present: false
+  note: POST /graphql returned 401 on api.cloud.blnkfinance.com and 404 on blnkfinance.com. No GraphQL surface.
+coverage:
+  mcp_tools_total: 33
+  mcp_tools_bound: 12
+  mcp_only: 21
+  rest_operations_total: 18
+  rest_only: 8
+crosswalk:
+- tool: create_ledger
+  category: ledgers
+  rest: [Createledger]
+  binding: POST /ledgers
+  confidence: high
+- tool: get_ledger
+  category: ledgers
+  rest: [GetLedger]
+  binding: GET /ledgers/{ledger_id}
+  confidence: high
+- tool: create_balance
+  category: balances
+  rest: [CreateBalance]
+  binding: POST /balances
+  confidence: high
+- tool: get_balance
+  category: balances
+  rest: [GetBalance]
+  binding: GET /balances/{id}
+  confidence: high
+- tool: record_transaction
+  category: transactions
+  rest: [RecordTransaction]
+  binding: POST /transactions
+  confidence: high
+- tool: commit_inflight
+  category: transactions
+  rest: [UpdateInflightTransaction]
+  binding: PUT /transactions/inflight/{txID} with status "commit"
+  confidence: high
+  note: Same operation as void_inflight; the tools split what REST expresses as a status enum.
+- tool: void_inflight
+  category: transactions
+  rest: [UpdateInflightTransaction]
+  binding: PUT /transactions/inflight/{txID} with status "void"
+  confidence: high
+- tool: refund_transaction
+  category: transactions
+  rest: [RefundTransaction]
+  binding: POST /refund-transaction/{id}
+  confidence: high
+- tool: schedule_transaction
+  category: transactions
+  rest: [RecordTransaction]
+  binding: POST /transactions with scheduled_for
+  confidence: medium
+  note: >-
+    The spec has no separate schedule operation but does carry a ScheduleTransactionRequest schema, and
+    the docs describe scheduling as a field on the create call.
+- tool: create_identity
+  category: identities
+  rest: [CreateIdentity]
+  binding: POST /identities
+  confidence: high
+- tool: get_identity
+  category: identities
+  rest: [GetIdentity]
+  binding: GET /identities/{id}
+  confidence: high
+- tool: update_identity
+  category: identities
+  rest: [UpdateIdentity]
+  binding: PUT /identities/{id}
+  confidence: high
+mcp_only:
+- tool: list_ledgers
+  reason: No list/collection operation for ledgers in the published OpenAPI.
+- tool: list_balances
+  reason: No list/collection operation for balances in the published OpenAPI.
+- tool: list_identities
+  reason: No list/collection operation for identities in the published OpenAPI.
+- tool: get_transaction
+  reason: The published OpenAPI has no GET /transactions/{id}, only the create and inflight-update paths.
+- tool: get_transaction_by_reference
+  reason: Reference lookup is documented in the reference site but absent from the published OpenAPI.
+- tool: bulk_transactions
+  reason: >-
+    Bulk create is documented (/reference/bulk-transactions, max 10,000 items since 0.15.0) but is not in
+    the published OpenAPI.
+- tool: delete_identity
+  reason: DELETE identity shipped in Core 0.15.0; the published OpenAPI predates it.
+- tool: search
+  reason: Typesense-backed search endpoint is documented but not in the published OpenAPI.
+- tool: query_transactions
+  reason: Filter/query endpoints (POST /transactions/filter) are documented but not in the published OpenAPI.
+- tool: query_balances
+  reason: Filter/query endpoint not in the published OpenAPI.
+- tool: query_ledgers
+  reason: Filter/query endpoint not in the published OpenAPI.
+- tool: query_identities
+  reason: Filter/query endpoint not in the published OpenAPI.
+- tool: create_view
+  reason: Saved views are a Blnk Cloud workspace feature; Core has no REST equivalent.
+- tool: list_views
+  reason: Blnk Cloud workspace feature; no Core REST equivalent.
+- tool: get_view
+  reason: Blnk Cloud workspace feature; no Core REST equivalent.
+- tool: update_view
+  reason: Blnk Cloud workspace feature; no Core REST equivalent.
+- tool: delete_view
+  reason: Blnk Cloud workspace feature; no Core REST equivalent.
+- tool: create_visualization
+  reason: Cloud Insights feature; no Core REST equivalent.
+- tool: list_visualizations
+  reason: Cloud Insights feature; no Core REST equivalent.
+- tool: get_visualization_data
+  reason: Cloud Insights feature; no Core REST equivalent.
+- tool: delete_visualization
+  reason: Cloud Insights feature; no Core REST equivalent.
+rest_only:
+- operationId: CreateAccount
+  binding: POST /accounts
+  reason: No MCP tool for accounts; the ledger MCP exposes balances and identities, not accounts.
+- operationId: UpdateAccount
+  binding: PUT /accounts/{id}
+  reason: No MCP tool for accounts.
+- operationId: GetAccount
+  binding: GET /accounts/{id}
+  reason: No MCP tool for accounts.
+- operationId: CreateBalanceMonitor
+  binding: POST /balance-monitors
+  reason: Balance monitors have no MCP tool; the Cloud equivalent is Alerts, a separate REST surface.
+- operationId: UpdateBalanceMonitor
+  binding: PUT /balance-monitors/{id}
+  reason: No MCP tool for balance monitors.
+- operationId: GetBalanceMonitor
+  binding: GET /balance-monitors/{id}
+  reason: No MCP tool for balance monitors.
+- operationId: BackDB
+  binding: POST /backup
+  reason: Operator/admin operation, deliberately not exposed to agents.
+- operationId: BackDBToS3
+  binding: POST /backup/s3
+  reason: Operator/admin operation, deliberately not exposed to agents.

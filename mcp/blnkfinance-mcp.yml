@@ -1,0 +1,180 @@
+generated: '2026-08-27'
+method: probed
+source: >-
+  https://docs.blnkfinance.com/cloud/integrations/mcp + https://docs.blnkfinance.com/cloud/reference/mcp
+  (Cloud ledger MCP, tool list read from the docs) and a live initialize + tools/list against
+  https://docs.blnkfinance.com/mcp (documentation MCP, tools read from the wire)
+note: >-
+  Blnk ships TWO distinct MCP servers and they are not interchangeable. The LEDGER MCP is the product
+  surface: a Cloud-proxied endpoint at https://api.cloud.blnkfinance.com/mcp/{instance_id} with 33 tools
+  that read and write real ledger data, gated behind a Blnk Cloud plan and mcp:read / mcp:write scopes.
+  The DOCUMENTATION MCP is a Mintlify docs-search server at https://docs.blnkfinance.com/mcp, open with
+  no auth, 3 tools, and it cannot touch a ledger. deployment: below describes the ledger MCP, because
+  that is the agent surface a buyer is asking about.
+deployment:
+  mode: remote
+  endpoint: https://api.cloud.blnkfinance.com/mcp/{instance_id}
+  auth: oauth
+  verified: searched
+  templated: true
+  template_variables:
+  - name: instance_id
+    description: >-
+      Identifier of the Blnk Core instance to attach to, found in Settings > MCP in the Blnk Cloud
+      dashboard. There is no tenant-neutral URL; every customer gets their own path.
+  note: >-
+    verified: searched, not probed -- the endpoint cannot be exercised anonymously and there is no
+    instance_id to substitute without a Cloud account. api.cloud.blnkfinance.com returns
+    401 {"error":"Authorization header is required"} on every path, which is consistent with the
+    documented model. Auth is Bearer with either a Cloud API key or an OAuth access token; the OAuth
+    authorization-server metadata IS served anonymously and is captured in
+    well-known/blnkfinance-oauth-authorization-server.json.
+servers:
+- id: ledger
+  name: Blnk MCP (Cloud ledger)
+  status: published
+  transport: http
+  endpoint: https://api.cloud.blnkfinance.com/mcp/{instance_id}
+  auth:
+    type: bearer
+    accepts:
+    - Blnk Cloud API key
+    - OAuth 2.0 access token
+    scopes:
+    - name: mcp:read
+      description: Read-only access to ledger data through MCP tools.
+    - name: mcp:write
+      description: Read and write access through MCP tools.
+  availability: >-
+    Requires a Blnk Cloud Sandbox ($100/mo) or Production ($1,000/mo) plan; the pricing table lists MCP
+    as "Not included" on the free open-source tier.
+  architecture: >-
+    All MCP traffic is proxied by Blnk Cloud. AI clients never connect directly to a Core instance;
+    Cloud validates credentials, enforces scopes, and forwards authorized operations.
+  spec_reference: https://modelcontextprotocol.io/specification/2025-03-26
+  docs: https://docs.blnkfinance.com/cloud/reference/mcp
+  tool_count: 33
+  tool_source: >-
+    Docs (https://docs.blnkfinance.com/cloud/integrations/mcp#supported-tools). Names and one-line
+    descriptions only -- inputSchema requires authenticated introspection against a real instance.
+  tool_categories:
+  - category: ledgers
+    tools:
+    - name: create_ledger
+      description: Create a new ledger for organizing balances.
+    - name: get_ledger
+      description: Retrieve ledger details by ID.
+    - name: list_ledgers
+      description: List all ledgers.
+  - category: balances
+    tools:
+    - name: create_balance
+      description: Create a balance within a ledger.
+    - name: get_balance
+      description: Retrieve balance details and current amounts by ID.
+    - name: list_balances
+      description: List all balances.
+  - category: transactions
+    tools:
+    - name: record_transaction
+      description: Record a transaction between two balances.
+    - name: get_transaction
+      description: Get a transaction by ID.
+    - name: get_transaction_by_reference
+      description: Get a transaction by its unique reference.
+    - name: commit_inflight
+      description: Commit an inflight transaction to finalize it.
+    - name: void_inflight
+      description: Void an inflight transaction to cancel it.
+    - name: refund_transaction
+      description: Create a refund for a transaction.
+    - name: schedule_transaction
+      description: Schedule a transaction for future execution.
+    - name: bulk_transactions
+      description: Process multiple transactions at once.
+  - category: identities
+    tools:
+    - name: create_identity
+      description: Create a new identity (individual or organization).
+    - name: get_identity
+      description: Retrieve identity details by ID.
+    - name: list_identities
+      description: List all identities.
+    - name: update_identity
+      description: Update an existing identity.
+    - name: delete_identity
+      description: Delete an identity.
+  - category: views
+    tools:
+    - name: create_view
+      description: Create a saved view (reusable filter configuration).
+    - name: list_views
+      description: List all saved views.
+    - name: get_view
+      description: Retrieve a saved view by ID.
+    - name: update_view
+      description: Update an existing saved view.
+    - name: delete_view
+      description: Delete a saved view.
+  - category: insights
+    tools:
+    - name: create_visualization
+      description: Create a new visualization.
+    - name: list_visualizations
+      description: List all visualizations.
+    - name: get_visualization_data
+      description: Execute a saved visualization and get chart data.
+    - name: delete_visualization
+      description: Delete a visualization.
+  - category: search
+    tools:
+    - name: search
+      description: Search across entities (transactions, ledgers, balances, identities).
+  - category: queries
+    tools:
+    - name: query_transactions
+      description: Query transactions with advanced filters.
+    - name: query_balances
+      description: Query balances with advanced filters.
+    - name: query_ledgers
+      description: Query ledgers with advanced filters.
+    - name: query_identities
+      description: Query identities with advanced filters.
+  clients_documented:
+  - Cursor
+  - Claude Desktop
+  - ChatGPT (Apps / developer mode, OAuth)
+- id: documentation
+  name: Blnk Finance docs MCP (Mintlify)
+  status: published
+  transport: http
+  endpoint: https://docs.blnkfinance.com/mcp
+  auth:
+    type: none
+  verified: probed
+  probe:
+    method: 'POST initialize + tools/list, 2026-08-27'
+    http_status: 200
+    server_info:
+      name: Blnk Finance
+      version: '1.0.0'
+    protocol_version: '2025-11-25'
+  tool_count: 3
+  tool_source: live tools/list (mcp/blnkfinance-docs-mcp-tools.json)
+  tools:
+  - name: search_blnk_finance
+    description: Search the Blnk Finance documentation knowledge base.
+  - name: query_docs_filesystem_blnk_finance
+    description: >-
+      Read-only shell-like query (rg/grep/cat/head/tree) over a virtual in-memory filesystem containing
+      only the Blnk docs pages and OpenAPI specs.
+  - name: submit_feedback
+    description: Send feedback about the documentation.
+  discovery_document: well-known/blnkfinance-mcp.json
+  discovery_note: >-
+    /.well-known/mcp.json on docs.blnkfinance.com advertises the server as
+    https://blnk.main-kill-isr.mintlify.me/mcp -- a Mintlify preview host, not a blnkfinance.com host.
+    The equivalent first-party URL https://docs.blnkfinance.com/mcp answers correctly and is what is
+    recorded here; the mintlify.me URL should not be handed to an agent as Blnk's endpoint.
+  caveat: >-
+    Documentation search only. It cannot create a ledger, post a transaction, or read a balance.

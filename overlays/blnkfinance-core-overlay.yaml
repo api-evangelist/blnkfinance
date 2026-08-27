@@ -1,0 +1,235 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Blnk Core OpenAPI
+  version: 1.0.0
+x-provenance:
+  generated: '2026-08-27'
+  method: generated
+  source: openapi/blnkfinance-core-openapi.json
+  extends: openapi/blnkfinance-core-openapi.json
+  upstream: https://docs.blnkfinance.com/openapi.json
+  note: >-
+    Non-destructive. Everything below is sourced from Blnk's own published documentation, not invented:
+    the auth scheme from /advanced/configuration/server-security, the error envelope and codes from
+    /advanced/error-codes, the reversal semantics from /transactions/refunds and
+    /transactions/inflight/updating-inflight. The original spec is never mutated. The apis.io scorer
+    parses the ORIGINAL, so this overlay improves derived artifacts and client generation, not the raw
+    contract-content score.
+  gaps_addressed:
+  - The spec declares only http/basic and applies security to zero operations, while every documented call uses the X-Blnk-Key header.
+  - The spec declares no 4xx/5xx responses across all 18 operations.
+  - Every operation is untagged; the only declared tag is "Misc".
+  - info has no description, license, or termsOfService.
+actions:
+- target: $.info
+  update:
+    description: >-
+      Blnk Core is an open-source double-entry ledger for financial products -- wallets, loans, payouts,
+      escrow and cards. This contract covers the self-hosted Core REST surface: ledgers, balances,
+      transactions (including inflight holds and refunds), identities, accounts, balance monitors and
+      backup. Transactions are append-only; reversals are recorded as new child transactions linked by
+      parent_transaction.
+    license:
+      name: Apache-2.0
+      url: https://blnkfinance.com/legal/open-source-license
+    termsOfService: https://blnkfinance.com/legal/terms
+    contact:
+      name: Blnk Finance Support
+      email: support@blnkfinance.com
+      url: https://docs.blnkfinance.com
+- target: $.info
+  update:
+    x-api-evangelist:
+      docs: https://docs.blnkfinance.com/reference/overview
+      error_catalog: errors/blnkfinance-error-codes.yml
+      conventions: conventions/blnkfinance-conventions.yml
+      scopes: scopes/blnkfinance-scopes.yml
+- target: $.components.securitySchemes
+  update:
+    blnkKey:
+      type: apiKey
+      in: header
+      name: X-Blnk-Key
+      description: >-
+        Master key (BLNK_SERVER_SECRET_KEY) or a scoped API key. Only enforced when
+        BLNK_SERVER_SECURE=true; the shipped default is false, which skips authentication entirely.
+        Scoped keys carry resource:action permissions -- see scopes/blnkfinance-scopes.yml.
+- target: $.servers
+  update:
+  - url: http://localhost:5001
+    description: >-
+      Docker Compose default for a locally running Blnk Core. Blnk Core is self-hosted open source and
+      has no vendor-operated public host; in production this is the operator's own instance URL, which
+      Blnk's docs write as http://YOUR_BLNK_INSTANCE_URL.
+- target: $.tags
+  update:
+  - name: Ledgers
+    description: Create and read ledgers, the container for balances.
+  - name: Balances
+    description: Create and read balances, and manage balance monitors.
+  - name: Transactions
+    description: Record money movements, update inflight holds, and issue refunds.
+  - name: Identities
+    description: Create, read and update the people and organizations balances belong to.
+  - name: Accounts
+    description: Bank-account representations bound to a balance and an identity.
+  - name: Admin
+    description: Database backup operations.
+- target: $.paths['/ledgers'].post
+  update:
+    tags: [Ledgers]
+    security:
+    - blnkKey: []
+    x-required-scope: 'ledgers:write'
+- target: $.paths['/ledgers/{ledger_id}'].get
+  update:
+    tags: [Ledgers]
+    security:
+    - blnkKey: []
+    x-required-scope: 'ledgers:read'
+- target: $.paths['/balances'].post
+  update:
+    tags: [Balances]
+    security:
+    - blnkKey: []
+    x-required-scope: 'balances:write'
+- target: $.paths['/balances/{id}'].get
+  update:
+    tags: [Balances]
+    security:
+    - blnkKey: []
+    x-required-scope: 'balances:read'
+- target: $.paths['/balance-monitors'].post
+  update:
+    tags: [Balances]
+    security:
+    - blnkKey: []
+    x-required-scope: 'balance-monitors:write'
+- target: $.paths['/balance-monitors/{id}'].get
+  update:
+    tags: [Balances]
+    security:
+    - blnkKey: []
+    x-required-scope: 'balance-monitors:read'
+- target: $.paths['/balance-monitors/{id}'].put
+  update:
+    tags: [Balances]
+    security:
+    - blnkKey: []
+    x-required-scope: 'balance-monitors:write'
+- target: $.paths['/transactions'].post
+  update:
+    tags: [Transactions]
+    security:
+    - blnkKey: []
+    x-required-scope: 'transactions:write'
+    x-idempotency:
+      field: reference
+      behavior: reject
+      duplicate_status: 409
+      duplicate_code: TXN_DUPLICATE_REFERENCE
+      note: Caller-supplied reference is unique at the database layer since Core 0.13.2. A duplicate is rejected, not replayed.
+    x-dry-run:
+      field: dry_run
+      since: 0.15.3
+    x-reversibility:
+      reversal: RefundTransaction
+      note: An APPLIED transaction can be refunded exactly once. An INFLIGHT hold is committed, voided, or auto-voided at inflight_expiry_date.
+    x-async:
+      default: queued
+      opt_out_field: skip_queue
+      note: 'Defaults to skip_queue false; the create call returns status QUEUED and the applied record arrives later with a _q reference suffix.'
+- target: $.paths['/transactions/inflight/{txID}'].put
+  update:
+    tags: [Transactions]
+    security:
+    - blnkKey: []
+    x-required-scope: 'transactions:write'
+    x-reversibility:
+      action: void
+      window: until commit, or until inflight_expiry_date passes (auto-void)
+- target: $.paths['/refund-transaction/{id}'].post
+  update:
+    tags: [Transactions]
+    security:
+    - blnkKey: []
+    x-required-scope: 'transactions:write'
+    x-reversibility:
+      action: refund
+      once_only: true
+      note: Each original transaction can be refunded only once; a second attempt is rejected. The original record is never modified.
+- target: $.paths['/identities'].post
+  update:
+    tags: [Identities]
+    security:
+    - blnkKey: []
+    x-required-scope: 'identities:write'
+    x-pii: true
+- target: $.paths['/identities/{id}'].get
+  update:
+    tags: [Identities]
+    security:
+    - blnkKey: []
+    x-required-scope: 'identities:read'
+    x-pii: true
+- target: $.paths['/identities/{id}'].put
+  update:
+    tags: [Identities]
+    security:
+    - blnkKey: []
+    x-required-scope: 'identities:write'
+    x-pii: true
+- target: $.paths['/accounts'].post
+  update:
+    tags: [Accounts]
+    security:
+    - blnkKey: []
+    x-required-scope: 'accounts:write'
+- target: $.paths['/accounts/{id}'].get
+  update:
+    tags: [Accounts]
+    security:
+    - blnkKey: []
+    x-required-scope: 'accounts:read'
+- target: $.paths['/accounts/{id}'].put
+  update:
+    tags: [Accounts]
+    security:
+    - blnkKey: []
+    x-required-scope: 'accounts:write'
+- target: $.paths['/backup'].post
+  update:
+    tags: [Admin]
+    security:
+    - blnkKey: []
+    x-required-scope: 'backup:write'
+- target: $.paths['/backup/s3'].post
+  update:
+    tags: [Admin]
+    security:
+    - blnkKey: []
+    x-required-scope: 'backup:write'
+- target: $.components.schemas
+  update:
+    BlnkError:
+      type: object
+      description: >-
+        Blnk's error envelope (Core 0.15.0+). Branch on error_detail.code, never on message text. Full
+        catalog of 72 codes in errors/blnkfinance-error-codes.yml.
+      properties:
+        error:
+          type: string
+          description: Display text, retained for backwards compatibility.
+        error_detail:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Stable, domain-prefixed error code (GEN_, AUTH_, TXN_, BAL_, LGR_, IDT_, RECON_, META_, HOOK_, QUEUE_, SRCH_, ADMIN_, APIKEY_).
+              example: TXN_DUPLICATE_REFERENCE
+            message:
+              type: string
+              description: Human-readable. May change between releases.
+            details:
+              type: object
+              description: Optional structured context.

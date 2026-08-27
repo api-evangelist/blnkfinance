@@ -1,0 +1,51 @@
+generated: '2026-08-27'
+method: searched
+source: >-
+  https://blnkfinance.com/pricing, https://docs.blnkfinance.com/home/install,
+  https://blnkfinance.com/llms.txt
+note: >-
+  Blnk offers two distinct ways to run against a non-production ledger, and neither is a free hosted
+  test mode with magic values. There are NO published test cards, test bank accounts, test identifiers,
+  test-key prefixes, test clocks or fixture triggers -- a ledger has no card network to simulate, so the
+  category does not apply. What exists is a real isolated environment: either a local Core you run
+  yourself for nothing, or a paid managed Sandbox instance. Recorded honestly rather than omitted,
+  because "how do I try this safely" has a concrete published answer here.
+environments:
+- name: Local Blnk Core
+  kind: self-hosted
+  cost: free
+  install: git clone https://github.com/blnkfinance/blnk && cd blnk && docker compose up
+  base_url: http://localhost:5001
+  auth: >-
+    None by default. BLNK_SERVER_SECURE defaults to false, which skips authentication entirely -- so a
+    fresh local Core is open, and that is a deliberate developer-experience default, not a leak.
+  docs: https://docs.blnkfinance.com/home/install
+  note: The docs describe Docker Compose as "the last option"; the recommended on-ramp is Cloud Sandbox.
+- name: Blnk Cloud Sandbox
+  kind: hosted
+  cost: $100/month
+  trial: 5-day free trial
+  signup: https://cloud.blnkfinance.com/auth/sign-up
+  isolation: shared infrastructure, described as for "small to low-risk workloads"
+  included_records: 100000
+  throughput_tpm: 5000
+  sla: none (no uptime or data-retention SLA)
+  includes_mcp: true
+  docs: https://blnkfinance.com/pricing
+  note: >-
+    A Cloud Sandbox is what gates the ledger MCP endpoint -- an agent cannot reach
+    api.cloud.blnkfinance.com/mcp/{instance_id} without at least this tier.
+test_values:
+  published: false
+  test_cards: []
+  test_identifiers: []
+  key_prefixes: []
+  note: >-
+    Blnk API keys have no documented live/test prefix convention; separation is per instance, not per
+    key. The one safe-rehearsal primitive Blnk does ship is dry_run (Core 0.15.3), which previews a
+    transaction's balance effect without writing -- see conventions/blnkfinance-conventions.yml.
+dry_run:
+  supported: true
+  field: dry_run
+  since: 0.15.3
+  applies_to: [create transaction, bulk create, refund, inflight update]

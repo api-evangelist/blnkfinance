@@ -1,0 +1,56 @@
+generated: '2026-08-27'
+method: searched
+source: https://blnkfinance.com/security
+http_status: 200
+trust_center:
+  published: true
+  url: https://blnkfinance.com/security
+  hosted_platform: null
+  note: >-
+    A first-party security page rather than a Vanta/Drata-style trust portal. There is no automated
+    document room; the ISO/IEC 27001 certificate is obtained by emailing sales@blnkfinance.com
+    ("Request certification").
+certifications:
+- name: ISO/IEC 27001
+  status: certified
+  scope: Blnk's ISMS -- access control, incident handling, risk treatment, and the control review cycle
+  evidence_request: 'mailto:sales@blnkfinance.com?subject=Request ISO/IEC 27001 certification'
+  document_available: on request
+- name: GDPR
+  status: compliant
+  scope: Personal data processing; lawful basis, retention and subject-access requests
+  reference: https://blnkfinance.com/legal/privacy
+- name: SOC 2
+  status: not claimed
+- name: PCI DSS
+  status: not claimed
+- name: HIPAA
+  status: not applicable
+practices:
+  compliance:
+  - Written policies for information security, access control, incident response and business continuity, reviewed on a set schedule
+  - Risk assessments tracked to remediation closure
+  - Annual role-based security training for all employees
+  - Background checks on all full-time hires, subject to local regulation
+  - Need-to-know data classification and access
+  infrastructure:
+  - Dedicated production hosts, separate from shared Sandbox capacity
+  - Customer-chosen deployment region
+  - Inbound traffic limited to a customer IP allowlist; Blnk egress IPs publishable for self-hosted firewalls
+  - Encryption at rest (AES-256-GCM for sensitive data including API keys) and TLS 1.2+ in transit
+  - SSO or MFA on critical services; periodic user access reviews
+  availability:
+  - 99.9% uptime SLA on the Production tier
+  - 30-minute SEV-1 response on the Production tier
+  - Auto-backups and multi-region support on Production
+legal:
+  privacy_policy: https://blnkfinance.com/legal/privacy
+  terms_of_service: https://blnkfinance.com/legal/terms
+  open_source_license: https://blnkfinance.com/legal/open-source-license
+  production_sla: https://blnkfinance.com/legal/deploy-sla
+  support_sla: https://blnkfinance.com/legal/support-sla
+  enterprise_license: https://blnkfinance.com/legal/license-sla
+customers_note: >-
+  The security page claims Blnk is "trusted by regulated institutions, public companies, and startups";
+  named production customers on https://blnkfinance.com/customers include Public Grid, Morna Tech,
+  Yousend and Tecnologia Financiera.

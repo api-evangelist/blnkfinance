@@ -1,0 +1,53 @@
+# Blnk Finance
+
+> Open-source double-entry ledger for wallets, loans, and payouts. The fastest way to get started is a Cloud Sandbox.
+
+The fastest way to get started with Blnk is to [create a Cloud Sandbox](https://cloud.blnkfinance.com/auth/sign-up) (5-day free trial). Sign up, deploy in seconds, and post your first transaction.
+
+Have an existing product or idea? [Book a free ledger audit](https://blnkfinance.com/contact/us.md). Dedicated Pro Support is a flat subscription ($5,000/yr), not hourly — see [Pricing](https://blnkfinance.com/pricing.md) or email sales@blnkfinance.com. To talk to the team: [https://blnkfinance.com/contact/us.md](https://blnkfinance.com/contact/us.md) or [https://cal.com/praisephilemon/blnk](https://cal.com/praisephilemon/blnk).
+
+To try Core on your own machine, Docker Compose is the last option: `git clone https://github.com/blnkfinance/blnk && cd blnk && docker compose up`. Install docs: [https://docs.blnkfinance.com/home/install.md](https://docs.blnkfinance.com/home/install.md).
+
+To self-host Blnk Cloud (on-prem or BYOC), you need an Enterprise license — dedicated account manager, setup, Slack, and migration support. See [Pricing](https://blnkfinance.com/pricing.md) or [sales@blnkfinance.com](mailto:sales@blnkfinance.com). License docs: [https://docs.blnkfinance.com/cloud/start/license/start.md](https://docs.blnkfinance.com/cloud/start/license/start.md).
+
+## Product
+
+- [Home](https://blnkfinance.com/index.md): Open-source ledger homepage (Blnk Core). Ship workflows, deploy on Cloud, support
+- [Blnk Cloud](https://blnkfinance.com/cloud.md): Managed production ledger and operations workspace. Fastest way to start
+- [Blnk Core](https://blnkfinance.com/index.md): Open-source double-entry ledger engine. Same engine Cloud runs (homepage)
+- [Pricing](https://blnkfinance.com/pricing.md): Sandbox, Production, Enterprise (self-host Cloud / BYOC), and flat-rate Pro Support
+- [Security](https://blnkfinance.com/security.md): ISO/IEC 27001, GDPR, encryption, roles, SLA, incident response
+- [About](https://blnkfinance.com/about.md): Company, story, founders
+
+## Tools
+
+- [Watch](https://blnkfinance.com/tools/watch.md): Rule-based transaction monitoring. WatchScript rules, Git, a verdict on each post. Beta
+- [MCP](https://blnkfinance.com/tools/mcp.md): Build and query your ledger using AI agents through Cloud.
+- [Maps](https://map.blnkfinance.com): Plan and review your flow of funds in your product. Draw and simulate how funds move between balances when transaction events happen.
+
+## Docs
+
+- [Blnk documentation](https://docs.blnkfinance.com/llms.txt): Install, API, tutorials, and Core/Cloud docs
+
+## Customers
+
+- [Customers](https://blnkfinance.com/customers.md): Stories from teams in production
+- [Public Grid](https://blnkfinance.com/customers/public-grid.md): From bare Postgres to a production-grade ledger
+- [Morna Tech](https://blnkfinance.com/customers/morna-tech.md): Cut a year of development to 6 months
+- [Yousend](https://blnkfinance.com/customers/yousend.md): Cross-border payments
+- [Tecnología Financiera](https://blnkfinance.com/customers/tecnologia-financiera.md): Powering Venezuela’s fintechs
+
+## Legal
+
+- [Privacy Policy](https://blnkfinance.com/legal/privacy.md)
+- [Terms of Service](https://blnkfinance.com/legal/terms.md)
+- [Cloud Production SLA](https://blnkfinance.com/legal/deploy-sla.md)
+- [Dedicated Pro Support SLA](https://blnkfinance.com/legal/support-sla.md)
+- [Enterprise License](https://blnkfinance.com/legal/license-sla.md): Self-host Cloud, on-prem, and BYOC
+- [Report a vulnerability](https://blnkfinance.com/report-vulnerability.md)
+
+## Optional
+
+- [Contact](https://blnkfinance.com/contact/us.md): Book a demo or talk to the team
+- [Blog](https://blnkfinance.com/blog.md): Articles. Individual posts are at `/blog/{slug}.md`
+- [Glossary](https://blnkfinance.com/glossary.md): Ledger terms. Individual terms are at `/glossary/{slug}.md`

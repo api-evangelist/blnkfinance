@@ -1,0 +1,201 @@
+generated: '2026-08-27'
+method: searched
+source: >-
+  https://docs.blnkfinance.com/advanced/error-codes,
+  https://docs.blnkfinance.com/advanced/configuration/server-security,
+  https://docs.blnkfinance.com/api-keys/scopes,
+  https://docs.blnkfinance.com/transactions/refunds,
+  https://docs.blnkfinance.com/transactions/inflight/updating-inflight,
+  https://docs.blnkfinance.com/changelog/blnk-core,
+  https://docs.blnkfinance.com/webhooks/overview,
+  and openapi/blnkfinance-core-openapi.json
+scope: Blnk Core REST API (self-hosted). Blnk Cloud adds OAuth and a proxy layer on top of the same semantics.
+authentication:
+  style: api-key-header
+  header: X-Blnk-Key
+  values:
+  - master key (BLNK_SERVER_SECRET_KEY)
+  - stored scoped API key
+  enforcement: >-
+    Only enforced when BLNK_SERVER_SECURE=true. With the default false, Blnk skips authentication checks
+    entirely -- a deployment-time decision the operator owns, not an API default the provider ships.
+  cloud: Bearer (API key or OAuth 2.0 access token) against api.cloud.blnkfinance.com
+  detail: authentication/blnkfinance-authentication.yml
+idempotency:
+  supported: true
+  style: request-field
+  field: reference
+  scope: per-transaction, database-enforced
+  header: null
+  mechanism: >-
+    Every transaction carries a caller-supplied `reference`. Since Core 0.13.2 that column has a unique
+    database index (idx_transactions_reference_unique); before 0.13.2 uniqueness was enforced only in
+    application logic and had gaps on some queued and bulk paths.
+  on_duplicate:
+    status: 409
+    code: TXN_DUPLICATE_REFERENCE
+    behavior: reject
+    note: >-
+      IMPORTANT for agents: a duplicate is REJECTED, not replayed. Blnk does not return the original
+      response body on a repeat call the way a header-based idempotency key would. The documented
+      recovery is to catch the 409 and fetch the existing transaction by reference
+      (get_transaction_by_reference on the MCP surface).
+  provider_language: >-
+    Blnk's own agent skill blnk-naming-patterns states it plainly: "References: unique idempotency keys;
+    clean deterministic intent_stableId[_leg] (not random per retry)."
+  retention: >-
+    Permanent. The uniqueness constraint is a database index over the whole transactions table, so a
+    reference is never reusable -- there is no expiring idempotency window.
+  queued_suffix: >-
+    Queued transactions get a _q suffix on the applied record's reference; refunds get
+    {original_txn_id}_refund and, once processed, {original_txn_id}_refund_q.
+  docs: https://docs.blnkfinance.com/changelog/v13-2-migration
+dry_run_mode:
+  supported: true
+  since: Blnk Core 0.15.3 (2026-08-25)
+  field: dry_run
+  applies_to:
+  - create transaction
+  - bulk create
+  - refund
+  - inflight update
+  behavior: >-
+    Previews a transaction's effect on balances without writing anything to the ledger. This is the
+    rehearsal primitive an agent needs before a money movement.
+  docs: https://docs.blnkfinance.com/changelog/blnk-core
+reversibility:
+  grade: verified
+  applies: true
+  note: >-
+    Blnk is a write-heavy ledger and reversal is a first-class, well-documented concept: an applied
+    transaction is refunded (never mutated), and an inflight hold is committed, voided, or auto-voided at
+    a caller-set expiry. Blnk never edits history -- every reversal is recorded as a new child
+    transaction linked by parent_transaction.
+  operations:
+  - action: refund
+    operationId: RefundTransaction
+    binding: POST /refund-transaction/{id}
+    mcp_tool: refund_transaction
+    reverses: an APPLIED transaction (funds return destination -> source)
+    window: >-
+      No time limit is stated. The stated constraint is single-use: "You can refund each original
+      transaction only once. A second attempt is rejected."
+    window_stated: true
+    window_kind: count-bounded
+    eligibility:
+    - {status: APPLIED, refundable: true, note: source and destination balances are reversed}
+    - {status: INFLIGHT, refundable: true, note: only once the inflight transaction has been committed or voided}
+    - {status: QUEUED, refundable: true, note: 'refunds all child APPLIED transactions; pass meta_data.QUEUED_PARENT_TRANSACTION'}
+    - {status: VOID, refundable: false, note: use the parent inflight transaction id instead}
+    - {status: SCHEDULED, refundable: false}
+    - {status: REJECTED, refundable: false}
+    immutability: The original record is never modified; the reversal is a new transaction.
+    docs: https://docs.blnkfinance.com/transactions/refunds
+  - action: void
+    operationId: UpdateInflightTransaction
+    binding: PUT /transactions/inflight/{txID} with status "void"
+    mcp_tool: void_inflight
+    reverses: an INFLIGHT hold (releases held funds without touching settled balances)
+    window: >-
+      Until the transaction is committed, or until inflight_expiry_date passes -- a caller-set ISO 8601
+      timestamp on the original create call. "A transaction will always stay inflight until you commit
+      it, void it, or it expires." At expiry Blnk auto-voids with the same outcome as a manual void.
+    window_stated: true
+    window_kind: caller-set-deadline
+    field: inflight_expiry_date
+    caveat: >-
+      If both inflight_commit_date and inflight_expiry_date are set, the commit must be earlier or Blnk
+      auto-voids before the scheduled commit runs.
+    conflicts:
+    - {code: TXN_ALREADY_COMMITTED, meaning: cannot void a fully committed inflight transaction}
+    - {code: TXN_ALREADY_VOIDED, meaning: already voided}
+    docs: https://docs.blnkfinance.com/transactions/inflight/updating-inflight
+  - action: bulk void / bulk commit
+    binding: bulk inflight update
+    mcp_tool: null
+    note: >-
+      Returns HTTP 200 with per-item results[]; ALREADY_VOIDED / ALREADY_COMMITTED come back per item,
+      not as a request-level error.
+  non_reversible:
+  - {surface: ledgers, note: No delete or reverse operation for a ledger in the published contract.}
+  - {surface: balances, note: No delete operation for a balance.}
+  - {surface: identities, note: 'DELETE identity shipped in Core 0.15.0 but is absent from the published OpenAPI; it exists as the delete_identity MCP tool.'}
+  - {surface: backup, note: Backup operations are one-way.}
+pagination:
+  style: page-number
+  params:
+  - page
+  - per_page
+  note: >-
+    Confirmed on the CLI (--page / --per-page) and on the Typesense search surface. The published
+    OpenAPI declares no pagination parameters because it carries no list operations at all.
+  docs: https://docs.blnkfinance.com/search/typesense/pagination
+versioning:
+  style: none-in-transport
+  note: >-
+    No version segment in the URL and no version header. The API version is the Blnk Core BINARY version
+    the operator has deployed (0.15.3 at time of writing), which is a consequence of the self-hosted
+    open-source model: the consumer and the server are the same party's decision. Breaking changes ship
+    as versioned migration guides.
+  detail: lifecycle/blnkfinance-lifecycle.yml
+error_envelope:
+  format: proprietary
+  discriminator: error_detail.code
+  rfc9457: false
+  detail: errors/blnkfinance-error-codes.yml
+rate_limit_signaling:
+  documented_headers: false
+  exhaustion:
+    status: 429
+    code: GEN_RATE_LIMITED
+  note: >-
+    Limits are operator-configured (BLNK_RATE_LIMIT_RPS / BLNK_RATE_LIMIT_BURST) with effectively
+    unlimited defaults. No X-RateLimit-* / RateLimit-* / Retry-After headers are documented.
+  detail: rate-limits/blnkfinance-rate-limits.yml
+metadata:
+  field: meta_data
+  note: >-
+    Free-form JSON object on ledgers, balances, transactions and identities, updatable via
+    POST /{id}/metadata (which maps to the `metadata` scope resource, needing metadata:write). Renamed
+    from `metadata` to `meta_data` in the update response in Core 0.14.0 -- a breaking change with its
+    own migration guide.
+  docs: https://docs.blnkfinance.com/changelog/v14-migration
+async_semantics:
+  queue: >-
+    Transactions default to the queue (skip_queue: false). The create call returns status QUEUED and the
+    applied record arrives later with a _q reference suffix. Set skip_queue: true for synchronous apply.
+    Since 0.15.0 inflight commit and void also queue by default.
+  backpressure:
+    status: 503
+    code: QUEUE_BACKPRESSURE
+    since: 0.15.2
+    note: On by default; triggered by Redis memory or pending-task thresholds.
+  agent_implication: >-
+    An agent that posts a transaction and immediately reads the balance will see stale state unless it
+    sets skip_queue or waits for the transaction.applied webhook.
+  docs: https://docs.blnkfinance.com/transactions/introduction
+webhooks:
+  signature_header: X-Blnk-Signature
+  timestamp_header: X-Blnk-Timestamp
+  algorithm: HMAC over BLNK_SERVER_SECRET_KEY
+  note: >-
+    The same secret is both the master API key and the webhook signing secret, so rotating it changes
+    request auth and webhook verification at once -- the docs flag this explicitly.
+  detail: asyncapi/blnkfinance-webhooks.yml
+request_limits:
+  max_request_body_mb: 5
+  max_upload_mb: 256
+  on_exceeded:
+    status: 400
+    code: GEN_MALFORMED_REQUEST
+    message: 'http: request body too large'
+  bulk_item_limit: 10000
+  bulk_limit_since: 0.15.0
+integrity:
+  transaction_hash_chain:
+    supported: true
+    since: 0.15.0
+    default: disabled
+    verify_command: blnk verify-chain
+    note: Optional global hash chain to detect tampering in transaction history.
+    docs: https://docs.blnkfinance.com/transactions/hash

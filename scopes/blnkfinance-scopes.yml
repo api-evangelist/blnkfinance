@@ -1,0 +1,97 @@
+generated: '2026-08-27'
+method: searched
+source: >-
+  https://docs.blnkfinance.com/api-keys/scopes, https://docs.blnkfinance.com/cloud/integrations/mcp,
+  https://docs.blnkfinance.com/cloud/auth/api-keys
+docs: https://docs.blnkfinance.com/api-keys/scopes
+note: >-
+  Blnk Core's scope model is attached to API KEYS, not to an OAuth flow -- derive-oauth-scopes.py found
+  nothing because the published OpenAPI declares only http/basic and no oauth2 securityScheme. The model
+  is real and fully documented anyway, and it is the same vocabulary the Blnk Cloud OAuth clients use,
+  so it is captured here. Scopes are `resource:action` pairs; Blnk maps HTTP methods to actions
+  automatically rather than naming a scope per endpoint, so the scope list is a small grid rather than a
+  long registry.
+model:
+  format: resource:action
+  wildcard: '*'
+  wildcard_note: 'Either side may be *: ledgers:* grants all ledger actions, *:read grants read on every resource.'
+  method_mapping:
+  - {action: read, http_methods: [GET, HEAD]}
+  - {action: write, http_methods: [POST, PUT, PATCH]}
+  - {action: delete, http_methods: [DELETE]}
+  - {action: '*', http_methods: [any]}
+resources:
+- {resource: '*', description: All resources}
+- {resource: ledgers, description: Ledger management}
+- {resource: balances, description: Balance operations}
+- {resource: accounts, description: Account operations}
+- {resource: identities, description: Identity management}
+- {resource: transactions, description: Transaction processing}
+- {resource: balance-monitors, description: Balance monitoring}
+- {resource: api-keys, description: API key management}
+- {resource: search, description: Search operations}
+- {resource: reconciliation, description: Reconciliation tasks}
+- {resource: metadata, description: 'Metadata management (POST /{id}/metadata maps here)'}
+- {resource: backup, description: Backup operations}
+scopes:
+- {scope: 'ledgers:read', description: View ledgers}
+- {scope: 'ledgers:write', description: Create ledgers}
+- {scope: 'balances:read', description: View balances}
+- {scope: 'balances:write', description: Create and update balances}
+- {scope: 'accounts:read', description: View accounts}
+- {scope: 'accounts:write', description: Create and update accounts}
+- {scope: 'identities:read', description: View identities}
+- {scope: 'identities:write', description: Create and update identities}
+- {scope: 'identities:delete', description: Delete identities}
+- {scope: 'transactions:read', description: View transactions}
+- {scope: 'transactions:write', description: Create transactions, commit/void inflight, refund}
+- {scope: 'balance-monitors:read', description: View balance monitors}
+- {scope: 'balance-monitors:write', description: Create and update balance monitors}
+- {scope: 'balance-monitors:delete', description: Delete balance monitors}
+- {scope: 'api-keys:read', description: List API keys within the owner context}
+- {scope: 'api-keys:write', description: Create API keys within the owner context}
+- {scope: 'api-keys:delete', description: Revoke API keys within the owner context}
+- {scope: 'search:read', description: Run search queries}
+- {scope: 'reconciliation:read', description: View reconciliation runs and rules}
+- {scope: 'reconciliation:write', description: Start reconciliations and manage matching rules}
+- {scope: 'metadata:write', description: Update metadata on ledgers, transactions, identities and balances}
+- {scope: 'backup:write', description: Trigger database backups}
+- {scope: 'mcp:read', description: Read-only access to ledger data through Blnk Cloud MCP tools, surface: blnk-cloud}
+- {scope: 'mcp:write', description: Read and write access through Blnk Cloud MCP tools, surface: blnk-cloud}
+scope_derivation_note: >-
+  The resource list and the action grid are published verbatim by Blnk; the individual resource:action
+  rows above are the documented cross-product of the two, restricted to the actions each resource's
+  documented operations actually support. mcp:read and mcp:write are named explicitly in the Cloud MCP
+  docs. No scope here was invented.
+documented_patterns:
+- {use_case: Read-only reporting, scopes: ['ledgers:read', 'balances:read']}
+- {use_case: Payment processing, scopes: ['transactions:write', 'balances:read']}
+- {use_case: Identity management, scopes: ['identities:write', 'identities:read']}
+- {use_case: Metadata updates, scopes: ['metadata:write']}
+- {use_case: Key administration, scopes: ['api-keys:read', 'api-keys:write', 'api-keys:delete']}
+- {use_case: AI agent over MCP, scopes: ['mcp:read', 'mcp:write']}
+guidance:
+  least_privilege: 'Blnk explicitly warns against *:* unless full access is genuinely needed.'
+  escalation_guard: 'A non-master key cannot grant scopes broader than its own (AUTH_SCOPE_ESCALATION, 403), since 0.14.3.'
+  owner_scoping: 'A non-master key is limited to its own owner_id for key management (AUTH_CROSS_OWNER_ACCESS, 403).'
+  master_key_only:
+  - Hook management (create, update, view, list, delete) -- scoped keys get AUTH_MASTER_KEY_REQUIRED 403.
+errors:
+- {code: AUTH_INSUFFICIENT_PERMISSIONS, status: 403, meaning: The key is missing the scope required for that endpoint}
+- {code: AUTH_UNKNOWN_RESOURCE, status: 403, meaning: The request path does not map to a known Blnk resource}
+- {code: AUTH_MASTER_KEY_REQUIRED, status: 403, meaning: The endpoint requires the master key}
+- {code: AUTH_SCOPE_ESCALATION, status: 403, meaning: Attempt to grant scopes broader than the caller's}
+oauth:
+  supported: true
+  surface: Blnk Cloud
+  metadata_document: well-known/blnkfinance-oauth-authorization-server.json
+  issuer: https://api.cloud.blnkfinance.com
+  authorization_endpoint: https://api.cloud.blnkfinance.com/oauth/authorize
+  token_endpoint: https://api.cloud.blnkfinance.com/oauth/token
+  grant_types: [authorization_code, refresh_token]
+  pkce: [S256, plain]
+  token_endpoint_auth_methods: [client_secret_post, client_secret_basic]
+  docs: https://docs.blnkfinance.com/cloud/auth/oauth
+  note: >-
+    The RFC 8414 metadata document declares no scopes_supported field, so the OAuth scope vocabulary is
+    only discoverable from the docs (mcp:read / mcp:write are the ones named).
