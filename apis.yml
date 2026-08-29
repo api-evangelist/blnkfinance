@@ -4,6 +4,17 @@ description: Open-source double-entry ledger for financial products (wallets, lo
   self-hosted Blnk Core (OSS engine) and Blnk Cloud (managed), plus Blnk Watch for transaction monitoring. Exposes REST APIs
   with a public OpenAPI spec, hosted MCP servers, llms.txt, and installable agent skills.
 url: https://raw.githubusercontent.com/api-evangelist/open-source-ledger-for-financial-products-blnk-finance/refs/heads/main/apis.yml
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 created: '2026-08-26'
 modified: '2026-08-27'
 specificationVersion: '0.21'
