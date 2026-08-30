@@ -19,6 +19,19 @@ created: '2026-08-26'
 modified: '2026-08-27'
 specificationVersion: '0.21'
 tags:
+- Fintech
+- Financial-Services
+- Ledger
+- double-entry-accounting
+- Payments
+- Wallets
+- Lending
+- Banking Infrastructure
+- Open-Source
+- MCP
+- AI Agents
+- Developer Tools
+tags_raw:
 - fintech
 - financial-services
 - ledger
@@ -39,6 +52,19 @@ apis:
   humanURL: https://docs.blnkfinance.com/cloud/reference/overview.md
   baseURL: https://api.cloud.blnkfinance.com
   tags:
+  - Fintech
+  - Financial-Services
+  - Ledger
+  - double-entry-accounting
+  - Payments
+  - Wallets
+  - Lending
+  - Banking Infrastructure
+  - Open-Source
+  - MCP
+  - AI Agents
+  - Developer Tools
+  tags_raw:
   - fintech
   - financial-services
   - ledger
@@ -88,6 +114,19 @@ apis:
   humanURL: https://docs.blnkfinance.com/watch/reference/overview.md
   baseURL: https://api.cloud.blnkfinance.com
   tags:
+  - Fintech
+  - Financial-Services
+  - Ledger
+  - double-entry-accounting
+  - Payments
+  - Wallets
+  - Lending
+  - Banking Infrastructure
+  - Open-Source
+  - MCP
+  - AI Agents
+  - Developer Tools
+  tags_raw:
   - fintech
   - financial-services
   - ledger
@@ -111,6 +150,8 @@ apis:
   humanURL: https://docs.blnkfinance.com/reference/overview.md
   baseURL: http://localhost:5001
   tags:
+  - Account
+  tags_raw:
   - Accounts
   properties:
   - type: OpenAPI
@@ -279,6 +320,8 @@ apis:
   humanURL: https://docs.blnkfinance.com/reference/overview.md
   baseURL: http://localhost:5001
   tags:
+  - Transaction
+  tags_raw:
   - Transactions
   properties:
   - type: OpenAPI
