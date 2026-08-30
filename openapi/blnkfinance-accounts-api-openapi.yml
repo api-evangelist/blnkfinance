@@ -1,0 +1,693 @@
+openapi: 3.2.0
+info:
+  title: Blnk Accounts API
+  contact: {}
+  version: '1.0'
+servers:
+- url: http://localhost:5001
+  variables: {}
+security: []
+tags:
+- name: Accounts
+paths:
+  /accounts:
+    post:
+      summary: Create Account
+      operationId: CreateAccount
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/CreateAccountRequest'
+              - example:
+                  bank_name: Bknk bank
+                  number: '30888334'
+                  balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
+                  identity_id: idt_0b5f333d-e0b8-4422-8e0e-5d41a767f1db
+            example:
+              bank_name: Bknk bank
+              number: '30888334'
+              balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
+              identity_id: idt_0b5f333d-e0b8-4422-8e0e-5d41a767f1db
+        required: true
+      responses:
+        '201':
+          description: Created
+          headers:
+            Date:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Tue, 20 Feb 2024 05:35:55 GMT
+            Content-Length:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: '423'
+          content:
+            application/json; charset=utf-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/CreateAccount'
+                - example:
+                    account_id: acc_463b25b8-7b24-4e8b-aa49-7844d9074019
+                    name: Chijioke Adeola
+                    number: '294364850431'
+                    bank_name: Blnk Bank
+                    currency: NGN
+                    created_at: '2024-02-20T05:35:55.720731136Z'
+                    balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
+                    identity_id: idt_0b5f333d-e0b8-4422-8e0e-5d41a767f1db
+                    ledger_id: ldg_073f7ffe-9dfd-42ce-aa50-d1dca1788adc
+                    meta_data: null
+                    ledger: null
+                    balance: null
+                    identity: null
+              example:
+                account_id: acc_463b25b8-7b24-4e8b-aa49-7844d9074019
+                name: Chijioke Adeola
+                number: '294364850431'
+                bank_name: Blnk Bank
+                currency: NGN
+                created_at: '2024-02-20T05:35:55.720731136Z'
+                balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
+                identity_id: idt_0b5f333d-e0b8-4422-8e0e-5d41a767f1db
+                ledger_id: ldg_073f7ffe-9dfd-42ce-aa50-d1dca1788adc
+                meta_data: null
+                ledger: null
+                balance: null
+                identity: null
+      deprecated: false
+      tags:
+      - Accounts
+  /accounts/{id}:
+    put:
+      summary: Update Account
+      operationId: UpdateAccount
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/UpdateAccountRequest'
+              - example:
+                  bank_name: Bknk bank MFB
+                  number: '30888334'
+                  balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
+                  identity_id: idt_0b5f333d-e0b8-4422-8e0e-5d41a767f1db
+            example:
+              bank_name: Bknk bank MFB
+              number: '30888334'
+              balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
+              identity_id: idt_0b5f333d-e0b8-4422-8e0e-5d41a767f1db
+        required: true
+      responses:
+        '201':
+          description: Created
+          headers:
+            Date:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Tue, 20 Feb 2024 05:35:55 GMT
+            Content-Length:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: '423'
+          content:
+            application/json; charset=utf-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/CreateAccount'
+                - example:
+                    account_id: acc_463b25b8-7b24-4e8b-aa49-7844d9074019
+                    name: Chijioke Adeola
+                    number: '294364850431'
+                    bank_name: Blnk Bank
+                    currency: NGN
+                    created_at: '2024-02-20T05:35:55.720731136Z'
+                    balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
+                    identity_id: idt_0b5f333d-e0b8-4422-8e0e-5d41a767f1db
+                    ledger_id: ldg_073f7ffe-9dfd-42ce-aa50-d1dca1788adc
+                    meta_data: null
+                    ledger: null
+                    balance: null
+                    identity: null
+              example:
+                account_id: acc_463b25b8-7b24-4e8b-aa49-7844d9074019
+                name: Chijioke Adeola
+                number: '294364850431'
+                bank_name: Blnk Bank
+                currency: NGN
+                created_at: '2024-02-20T05:35:55.720731136Z'
+                balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
+                identity_id: idt_0b5f333d-e0b8-4422-8e0e-5d41a767f1db
+                ledger_id: ldg_073f7ffe-9dfd-42ce-aa50-d1dca1788adc
+                meta_data: null
+                ledger: null
+                balance: null
+                identity: null
+      deprecated: false
+      tags:
+      - Accounts
+    get:
+      summary: Get Account
+      operationId: GetAccount
+      parameters:
+      - name: include
+        in: query
+        description: ''
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: identity
+      - name: id
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: acc_463b25b8-7b24-4e8b-aa49-7844d9074019
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Tue, 20 Feb 2024 05:50:24 GMT
+            Content-Length:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: '1343'
+          content:
+            application/json; charset=utf-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/GetAccount'
+                - example:
+                    account_id: acc_463b25b8-7b24-4e8b-aa49-7844d9074019
+                    name: Chijioke Adeola
+                    number: '294364850431'
+                    bank_name: Blnk Bank
+                    currency: NGN
+                    created_at: '0001-01-01T00:00:00Z'
+                    balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
+                    identity_id: idt_0b5f333d-e0b8-4422-8e0e-5d41a767f1db
+                    ledger_id: ldg_073f7ffe-9dfd-42ce-aa50-d1dca1788adc
+                    meta_data:
+                      reference: XYZ123456789
+                      verified: true
+                    ledger:
+                      id: ldg_073f7ffe-9dfd-42ce-aa50-d1dca1788adc
+                      name: Customer wallets Ledger
+                      created_at: '2024-02-20T05:28:03.563132Z'
+                    balance:
+                      balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
+                      balance: 30300
+                      credit_balance: 30600
+                      debit_balance: 300
+                      currency: NGN
+                      ledger_id: ldg_073f7ffe-9dfd-42ce-aa50-d1dca1788adc
+                      identity_id: ''
+                      created_at: '2024-02-20T05:33:01.3116Z'
+                      meta_data: null
+                    identity:
+                      identity_id: idt_0b5f333d-e0b8-4422-8e0e-5d41a767f1db
+                      identity_type: individual
+                      organization_name: ''
+                      category: ''
+                      first_name: Chijioke
+                      last_name: Adeola
+                      other_names: Emeka
+                      gender: male
+                      dob: '1990-01-01T00:00:00Z'
+                      email_address: chijioke.adeola@gmail.com
+                      phone_number: '+2347012345678'
+                      nationality: Nigerian
+                      street: 10 Aso Villa Way
+                      country: Nigeria
+                      state: Lagos
+                      post_code: '101001'
+                      city: Lagos
+                      created_at: '2023-10-16T10:00:00Z'
+                      meta_data: null
+              example:
+                account_id: acc_463b25b8-7b24-4e8b-aa49-7844d9074019
+                name: Chijioke Adeola
+                number: '294364850431'
+                bank_name: Blnk Bank
+                currency: NGN
+                created_at: '0001-01-01T00:00:00Z'
+                balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
+                identity_id: idt_0b5f333d-e0b8-4422-8e0e-5d41a767f1db
+                ledger_id: ldg_073f7ffe-9dfd-42ce-aa50-d1dca1788adc
+                meta_data:
+                  reference: XYZ123456789
+                  verified: true
+                ledger:
+                  id: ldg_073f7ffe-9dfd-42ce-aa50-d1dca1788adc
+                  name: Customer wallets Ledger
+                  created_at: '2024-02-20T05:28:03.563132Z'
+                balance:
+                  balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
+                  balance: 30300
+                  credit_balance: 30600
+                  debit_balance: 300
+                  currency: NGN
+                  ledger_id: ldg_073f7ffe-9dfd-42ce-aa50-d1dca1788adc
+                  identity_id: ''
+                  created_at: '2024-02-20T05:33:01.3116Z'
+                  meta_data: null
+                identity:
+                  identity_id: idt_0b5f333d-e0b8-4422-8e0e-5d41a767f1db
+                  identity_type: individual
+                  organization_name: ''
+                  category: ''
+                  first_name: Chijioke
+                  last_name: Adeola
+                  other_names: Emeka
+                  gender: male
+                  dob: '1990-01-01T00:00:00Z'
+                  email_address: chijioke.adeola@gmail.com
+                  phone_number: '+2347012345678'
+                  nationality: Nigerian
+                  street: 10 Aso Villa Way
+                  country: Nigeria
+                  state: Lagos
+                  post_code: '101001'
+                  city: Lagos
+                  created_at: '2023-10-16T10:00:00Z'
+                  meta_data: null
+      deprecated: false
+      tags:
+      - Accounts
+components:
+  schemas:
+    Balance:
+      title: Balance
+      required:
+      - balance_id
+      - balance
+      - credit_balance
+      - debit_balance
+      - currency
+      - ledger_id
+      - identity_id
+      - created_at
+      - meta_data
+      type: object
+      properties:
+        balance_id:
+          type: string
+        balance:
+          type: integer
+          format: int32
+        credit_balance:
+          type: integer
+          format: int32
+        debit_balance:
+          type: integer
+          format: int32
+        currency:
+          type: string
+        ledger_id:
+          type: string
+        identity_id:
+          type: string
+        created_at:
+          type: string
+        meta_data:
+          type:
+          - string
+          - 'null'
+      example:
+        balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
+        balance: 30300
+        credit_balance: 30600
+        debit_balance: 300
+        currency: NGN
+        ledger_id: ldg_073f7ffe-9dfd-42ce-aa50-d1dca1788adc
+        identity_id: ''
+        created_at: '2024-02-20T05:33:01.3116Z'
+        meta_data: null
+    UpdateAccountRequest:
+      title: UpdateAccountRequest
+      required:
+      - bank_name
+      - number
+      - balance_id
+      - identity_id
+      type: object
+      properties:
+        bank_name:
+          type: string
+        number:
+          type: string
+        balance_id:
+          type: string
+        identity_id:
+          type: string
+      example:
+        bank_name: Bknk bank MFB
+        number: '30888334'
+        balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
+        identity_id: idt_0b5f333d-e0b8-4422-8e0e-5d41a767f1db
+    CreateAccount:
+      title: CreateAccount
+      required:
+      - account_id
+      - name
+      - number
+      - bank_name
+      - currency
+      - created_at
+      - balance_id
+      - identity_id
+      - ledger_id
+      - meta_data
+      - ledger
+      - balance
+      - identity
+      type: object
+      properties:
+        account_id:
+          type: string
+        name:
+          type: string
+        number:
+          type: string
+        bank_name:
+          type: string
+        currency:
+          type: string
+        created_at:
+          type: string
+        balance_id:
+          type: string
+        identity_id:
+          type: string
+        ledger_id:
+          type: string
+        meta_data:
+          type:
+          - string
+          - 'null'
+        ledger:
+          type:
+          - string
+          - 'null'
+        balance:
+          type:
+          - string
+          - 'null'
+        identity:
+          type:
+          - string
+          - 'null'
+      example:
+        account_id: acc_463b25b8-7b24-4e8b-aa49-7844d9074019
+        name: Chijioke Adeola
+        number: '294364850431'
+        bank_name: Blnk Bank
+        currency: NGN
+        created_at: '2024-02-20T05:35:55.720731136Z'
+        balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
+        identity_id: idt_0b5f333d-e0b8-4422-8e0e-5d41a767f1db
+        ledger_id: ldg_073f7ffe-9dfd-42ce-aa50-d1dca1788adc
+        meta_data: null
+        ledger: null
+        balance: null
+        identity: null
+    GetAccount:
+      title: GetAccount
+      required:
+      - account_id
+      - name
+      - number
+      - bank_name
+      - currency
+      - created_at
+      - balance_id
+      - identity_id
+      - ledger_id
+      - meta_data
+      - ledger
+      - balance
+      - identity
+      type: object
+      properties:
+        account_id:
+          type: string
+        name:
+          type: string
+        number:
+          type: string
+        bank_name:
+          type: string
+        currency:
+          type: string
+        created_at:
+          type: string
+        balance_id:
+          type: string
+        identity_id:
+          type: string
+        ledger_id:
+          type: string
+        meta_data:
+          $ref: '#/components/schemas/MetaData2'
+        ledger:
+          $ref: '#/components/schemas/Ledger'
+        balance:
+          $ref: '#/components/schemas/Balance'
+        identity:
+          $ref: '#/components/schemas/Identity'
+      example:
+        account_id: acc_463b25b8-7b24-4e8b-aa49-7844d9074019
+        name: Chijioke Adeola
+        number: '294364850431'
+        bank_name: Blnk Bank
+        currency: NGN
+        created_at: '0001-01-01T00:00:00Z'
+        balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
+        identity_id: idt_0b5f333d-e0b8-4422-8e0e-5d41a767f1db
+        ledger_id: ldg_073f7ffe-9dfd-42ce-aa50-d1dca1788adc
+        meta_data:
+          reference: XYZ123456789
+          verified: true
+        ledger:
+          id: ldg_073f7ffe-9dfd-42ce-aa50-d1dca1788adc
+          name: Customer wallets Ledger
+          created_at: '2024-02-20T05:28:03.563132Z'
+        balance:
+          balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
+          balance: 30300
+          credit_balance: 30600
+          debit_balance: 300
+          currency: NGN
+          ledger_id: ldg_073f7ffe-9dfd-42ce-aa50-d1dca1788adc
+          identity_id: ''
+          created_at: '2024-02-20T05:33:01.3116Z'
+          meta_data: null
+        identity:
+          identity_id: idt_0b5f333d-e0b8-4422-8e0e-5d41a767f1db
+          identity_type: individual
+          organization_name: ''
+          category: ''
+          first_name: Chijioke
+          last_name: Adeola
+          other_names: Emeka
+          gender: male
+          dob: '1990-01-01T00:00:00Z'
+          email_address: chijioke.adeola@gmail.com
+          phone_number: '+2347012345678'
+          nationality: Nigerian
+          street: 10 Aso Villa Way
+          country: Nigeria
+          state: Lagos
+          post_code: '101001'
+          city: Lagos
+          created_at: '2023-10-16T10:00:00Z'
+          meta_data: null
+    MetaData:
+      title: MetaData
+      required:
+      - project_owner
+      type: object
+      properties:
+        project_owner:
+          type: string
+      example:
+        project_owner: Blnk Tech
+    Identity:
+      title: Identity
+      required:
+      - identity_id
+      - identity_type
+      - organization_name
+      - category
+      - first_name
+      - last_name
+      - other_names
+      - gender
+      - dob
+      - email_address
+      - phone_number
+      - nationality
+      - street
+      - country
+      - state
+      - post_code
+      - city
+      - created_at
+      - meta_data
+      type: object
+      properties:
+        identity_id:
+          type: string
+        identity_type:
+          type: string
+        organization_name:
+          type: string
+        category:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        other_names:
+          type: string
+        gender:
+          type: string
+        dob:
+          type: string
+        email_address:
+          type: string
+        phone_number:
+          type: string
+        nationality:
+          type: string
+        street:
+          type: string
+        country:
+          type: string
+        state:
+          type: string
+        post_code:
+          type: string
+        city:
+          type: string
+        created_at:
+          type: string
+        meta_data:
+          type:
+          - string
+          - 'null'
+      example:
+        identity_id: idt_0b5f333d-e0b8-4422-8e0e-5d41a767f1db
+        identity_type: individual
+        organization_name: ''
+        category: ''
+        first_name: Chijioke
+        last_name: Adeola
+        other_names: Emeka
+        gender: male
+        dob: '1990-01-01T00:00:00Z'
+        email_address: chijioke.adeola@gmail.com
+        phone_number: '+2347012345678'
+        nationality: Nigerian
+        street: 10 Aso Villa Way
+        country: Nigeria
+        state: Lagos
+        post_code: '101001'
+        city: Lagos
+        created_at: '2023-10-16T10:00:00Z'
+        meta_data: null
+    MetaData2:
+      title: MetaData2
+      required:
+      - verified
+      - reference
+      type: object
+      properties:
+        verified:
+          type: boolean
+        reference:
+          type: string
+      example:
+        verified: true
+        reference: XYZ123456789
+    Ledger:
+      title: Ledger
+      required:
+      - ledger_id
+      - name
+      - created_at
+      - meta_data
+      type: object
+      properties:
+        ledger_id:
+          type: string
+        name:
+          type: string
+        created_at:
+          type: string
+        meta_data:
+          $ref: '#/components/schemas/MetaData'
+      example:
+        ledger_id: ldg_073f7ffe-9dfd-42ce-aa50-d1dca1788adc
+        name: Customer wallets Ledger
+        created_at: '2024-02-20T05:28:03.563132Z'
+        meta_data:
+          project_owner: Blnk Tech
+    CreateAccountRequest:
+      title: CreateAccountRequest
+      required:
+      - bank_name
+      - number
+      - balance_id
+      - identity_id
+      type: object
+      properties:
+        bank_name:
+          type: string
+        number:
+          type: string
+        balance_id:
+          type: string
+        identity_id:
+          type: string
+      example:
+        bank_name: Bknk bank
+        number: '30888334'
+        balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
+        identity_id: idt_0b5f333d-e0b8-4422-8e0e-5d41a767f1db
+  securitySchemes:
+    basic:
+      type: http
+      scheme: basic

@@ -1,0 +1,308 @@
+openapi: 3.2.0
+info:
+  title: Blnk Balance Monitors API
+  contact: {}
+  version: '1.0'
+servers:
+- url: http://localhost:5001
+  variables: {}
+security: []
+tags:
+- name: Balance Monitors
+paths:
+  /balance-monitors:
+    post:
+      summary: Create Balance Monitor
+      operationId: CreateBalanceMonitor
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/CreateBalanceMonitorRequest'
+              - example:
+                  balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
+                  condition:
+                    field: debit_balance
+                    operator: '>'
+                    value: 100000
+                  call_back_url: https://api.myapp.com/balancemonitor
+            example:
+              balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
+              condition:
+                field: debit_balance
+                operator: '>'
+                value: 100000
+              call_back_url: https://api.myapp.com/balancemonitor
+        required: true
+      responses:
+        '201':
+          description: Created
+          headers:
+            Date:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Tue, 20 Feb 2024 05:56:58 GMT
+            Content-Length:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: '268'
+          content:
+            application/json; charset=utf-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/CreateBalanceMonitor'
+                - example:
+                    monitor_id: mon_e0e77b0c-4985-472a-9bf5-76a48b0259b0
+                    balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
+                    condition:
+                      field: debit_balance
+                      operator: '>'
+                      value: 100000
+                    description: ''
+                    call_back_url: https://api.myapp.com/balancemonitor
+                    created_at: '2024-02-20T05:56:58.257315054Z'
+              example:
+                monitor_id: mon_e0e77b0c-4985-472a-9bf5-76a48b0259b0
+                balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
+                condition:
+                  field: debit_balance
+                  operator: '>'
+                  value: 100000
+                description: ''
+                call_back_url: https://api.myapp.com/balancemonitor
+                created_at: '2024-02-20T05:56:58.257315054Z'
+      deprecated: false
+      tags:
+      - Balance Monitors
+  /balance-monitors/{id}:
+    put:
+      summary: Update Balance Monitor
+      operationId: UpdateBalanceMonitor
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: mon_da573822-902c-4349-86c9-2c02ab697c6e
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/UpdateBalanceMonitorRequest'
+              - example:
+                  balance_id: bln_c1750613-b4b0-4cde-9793-459165a8715f
+                  condition:
+                    field: balance
+                    operator: '='
+                    value: 10000000
+            example:
+              balance_id: bln_c1750613-b4b0-4cde-9793-459165a8715f
+              condition:
+                field: balance
+                operator: '='
+                value: 10000000
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      tags:
+      - Balance Monitors
+    get:
+      summary: Get Balance Monitor
+      operationId: GetBalanceMonitor
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: mon_e0e77b0c-4985-472a-9bf5-76a48b0259b0
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Tue, 20 Feb 2024 05:59:11 GMT
+            Content-Length:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: '265'
+          content:
+            application/json; charset=utf-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/GetBalanceMonitor'
+                - example:
+                    monitor_id: mon_e0e77b0c-4985-472a-9bf5-76a48b0259b0
+                    balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
+                    condition:
+                      field: debit_balance
+                      operator: '>'
+                      value: 100000
+                    description: ''
+                    call_back_url: https://api.myapp.com/balancemonitor
+                    created_at: '2024-02-20T05:56:58.257315Z'
+              example:
+                monitor_id: mon_e0e77b0c-4985-472a-9bf5-76a48b0259b0
+                balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
+                condition:
+                  field: debit_balance
+                  operator: '>'
+                  value: 100000
+                description: ''
+                call_back_url: https://api.myapp.com/balancemonitor
+                created_at: '2024-02-20T05:56:58.257315Z'
+      deprecated: false
+      tags:
+      - Balance Monitors
+components:
+  schemas:
+    UpdateBalanceMonitorRequest:
+      title: UpdateBalanceMonitorRequest
+      required:
+      - balance_id
+      - condition
+      type: object
+      properties:
+        balance_id:
+          type: string
+        condition:
+          $ref: '#/components/schemas/Condition'
+      example:
+        balance_id: bln_c1750613-b4b0-4cde-9793-459165a8715f
+        condition:
+          field: balance
+          operator: '='
+          value: 10000000
+    Condition:
+      title: Condition
+      required:
+      - field
+      - operator
+      - value
+      type: object
+      properties:
+        field:
+          type: string
+        operator:
+          type: string
+        value:
+          type: integer
+          format: int32
+      example:
+        field: debit_balance
+        operator: '>'
+        value: 100000
+    CreateBalanceMonitor:
+      title: CreateBalanceMonitor
+      required:
+      - monitor_id
+      - balance_id
+      - condition
+      - description
+      - call_back_url
+      - created_at
+      type: object
+      properties:
+        monitor_id:
+          type: string
+        balance_id:
+          type: string
+        condition:
+          $ref: '#/components/schemas/Condition'
+        description:
+          type: string
+        call_back_url:
+          type: string
+        created_at:
+          type: string
+      example:
+        monitor_id: mon_e0e77b0c-4985-472a-9bf5-76a48b0259b0
+        balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
+        condition:
+          field: debit_balance
+          operator: '>'
+          value: 100000
+        description: ''
+        call_back_url: https://api.myapp.com/balancemonitor
+        created_at: '2024-02-20T05:56:58.257315054Z'
+    CreateBalanceMonitorRequest:
+      title: CreateBalanceMonitorRequest
+      required:
+      - balance_id
+      - condition
+      - call_back_url
+      type: object
+      properties:
+        balance_id:
+          type: string
+        condition:
+          $ref: '#/components/schemas/Condition'
+        call_back_url:
+          type: string
+      example:
+        balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
+        condition:
+          field: debit_balance
+          operator: '>'
+          value: 100000
+        call_back_url: https://api.myapp.com/balancemonitor
+    GetBalanceMonitor:
+      title: GetBalanceMonitor
+      required:
+      - monitor_id
+      - balance_id
+      - condition
+      - description
+      - call_back_url
+      - created_at
+      type: object
+      properties:
+        monitor_id:
+          type: string
+        balance_id:
+          type: string
+        condition:
+          $ref: '#/components/schemas/Condition'
+        description:
+          type: string
+        call_back_url:
+          type: string
+        created_at:
+          type: string
+      example:
+        monitor_id: mon_e0e77b0c-4985-472a-9bf5-76a48b0259b0
+        balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
+        condition:
+          field: debit_balance
+          operator: '>'
+          value: 100000
+        description: ''
+        call_back_url: https://api.myapp.com/balancemonitor
+        created_at: '2024-02-20T05:56:58.257315Z'
+  securitySchemes:
+    basic:
+      type: http
+      scheme: basic

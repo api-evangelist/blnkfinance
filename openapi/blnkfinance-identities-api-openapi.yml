@@ -1,0 +1,604 @@
+openapi: 3.2.0
+info:
+  title: Blnk Identities API
+  contact: {}
+  version: '1.0'
+servers:
+- url: http://localhost:5001
+  variables: {}
+security: []
+tags:
+- name: Identities
+paths:
+  /identities:
+    post:
+      summary: Create Identity
+      operationId: CreateIdentity
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/CreateIdentityRequest'
+              - example:
+                  identity_type: organization
+                  name: Blnk
+                  category: fintech
+                  street: 10 Aso Villa Way
+                  country: Nigeria
+                  state: Lagos
+                  post_code: '101001'
+                  city: Lagos
+                  created_at: '2023-10-16T10:00:00Z'
+                  meta_data:
+                    verified: true
+                    reference: XYZ123456789
+            example:
+              identity_type: organization
+              name: Blnk
+              category: fintech
+              street: 10 Aso Villa Way
+              country: Nigeria
+              state: Lagos
+              post_code: '101001'
+              city: Lagos
+              created_at: '2023-10-16T10:00:00Z'
+              meta_data:
+                verified: true
+                reference: XYZ123456789
+        required: true
+      responses:
+        '201':
+          description: Created
+          headers:
+            Date:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Tue, 20 Feb 2024 05:27:44 GMT
+            Content-Length:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: '479'
+          content:
+            application/json; charset=utf-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/CreateIdentity'
+                - example:
+                    identity_id: idt_0b5f333d-e0b8-4422-8e0e-5d41a767f1db
+                    identity_type: organization
+                    organization_name: ''
+                    category: fintech
+                    first_name: ''
+                    last_name: ''
+                    other_names: ''
+                    gender: ''
+                    dob: '0001-01-01T00:00:00Z'
+                    email_address: ''
+                    phone_number: ''
+                    nationality: ''
+                    street: 10 Aso Villa Way
+                    country: Nigeria
+                    state: Lagos
+                    post_code: '101001'
+                    city: Lagos
+                    created_at: '2024-02-20T05:27:44.748526423Z'
+                    meta_data:
+                      reference: XYZ123456789
+                      verified: true
+              example:
+                identity_id: idt_0b5f333d-e0b8-4422-8e0e-5d41a767f1db
+                identity_type: organization
+                organization_name: ''
+                category: fintech
+                first_name: ''
+                last_name: ''
+                other_names: ''
+                gender: ''
+                dob: '0001-01-01T00:00:00Z'
+                email_address: ''
+                phone_number: ''
+                nationality: ''
+                street: 10 Aso Villa Way
+                country: Nigeria
+                state: Lagos
+                post_code: '101001'
+                city: Lagos
+                created_at: '2024-02-20T05:27:44.748526423Z'
+                meta_data:
+                  reference: XYZ123456789
+                  verified: true
+      deprecated: false
+      tags:
+      - Identities
+  /identities/{id}:
+    put:
+      summary: Update Identity
+      operationId: UpdateIdentity
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: idt_0b5f333d-e0b8-4422-8e0e-5d41a767f1db
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/UpdateIdentityRequest'
+              - example:
+                  identity_type: individual
+                  first_name: Chijioke
+                  last_name: Adeola
+                  other_names: Emeka
+                  gender: male
+                  dob: '1990-01-01T00:00:00Z'
+                  email_address: chijioke.adeola@gmail.com
+                  phone_number: '+2347012345678'
+                  nationality: Nigerian
+                  street: 10 Aso Villa Way
+                  country: Nigeria
+                  state: Lagos
+                  post_code: '101001'
+                  city: Lagos
+                  created_at: '2023-10-16T10:00:00Z'
+                  meta_data:
+                    verified: true
+                    reference: XYZ123456789
+            example:
+              identity_type: individual
+              first_name: Chijioke
+              last_name: Adeola
+              other_names: Emeka
+              gender: male
+              dob: '1990-01-01T00:00:00Z'
+              email_address: chijioke.adeola@gmail.com
+              phone_number: '+2347012345678'
+              nationality: Nigerian
+              street: 10 Aso Villa Way
+              country: Nigeria
+              state: Lagos
+              post_code: '101001'
+              city: Lagos
+              created_at: '2023-10-16T10:00:00Z'
+              meta_data:
+                verified: true
+                reference: XYZ123456789
+        required: true
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Tue, 20 Feb 2024 05:28:19 GMT
+            Content-Length:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: '43'
+          content:
+            application/json; charset=utf-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/UpdateIdentity'
+                - example:
+                    message: Identity updated successfully
+              example:
+                message: Identity updated successfully
+      deprecated: false
+      tags:
+      - Identities
+    get:
+      summary: Get Identity
+      operationId: GetIdentity
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: idt_0b5f333d-e0b8-4422-8e0e-5d41a767f1db
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Tue, 20 Feb 2024 05:28:41 GMT
+            Content-Length:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: '530'
+          content:
+            application/json; charset=utf-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/GetIdentity'
+                - example:
+                    identity_id: idt_0b5f333d-e0b8-4422-8e0e-5d41a767f1db
+                    identity_type: individual
+                    organization_name: ''
+                    category: ''
+                    first_name: Chijioke
+                    last_name: Adeola
+                    other_names: Emeka
+                    gender: male
+                    dob: '1990-01-01T00:00:00Z'
+                    email_address: chijioke.adeola@gmail.com
+                    phone_number: '+2347012345678'
+                    nationality: Nigerian
+                    street: 10 Aso Villa Way
+                    country: Nigeria
+                    state: Lagos
+                    post_code: '101001'
+                    city: Lagos
+                    created_at: '2023-10-16T10:00:00Z'
+                    meta_data:
+                      reference: XYZ123456789
+                      verified: true
+              example:
+                identity_id: idt_0b5f333d-e0b8-4422-8e0e-5d41a767f1db
+                identity_type: individual
+                organization_name: ''
+                category: ''
+                first_name: Chijioke
+                last_name: Adeola
+                other_names: Emeka
+                gender: male
+                dob: '1990-01-01T00:00:00Z'
+                email_address: chijioke.adeola@gmail.com
+                phone_number: '+2347012345678'
+                nationality: Nigerian
+                street: 10 Aso Villa Way
+                country: Nigeria
+                state: Lagos
+                post_code: '101001'
+                city: Lagos
+                created_at: '2023-10-16T10:00:00Z'
+                meta_data:
+                  reference: XYZ123456789
+                  verified: true
+      deprecated: false
+      tags:
+      - Identities
+components:
+  schemas:
+    CreateIdentityRequest:
+      title: CreateIdentityRequest
+      required:
+      - identity_type
+      - name
+      - category
+      - street
+      - country
+      - state
+      - post_code
+      - city
+      - created_at
+      - meta_data
+      type: object
+      properties:
+        identity_type:
+          type: string
+        name:
+          type: string
+        category:
+          type: string
+        street:
+          type: string
+        country:
+          type: string
+        state:
+          type: string
+        post_code:
+          type: string
+        city:
+          type: string
+        created_at:
+          type: string
+        meta_data:
+          $ref: '#/components/schemas/MetaData2'
+      example:
+        identity_type: organization
+        name: Blnk
+        category: fintech
+        street: 10 Aso Villa Way
+        country: Nigeria
+        state: Lagos
+        post_code: '101001'
+        city: Lagos
+        created_at: '2023-10-16T10:00:00Z'
+        meta_data:
+          verified: true
+          reference: XYZ123456789
+    GetIdentity:
+      title: GetIdentity
+      required:
+      - identity_id
+      - identity_type
+      - organization_name
+      - category
+      - first_name
+      - last_name
+      - other_names
+      - gender
+      - dob
+      - email_address
+      - phone_number
+      - nationality
+      - street
+      - country
+      - state
+      - post_code
+      - city
+      - created_at
+      - meta_data
+      type: object
+      properties:
+        identity_id:
+          type: string
+        identity_type:
+          type: string
+        organization_name:
+          type: string
+        category:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        other_names:
+          type: string
+        gender:
+          type: string
+        dob:
+          type: string
+        email_address:
+          type: string
+        phone_number:
+          type: string
+        nationality:
+          type: string
+        street:
+          type: string
+        country:
+          type: string
+        state:
+          type: string
+        post_code:
+          type: string
+        city:
+          type: string
+        created_at:
+          type: string
+        meta_data:
+          $ref: '#/components/schemas/MetaData2'
+      example:
+        identity_id: idt_0b5f333d-e0b8-4422-8e0e-5d41a767f1db
+        identity_type: individual
+        organization_name: ''
+        category: ''
+        first_name: Chijioke
+        last_name: Adeola
+        other_names: Emeka
+        gender: male
+        dob: '1990-01-01T00:00:00Z'
+        email_address: chijioke.adeola@gmail.com
+        phone_number: '+2347012345678'
+        nationality: Nigerian
+        street: 10 Aso Villa Way
+        country: Nigeria
+        state: Lagos
+        post_code: '101001'
+        city: Lagos
+        created_at: '2023-10-16T10:00:00Z'
+        meta_data:
+          reference: XYZ123456789
+          verified: true
+    MetaData2:
+      title: MetaData2
+      required:
+      - verified
+      - reference
+      type: object
+      properties:
+        verified:
+          type: boolean
+        reference:
+          type: string
+      example:
+        verified: true
+        reference: XYZ123456789
+    CreateIdentity:
+      title: CreateIdentity
+      required:
+      - identity_id
+      - identity_type
+      - organization_name
+      - category
+      - first_name
+      - last_name
+      - other_names
+      - gender
+      - dob
+      - email_address
+      - phone_number
+      - nationality
+      - street
+      - country
+      - state
+      - post_code
+      - city
+      - created_at
+      - meta_data
+      type: object
+      properties:
+        identity_id:
+          type: string
+        identity_type:
+          type: string
+        organization_name:
+          type: string
+        category:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        other_names:
+          type: string
+        gender:
+          type: string
+        dob:
+          type: string
+        email_address:
+          type: string
+        phone_number:
+          type: string
+        nationality:
+          type: string
+        street:
+          type: string
+        country:
+          type: string
+        state:
+          type: string
+        post_code:
+          type: string
+        city:
+          type: string
+        created_at:
+          type: string
+        meta_data:
+          $ref: '#/components/schemas/MetaData2'
+      example:
+        identity_id: idt_0b5f333d-e0b8-4422-8e0e-5d41a767f1db
+        identity_type: organization
+        organization_name: ''
+        category: fintech
+        first_name: ''
+        last_name: ''
+        other_names: ''
+        gender: ''
+        dob: '0001-01-01T00:00:00Z'
+        email_address: ''
+        phone_number: ''
+        nationality: ''
+        street: 10 Aso Villa Way
+        country: Nigeria
+        state: Lagos
+        post_code: '101001'
+        city: Lagos
+        created_at: '2024-02-20T05:27:44.748526423Z'
+        meta_data:
+          reference: XYZ123456789
+          verified: true
+    UpdateIdentity:
+      title: UpdateIdentity
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: Identity updated successfully
+    UpdateIdentityRequest:
+      title: UpdateIdentityRequest
+      required:
+      - identity_type
+      - first_name
+      - last_name
+      - other_names
+      - gender
+      - dob
+      - email_address
+      - phone_number
+      - nationality
+      - street
+      - country
+      - state
+      - post_code
+      - city
+      - created_at
+      - meta_data
+      type: object
+      properties:
+        identity_type:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        other_names:
+          type: string
+        gender:
+          type: string
+        dob:
+          type: string
+        email_address:
+          type: string
+        phone_number:
+          type: string
+        nationality:
+          type: string
+        street:
+          type: string
+        country:
+          type: string
+        state:
+          type: string
+        post_code:
+          type: string
+        city:
+          type: string
+        created_at:
+          type: string
+        meta_data:
+          $ref: '#/components/schemas/MetaData2'
+      example:
+        identity_type: individual
+        first_name: Chijioke
+        last_name: Adeola
+        other_names: Emeka
+        gender: male
+        dob: '1990-01-01T00:00:00Z'
+        email_address: chijioke.adeola@gmail.com
+        phone_number: '+2347012345678'
+        nationality: Nigerian
+        street: 10 Aso Villa Way
+        country: Nigeria
+        state: Lagos
+        post_code: '101001'
+        city: Lagos
+        created_at: '2023-10-16T10:00:00Z'
+        meta_data:
+          verified: true
+          reference: XYZ123456789
+  securitySchemes:
+    basic:
+      type: http
+      scheme: basic

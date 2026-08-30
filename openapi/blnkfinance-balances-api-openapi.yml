@@ -1,0 +1,343 @@
+openapi: 3.2.0
+info:
+  title: Blnk Balances API
+  contact: {}
+  version: '1.0'
+servers:
+- url: http://localhost:5001
+  variables: {}
+security: []
+tags:
+- name: Balances
+paths:
+  /balances:
+    post:
+      summary: Create Balance
+      operationId: CreateBalance
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/CreateBalanceRequest'
+              - example:
+                  ledger_id: ldg_63d9915b-926f-49d6-93b2-4acc5ab214ed
+                  currency: NGN
+            example:
+              ledger_id: ldg_63d9915b-926f-49d6-93b2-4acc5ab214ed
+              currency: NGN
+        required: true
+      responses:
+        '201':
+          description: Created
+          headers:
+            Date:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Tue, 20 Feb 2024 05:33:01 GMT
+            Content-Length:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: '282'
+          content:
+            application/json; charset=utf-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/CreateBalance'
+                - example:
+                    balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
+                    balance: 0
+                    version: 0
+                    inflight_balance: 0
+                    credit_balance: 0
+                    inflight_credit_balance: 0
+                    debit_balance: 0
+                    inflight_debit_balance: 0
+                    ledger_id: ldg_073f7ffe-9dfd-42ce-aa50-d1dca1788adc
+                    identity_id: ''
+                    indicator: ''
+                    currency: NGN
+                    created_at: '2024-02-20T05:33:01.311600208Z'
+                    inflight_expires_at: '0001-01-01T00:00:00Z'
+                    meta_data: null
+              example:
+                balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
+                balance: 0
+                version: 0
+                inflight_balance: 0
+                credit_balance: 0
+                inflight_credit_balance: 0
+                debit_balance: 0
+                inflight_debit_balance: 0
+                ledger_id: ldg_073f7ffe-9dfd-42ce-aa50-d1dca1788adc
+                identity_id: ''
+                indicator: ''
+                currency: NGN
+                created_at: '2024-02-20T05:33:01.311600208Z'
+                inflight_expires_at: '0001-01-01T00:00:00Z'
+                meta_data: null
+      deprecated: false
+      tags:
+      - Balances
+  /balances/{id}:
+    get:
+      summary: Get Balance
+      operationId: GetBalance
+      parameters:
+      - name: include
+        in: query
+        description: ''
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: ledger
+      - name: id
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Tue, 20 Feb 2024 05:38:01 GMT
+            Content-Length:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: '416'
+          content:
+            application/json; charset=utf-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/GetBalance1'
+                - example:
+                    balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
+                    balance: 300
+                    credit_balance: 300
+                    debit_balance: 0
+                    currency: NGN
+                    ledger_id: ldg_073f7ffe-9dfd-42ce-aa50-d1dca1788adc
+                    identity_id: ''
+                    ledger:
+                      id: ldg_073f7ffe-9dfd-42ce-aa50-d1dca1788adc
+                      name: Customer wallets Ledger
+                      created_at: '2024-02-20T05:28:03.563132Z'
+                    created_at: '2024-02-20T05:33:01.3116Z'
+                    meta_data: null
+              example:
+                balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
+                balance: 300
+                credit_balance: 300
+                debit_balance: 0
+                currency: NGN
+                ledger_id: ldg_073f7ffe-9dfd-42ce-aa50-d1dca1788adc
+                identity_id: ''
+                ledger:
+                  id: ldg_073f7ffe-9dfd-42ce-aa50-d1dca1788adc
+                  name: Customer wallets Ledger
+                  created_at: '2024-02-20T05:28:03.563132Z'
+                created_at: '2024-02-20T05:33:01.3116Z'
+                meta_data: null
+      deprecated: false
+      tags:
+      - Balances
+components:
+  schemas:
+    GetBalance1:
+      title: GetBalance1
+      required:
+      - balance_id
+      - balance
+      - credit_balance
+      - debit_balance
+      - currency
+      - ledger_id
+      - identity_id
+      - ledger
+      - created_at
+      - meta_data
+      type: object
+      properties:
+        balance_id:
+          type: string
+        balance:
+          type: integer
+          format: int32
+        credit_balance:
+          type: integer
+          format: int32
+        debit_balance:
+          type: integer
+          format: int32
+        currency:
+          type: string
+        ledger_id:
+          type: string
+        identity_id:
+          type: string
+        ledger:
+          $ref: '#/components/schemas/Ledger'
+        created_at:
+          type: string
+        meta_data:
+          type:
+          - string
+          - 'null'
+      example:
+        balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
+        balance: 300
+        credit_balance: 300
+        debit_balance: 0
+        currency: NGN
+        ledger_id: ldg_073f7ffe-9dfd-42ce-aa50-d1dca1788adc
+        identity_id: ''
+        ledger:
+          id: ldg_073f7ffe-9dfd-42ce-aa50-d1dca1788adc
+          name: Customer wallets Ledger
+          created_at: '2024-02-20T05:28:03.563132Z'
+        created_at: '2024-02-20T05:33:01.3116Z'
+        meta_data: null
+    MetaData:
+      title: MetaData
+      required:
+      - project_owner
+      type: object
+      properties:
+        project_owner:
+          type: string
+      example:
+        project_owner: Blnk Tech
+    CreateBalance:
+      title: CreateBalance
+      required:
+      - balance_id
+      - balance
+      - version
+      - inflight_balance
+      - credit_balance
+      - inflight_credit_balance
+      - debit_balance
+      - inflight_debit_balance
+      - ledger_id
+      - identity_id
+      - indicator
+      - currency
+      - created_at
+      - inflight_expires_at
+      - meta_data
+      type: object
+      properties:
+        balance_id:
+          type: string
+        balance:
+          type: integer
+          format: int32
+        version:
+          type: integer
+          format: int32
+        inflight_balance:
+          type: integer
+          format: int32
+        credit_balance:
+          type: integer
+          format: int32
+        inflight_credit_balance:
+          type: integer
+          format: int32
+        debit_balance:
+          type: integer
+          format: int32
+        inflight_debit_balance:
+          type: integer
+          format: int32
+        ledger_id:
+          type: string
+        identity_id:
+          type: string
+        indicator:
+          type: string
+        currency:
+          type: string
+        created_at:
+          type: string
+        inflight_expires_at:
+          type: string
+        meta_data:
+          type:
+          - string
+          - 'null'
+      example:
+        balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
+        balance: 0
+        version: 0
+        inflight_balance: 0
+        credit_balance: 0
+        inflight_credit_balance: 0
+        debit_balance: 0
+        inflight_debit_balance: 0
+        ledger_id: ldg_073f7ffe-9dfd-42ce-aa50-d1dca1788adc
+        identity_id: ''
+        indicator: ''
+        currency: NGN
+        created_at: '2024-02-20T05:33:01.311600208Z'
+        inflight_expires_at: '0001-01-01T00:00:00Z'
+        meta_data: null
+    Ledger:
+      title: Ledger
+      required:
+      - ledger_id
+      - name
+      - created_at
+      - meta_data
+      type: object
+      properties:
+        ledger_id:
+          type: string
+        name:
+          type: string
+        created_at:
+          type: string
+        meta_data:
+          $ref: '#/components/schemas/MetaData'
+      example:
+        ledger_id: ldg_073f7ffe-9dfd-42ce-aa50-d1dca1788adc
+        name: Customer wallets Ledger
+        created_at: '2024-02-20T05:28:03.563132Z'
+        meta_data:
+          project_owner: Blnk Tech
+    CreateBalanceRequest:
+      title: CreateBalanceRequest
+      required:
+      - ledger_id
+      - currency
+      type: object
+      properties:
+        ledger_id:
+          type: string
+        currency:
+          type: string
+      example:
+        ledger_id: ldg_63d9915b-926f-49d6-93b2-4acc5ab214ed
+        currency: NGN
+  securitySchemes:
+    basic:
+      type: http
+      scheme: basic

@@ -1,0 +1,224 @@
+openapi: 3.2.0
+info:
+  title: Blnk Refund Transaction API
+  contact: {}
+  version: '1.0'
+servers:
+- url: http://localhost:5001
+  variables: {}
+security: []
+tags:
+- name: Refund Transaction
+paths:
+  /refund-transaction/{id}:
+    post:
+      summary: Refund Transaction
+      operationId: RefundTransaction
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: txn_5bbbe4d3-2d82-4da1-8191-aaa491d025de
+      responses:
+        '201':
+          description: Created
+          headers:
+            Date:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Tue, 20 Feb 2024 05:40:52 GMT
+            Content-Length:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: '713'
+          content:
+            application/json; charset=utf-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/RefundTransaction'
+                - example:
+                    id: txn_043d4ac3-4caf-4149-9c0d-927ae637d83f
+                    tag: Refund
+                    reference: ref_70ffd90f-7bcf-43b8-90ba-70505c113b52
+                    amount: 300
+                    currency: NGN
+                    payment_method: ''
+                    description: ''
+                    drcr: Debit
+                    status: APPLIED
+                    ledger_id: ldg_073f7ffe-9dfd-42ce-aa50-d1dca1788adc
+                    balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
+                    credit_balance_before: 600
+                    debit_balance_before: 0
+                    credit_balance_after: 600
+                    debit_balance_after: 300
+                    balance_before: 600
+                    balance_after: 300
+                    created_at: '2024-02-20T05:40:52.630481718Z'
+                    scheduled_for: '0001-01-01T00:00:00Z'
+                    risk_tolerance_threshold: 0
+                    risk_score: 0.03108
+                    meta_data:
+                      refunded_transaction_id: txn_5bbbe4d3-2d82-4da1-8191-aaa491d025de
+                    group_ids: null
+              example:
+                id: txn_043d4ac3-4caf-4149-9c0d-927ae637d83f
+                tag: Refund
+                reference: ref_70ffd90f-7bcf-43b8-90ba-70505c113b52
+                amount: 300
+                currency: NGN
+                payment_method: ''
+                description: ''
+                drcr: Debit
+                status: APPLIED
+                ledger_id: ldg_073f7ffe-9dfd-42ce-aa50-d1dca1788adc
+                balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
+                credit_balance_before: 600
+                debit_balance_before: 0
+                credit_balance_after: 600
+                debit_balance_after: 300
+                balance_before: 600
+                balance_after: 300
+                created_at: '2024-02-20T05:40:52.630481718Z'
+                scheduled_for: '0001-01-01T00:00:00Z'
+                risk_tolerance_threshold: 0
+                risk_score: 0.03108
+                meta_data:
+                  refunded_transaction_id: txn_5bbbe4d3-2d82-4da1-8191-aaa491d025de
+                group_ids: null
+      deprecated: false
+      tags:
+      - Refund Transaction
+components:
+  schemas:
+    MetaData1:
+      title: MetaData1
+      required:
+      - refunded_transaction_id
+      type: object
+      properties:
+        refunded_transaction_id:
+          type: string
+      example:
+        refunded_transaction_id: txn_5bbbe4d3-2d82-4da1-8191-aaa491d025de
+    RefundTransaction:
+      title: RefundTransaction
+      required:
+      - id
+      - tag
+      - reference
+      - amount
+      - currency
+      - payment_method
+      - description
+      - drcr
+      - status
+      - ledger_id
+      - balance_id
+      - credit_balance_before
+      - debit_balance_before
+      - credit_balance_after
+      - debit_balance_after
+      - balance_before
+      - balance_after
+      - created_at
+      - scheduled_for
+      - risk_tolerance_threshold
+      - risk_score
+      - meta_data
+      - group_ids
+      type: object
+      properties:
+        id:
+          type: string
+        tag:
+          type: string
+        reference:
+          type: string
+        amount:
+          type: integer
+          format: int32
+        currency:
+          type: string
+        payment_method:
+          type: string
+        description:
+          type: string
+        drcr:
+          type: string
+        status:
+          type: string
+        ledger_id:
+          type: string
+        balance_id:
+          type: string
+        credit_balance_before:
+          type: integer
+          format: int32
+        debit_balance_before:
+          type: integer
+          format: int32
+        credit_balance_after:
+          type: integer
+          format: int32
+        debit_balance_after:
+          type: integer
+          format: int32
+        balance_before:
+          type: integer
+          format: int32
+        balance_after:
+          type: integer
+          format: int32
+        created_at:
+          type: string
+        scheduled_for:
+          type: string
+        risk_tolerance_threshold:
+          type: integer
+          format: int32
+        risk_score:
+          type: number
+        meta_data:
+          $ref: '#/components/schemas/MetaData1'
+        group_ids:
+          type:
+          - string
+          - 'null'
+      example:
+        id: txn_043d4ac3-4caf-4149-9c0d-927ae637d83f
+        tag: Refund
+        reference: ref_70ffd90f-7bcf-43b8-90ba-70505c113b52
+        amount: 300
+        currency: NGN
+        payment_method: ''
+        description: ''
+        drcr: Debit
+        status: APPLIED
+        ledger_id: ldg_073f7ffe-9dfd-42ce-aa50-d1dca1788adc
+        balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
+        credit_balance_before: 600
+        debit_balance_before: 0
+        credit_balance_after: 600
+        debit_balance_after: 300
+        balance_before: 600
+        balance_after: 300
+        created_at: '2024-02-20T05:40:52.630481718Z'
+        scheduled_for: '0001-01-01T00:00:00Z'
+        risk_tolerance_threshold: 0
+        risk_score: 0.03108
+        meta_data:
+          refunded_transaction_id: txn_5bbbe4d3-2d82-4da1-8191-aaa491d025de
+        group_ids: null
+  securitySchemes:
+    basic:
+      type: http
+      scheme: basic
