@@ -367,6 +367,8 @@ generated:
   confidence: 95
   at: '2026-08-26T22:58:17.366Z'
 common:
+- type: Website
+  url: https://www.blnkfinance.com/
 - type: DomainSecurity
   url: security/blnkfinance-domain-security.yml
 - type: Authentication
