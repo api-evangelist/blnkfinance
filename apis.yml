@@ -485,6 +485,8 @@ common:
 - type: ToolCrosswalk
   url: mcp/blnkfinance-tool-crosswalk.yml
   description: 33 MCP tools bound against the 18 published OpenAPI operations; 12 bound, 21 MCP-only, 8 REST-only.
+- type: Contact
+  url: mailto:sales@blnkfinance.com
 image: https://blnkfinance.com/_astro/og-default.4FpZOtzr.png
 x-enrichment:
   date: '2026-08-27'
