@@ -179,42 +179,6 @@ paths:
       - Balance Monitors
 components:
   schemas:
-    UpdateBalanceMonitorRequest:
-      title: UpdateBalanceMonitorRequest
-      required:
-      - balance_id
-      - condition
-      type: object
-      properties:
-        balance_id:
-          type: string
-        condition:
-          $ref: '#/components/schemas/Condition'
-      example:
-        balance_id: bln_c1750613-b4b0-4cde-9793-459165a8715f
-        condition:
-          field: balance
-          operator: '='
-          value: 10000000
-    Condition:
-      title: Condition
-      required:
-      - field
-      - operator
-      - value
-      type: object
-      properties:
-        field:
-          type: string
-        operator:
-          type: string
-        value:
-          type: integer
-          format: int32
-      example:
-        field: debit_balance
-        operator: '>'
-        value: 100000
     CreateBalanceMonitor:
       title: CreateBalanceMonitor
       required:
@@ -248,27 +212,25 @@ components:
         description: ''
         call_back_url: https://api.myapp.com/balancemonitor
         created_at: '2024-02-20T05:56:58.257315054Z'
-    CreateBalanceMonitorRequest:
-      title: CreateBalanceMonitorRequest
+    Condition:
+      title: Condition
       required:
-      - balance_id
-      - condition
-      - call_back_url
+      - field
+      - operator
+      - value
       type: object
       properties:
-        balance_id:
+        field:
           type: string
-        condition:
-          $ref: '#/components/schemas/Condition'
-        call_back_url:
+        operator:
           type: string
+        value:
+          type: integer
+          format: int32
       example:
-        balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
-        condition:
-          field: debit_balance
-          operator: '>'
-          value: 100000
-        call_back_url: https://api.myapp.com/balancemonitor
+        field: debit_balance
+        operator: '>'
+        value: 100000
     GetBalanceMonitor:
       title: GetBalanceMonitor
       required:
@@ -302,6 +264,44 @@ components:
         description: ''
         call_back_url: https://api.myapp.com/balancemonitor
         created_at: '2024-02-20T05:56:58.257315Z'
+    UpdateBalanceMonitorRequest:
+      title: UpdateBalanceMonitorRequest
+      required:
+      - balance_id
+      - condition
+      type: object
+      properties:
+        balance_id:
+          type: string
+        condition:
+          $ref: '#/components/schemas/Condition'
+      example:
+        balance_id: bln_c1750613-b4b0-4cde-9793-459165a8715f
+        condition:
+          field: balance
+          operator: '='
+          value: 10000000
+    CreateBalanceMonitorRequest:
+      title: CreateBalanceMonitorRequest
+      required:
+      - balance_id
+      - condition
+      - call_back_url
+      type: object
+      properties:
+        balance_id:
+          type: string
+        condition:
+          $ref: '#/components/schemas/Condition'
+        call_back_url:
+          type: string
+      example:
+        balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
+        condition:
+          field: debit_balance
+          operator: '>'
+          value: 100000
+        call_back_url: https://api.myapp.com/balancemonitor
   securitySchemes:
     basic:
       type: http

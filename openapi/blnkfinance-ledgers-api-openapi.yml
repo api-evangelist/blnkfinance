@@ -120,8 +120,8 @@ paths:
       - Ledgers
 components:
   schemas:
-    Createledger:
-      title: Createledger
+    Ledger:
+      title: Ledger
       required:
       - ledger_id
       - name
@@ -138,9 +138,9 @@ components:
         meta_data:
           $ref: '#/components/schemas/MetaData'
       example:
-        id: ldg_073f7ffe-9dfd-42ce-aa50-d1dca1788adc
+        ledger_id: ldg_073f7ffe-9dfd-42ce-aa50-d1dca1788adc
         name: Customer wallets Ledger
-        created_at: '2024-02-20T05:28:03.558281542Z'
+        created_at: '2024-02-20T05:28:03.563132Z'
         meta_data:
           project_owner: Blnk Tech
     CreateledgerRequest:
@@ -168,8 +168,8 @@ components:
           type: string
       example:
         project_owner: Blnk Tech
-    Ledger:
-      title: Ledger
+    Createledger:
+      title: Createledger
       required:
       - ledger_id
       - name
@@ -186,9 +186,9 @@ components:
         meta_data:
           $ref: '#/components/schemas/MetaData'
       example:
-        ledger_id: ldg_073f7ffe-9dfd-42ce-aa50-d1dca1788adc
+        id: ldg_073f7ffe-9dfd-42ce-aa50-d1dca1788adc
         name: Customer wallets Ledger
-        created_at: '2024-02-20T05:28:03.563132Z'
+        created_at: '2024-02-20T05:28:03.558281542Z'
         meta_data:
           project_owner: Blnk Tech
   securitySchemes:

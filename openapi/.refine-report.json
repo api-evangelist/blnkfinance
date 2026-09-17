@@ -1,0 +1,60 @@
+{
+  "provider": "blnkfinance",
+  "sources": [
+    "_original/blnkfinance-core-openapi.json"
+  ],
+  "outputs": [
+    "blnkfinance-accounts-api-openapi.yml",
+    "blnkfinance-backup-api-openapi.yml",
+    "blnkfinance-balance-monitors-api-openapi.yml",
+    "blnkfinance-balances-api-openapi.yml",
+    "blnkfinance-identities-api-openapi.yml",
+    "blnkfinance-ledgers-api-openapi.yml",
+    "blnkfinance-refund-transaction-api-openapi.yml",
+    "blnkfinance-transactions-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "blnkfinance-core-openapi.json: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
+    "blnkfinance-core-openapi.json: tagged paths POST /ledgers -> Ledgers",
+    "blnkfinance-core-openapi.json: tagged paths POST /balances -> Balances",
+    "blnkfinance-core-openapi.json: tagged paths POST /transactions -> Transactions",
+    "blnkfinance-core-openapi.json: tagged paths PUT /transactions/inflight/{txID} -> Transactions",
+    "blnkfinance-core-openapi.json: tagged paths POST /refund-transaction/{id} -> Refund Transaction",
+    "blnkfinance-core-openapi.json: tagged paths POST /balance-monitors -> Balance Monitors",
+    "blnkfinance-core-openapi.json: tagged paths POST /identities -> Identities",
+    "blnkfinance-core-openapi.json: tagged paths POST /accounts -> Accounts",
+    "blnkfinance-core-openapi.json: tagged paths PUT /identities/{id} -> Identities",
+    "blnkfinance-core-openapi.json: tagged paths GET /identities/{id} -> Identities",
+    "blnkfinance-core-openapi.json: tagged paths PUT /accounts/{id} -> Accounts",
+    "blnkfinance-core-openapi.json: tagged paths GET /accounts/{id} -> Accounts",
+    "blnkfinance-core-openapi.json: tagged paths PUT /balance-monitors/{id} -> Balance Monitors",
+    "blnkfinance-core-openapi.json: tagged paths GET /balance-monitors/{id} -> Balance Monitors",
+    "blnkfinance-core-openapi.json: tagged paths POST /backup -> Backup",
+    "blnkfinance-core-openapi.json: tagged paths POST /backup/s3 -> Backup",
+    "blnkfinance-core-openapi.json: tagged paths GET /ledgers/{ledger_id} -> Ledgers",
+    "blnkfinance-core-openapi.json: tagged paths GET /balances/{id} -> Balances",
+    "blnkfinance-core-openapi.json: declared missing tag: Accounts",
+    "blnkfinance-core-openapi.json: declared missing tag: Backup",
+    "blnkfinance-core-openapi.json: declared missing tag: Balance Monitors",
+    "blnkfinance-core-openapi.json: declared missing tag: Balances",
+    "blnkfinance-core-openapi.json: declared missing tag: Identities",
+    "blnkfinance-core-openapi.json: declared missing tag: Ledgers",
+    "blnkfinance-core-openapi.json: declared missing tag: Refund Transaction",
+    "blnkfinance-core-openapi.json: declared missing tag: Transactions",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "blnkfinance-accounts-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "blnkfinance-backup-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "blnkfinance-balance-monitors-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "blnkfinance-balances-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "blnkfinance-identities-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "blnkfinance-ledgers-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "blnkfinance-refund-transaction-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "blnkfinance-transactions-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}

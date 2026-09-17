@@ -418,20 +418,78 @@ components:
         meta_data:
           reference: XYZ123456789
           verified: true
-    MetaData2:
-      title: MetaData2
+    UpdateIdentityRequest:
+      title: UpdateIdentityRequest
       required:
-      - verified
-      - reference
+      - identity_type
+      - first_name
+      - last_name
+      - other_names
+      - gender
+      - dob
+      - email_address
+      - phone_number
+      - nationality
+      - street
+      - country
+      - state
+      - post_code
+      - city
+      - created_at
+      - meta_data
       type: object
       properties:
-        verified:
-          type: boolean
-        reference:
+        identity_type:
           type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        other_names:
+          type: string
+        gender:
+          type: string
+        dob:
+          type: string
+        email_address:
+          type: string
+        phone_number:
+          type: string
+        nationality:
+          type: string
+        street:
+          type: string
+        country:
+          type: string
+        state:
+          type: string
+        post_code:
+          type: string
+        city:
+          type: string
+        created_at:
+          type: string
+        meta_data:
+          $ref: '#/components/schemas/MetaData2'
       example:
-        verified: true
-        reference: XYZ123456789
+        identity_type: individual
+        first_name: Chijioke
+        last_name: Adeola
+        other_names: Emeka
+        gender: male
+        dob: '1990-01-01T00:00:00Z'
+        email_address: chijioke.adeola@gmail.com
+        phone_number: '+2347012345678'
+        nationality: Nigerian
+        street: 10 Aso Villa Way
+        country: Nigeria
+        state: Lagos
+        post_code: '101001'
+        city: Lagos
+        created_at: '2023-10-16T10:00:00Z'
+        meta_data:
+          verified: true
+          reference: XYZ123456789
     CreateIdentity:
       title: CreateIdentity
       required:
@@ -516,6 +574,20 @@ components:
         meta_data:
           reference: XYZ123456789
           verified: true
+    MetaData2:
+      title: MetaData2
+      required:
+      - verified
+      - reference
+      type: object
+      properties:
+        verified:
+          type: boolean
+        reference:
+          type: string
+      example:
+        verified: true
+        reference: XYZ123456789
     UpdateIdentity:
       title: UpdateIdentity
       required:
@@ -526,78 +598,6 @@ components:
           type: string
       example:
         message: Identity updated successfully
-    UpdateIdentityRequest:
-      title: UpdateIdentityRequest
-      required:
-      - identity_type
-      - first_name
-      - last_name
-      - other_names
-      - gender
-      - dob
-      - email_address
-      - phone_number
-      - nationality
-      - street
-      - country
-      - state
-      - post_code
-      - city
-      - created_at
-      - meta_data
-      type: object
-      properties:
-        identity_type:
-          type: string
-        first_name:
-          type: string
-        last_name:
-          type: string
-        other_names:
-          type: string
-        gender:
-          type: string
-        dob:
-          type: string
-        email_address:
-          type: string
-        phone_number:
-          type: string
-        nationality:
-          type: string
-        street:
-          type: string
-        country:
-          type: string
-        state:
-          type: string
-        post_code:
-          type: string
-        city:
-          type: string
-        created_at:
-          type: string
-        meta_data:
-          $ref: '#/components/schemas/MetaData2'
-      example:
-        identity_type: individual
-        first_name: Chijioke
-        last_name: Adeola
-        other_names: Emeka
-        gender: male
-        dob: '1990-01-01T00:00:00Z'
-        email_address: chijioke.adeola@gmail.com
-        phone_number: '+2347012345678'
-        nationality: Nigerian
-        street: 10 Aso Villa Way
-        country: Nigeria
-        state: Lagos
-        post_code: '101001'
-        city: Lagos
-        created_at: '2023-10-16T10:00:00Z'
-        meta_data:
-          verified: true
-          reference: XYZ123456789
   securitySchemes:
     basic:
       type: http

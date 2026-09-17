@@ -308,75 +308,6 @@ paths:
       - Accounts
 components:
   schemas:
-    Balance:
-      title: Balance
-      required:
-      - balance_id
-      - balance
-      - credit_balance
-      - debit_balance
-      - currency
-      - ledger_id
-      - identity_id
-      - created_at
-      - meta_data
-      type: object
-      properties:
-        balance_id:
-          type: string
-        balance:
-          type: integer
-          format: int32
-        credit_balance:
-          type: integer
-          format: int32
-        debit_balance:
-          type: integer
-          format: int32
-        currency:
-          type: string
-        ledger_id:
-          type: string
-        identity_id:
-          type: string
-        created_at:
-          type: string
-        meta_data:
-          type:
-          - string
-          - 'null'
-      example:
-        balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
-        balance: 30300
-        credit_balance: 30600
-        debit_balance: 300
-        currency: NGN
-        ledger_id: ldg_073f7ffe-9dfd-42ce-aa50-d1dca1788adc
-        identity_id: ''
-        created_at: '2024-02-20T05:33:01.3116Z'
-        meta_data: null
-    UpdateAccountRequest:
-      title: UpdateAccountRequest
-      required:
-      - bank_name
-      - number
-      - balance_id
-      - identity_id
-      type: object
-      properties:
-        bank_name:
-          type: string
-        number:
-          type: string
-        balance_id:
-          type: string
-        identity_id:
-          type: string
-      example:
-        bank_name: Bknk bank MFB
-        number: '30888334'
-        balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
-        identity_id: idt_0b5f333d-e0b8-4422-8e0e-5d41a767f1db
     CreateAccount:
       title: CreateAccount
       required:
@@ -534,6 +465,29 @@ components:
           city: Lagos
           created_at: '2023-10-16T10:00:00Z'
           meta_data: null
+    Ledger:
+      title: Ledger
+      required:
+      - ledger_id
+      - name
+      - created_at
+      - meta_data
+      type: object
+      properties:
+        ledger_id:
+          type: string
+        name:
+          type: string
+        created_at:
+          type: string
+        meta_data:
+          $ref: '#/components/schemas/MetaData'
+      example:
+        ledger_id: ldg_073f7ffe-9dfd-42ce-aa50-d1dca1788adc
+        name: Customer wallets Ledger
+        created_at: '2024-02-20T05:28:03.563132Z'
+        meta_data:
+          project_owner: Blnk Tech
     MetaData:
       title: MetaData
       required:
@@ -544,6 +498,53 @@ components:
           type: string
       example:
         project_owner: Blnk Tech
+    Balance:
+      title: Balance
+      required:
+      - balance_id
+      - balance
+      - credit_balance
+      - debit_balance
+      - currency
+      - ledger_id
+      - identity_id
+      - created_at
+      - meta_data
+      type: object
+      properties:
+        balance_id:
+          type: string
+        balance:
+          type: integer
+          format: int32
+        credit_balance:
+          type: integer
+          format: int32
+        debit_balance:
+          type: integer
+          format: int32
+        currency:
+          type: string
+        ledger_id:
+          type: string
+        identity_id:
+          type: string
+        created_at:
+          type: string
+        meta_data:
+          type:
+          - string
+          - 'null'
+      example:
+        balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
+        balance: 30300
+        credit_balance: 30600
+        debit_balance: 300
+        currency: NGN
+        ledger_id: ldg_073f7ffe-9dfd-42ce-aa50-d1dca1788adc
+        identity_id: ''
+        created_at: '2024-02-20T05:33:01.3116Z'
+        meta_data: null
     Identity:
       title: Identity
       required:
@@ -642,29 +643,6 @@ components:
       example:
         verified: true
         reference: XYZ123456789
-    Ledger:
-      title: Ledger
-      required:
-      - ledger_id
-      - name
-      - created_at
-      - meta_data
-      type: object
-      properties:
-        ledger_id:
-          type: string
-        name:
-          type: string
-        created_at:
-          type: string
-        meta_data:
-          $ref: '#/components/schemas/MetaData'
-      example:
-        ledger_id: ldg_073f7ffe-9dfd-42ce-aa50-d1dca1788adc
-        name: Customer wallets Ledger
-        created_at: '2024-02-20T05:28:03.563132Z'
-        meta_data:
-          project_owner: Blnk Tech
     CreateAccountRequest:
       title: CreateAccountRequest
       required:
@@ -684,6 +662,28 @@ components:
           type: string
       example:
         bank_name: Bknk bank
+        number: '30888334'
+        balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
+        identity_id: idt_0b5f333d-e0b8-4422-8e0e-5d41a767f1db
+    UpdateAccountRequest:
+      title: UpdateAccountRequest
+      required:
+      - bank_name
+      - number
+      - balance_id
+      - identity_id
+      type: object
+      properties:
+        bank_name:
+          type: string
+        number:
+          type: string
+        balance_id:
+          type: string
+        identity_id:
+          type: string
+      example:
+        bank_name: Bknk bank MFB
         number: '30888334'
         balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
         identity_id: idt_0b5f333d-e0b8-4422-8e0e-5d41a767f1db

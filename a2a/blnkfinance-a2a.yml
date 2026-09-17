@@ -24,7 +24,7 @@ x-evidence:
 card:
   name: Blnk Finance
   url: https://docs.blnkfinance.com/
-  version: '1.0.0'
+  version: 1.0.0
   protocol_version: '0.3'
   preferred_transport: HTTP+JSON
   provider_organization: Blnk Finance
@@ -48,6 +48,7 @@ card:
   - transactions
   - watch
   - webhooks
+  file: a2a/blnkfinance-agent-card.json
 conformance:
   spec: A2A 1.0.0
   grade: flavored
@@ -61,15 +62,5 @@ conformance:
   - no-description
   - supportedInterfaces-instead-of-additionalInterfaces
   - protocolVersion-0.3-not-a-full-semver
-  deviation_notes: >-
-    All three A2A hard checks pass, but the card omits the REQUIRED top-level `description` field and
-    names its interface list `supportedInterfaces` rather than the spec's `additionalInterfaces`, which
-    is the documented flavored pattern. Graded flavored rather than near-conformant because a missing
-    required field is a genuine spec failure, not an omitted optional one.
-note: >-
-  The card is served from docs.blnkfinance.com, a host Blnk Finance controls, and self-identifies as
-  organization "Blnk Finance" with documentationUrl on the same host. It describes the DOCUMENTATION
-  agent surface (each of its 14 skills resolves to a real published Agent Skill markdown file under
-  /.well-known/agent-skills/<id>/skill.md, all of which returned 200 and are saved verbatim in skills/).
-  It is not a card for the ledger REST API itself; the callable ledger agent surface is the Cloud MCP
-  endpoint recorded in mcp/blnkfinance-mcp.yml.
+  deviation_notes: All three A2A hard checks pass, but the card omits the REQUIRED top-level `description` field and names its interface list `supportedInterfaces` rather than the spec's `additionalInterfaces`, which is the documented flavored pattern. Graded flavored rather than near-conformant because a missing required field is a genuine spec failure, not an omitted optional one.
+note: The card is served from docs.blnkfinance.com, a host Blnk Finance controls, and self-identifies as organization "Blnk Finance" with documentationUrl on the same host. It describes the DOCUMENTATION agent surface (each of its 14 skills resolves to a real published Agent Skill markdown file under /.well-known/agent-skills/<id>/skill.md, all of which returned 200 and are saved verbatim in skills/). It is not a card for the ledger REST API itself; the callable ledger agent surface is the Cloud MCP endpoint recorded in mcp/blnkfinance-mcp.yml.
