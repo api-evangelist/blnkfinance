@@ -35,6 +35,10 @@ accessModel:
 created: '2026-08-26'
 modified: '2026-08-27'
 specificationVersion: '0.21'
+x-docs-platform: mintlify
+x-docs-platform-confidence: medium
+x-docs-platform-checked: 2026-09-20
+x-docs-hosting: vercel
 tags:
 - Fintech
 - Financial-Services
