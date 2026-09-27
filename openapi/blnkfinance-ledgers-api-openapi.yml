@@ -120,6 +120,16 @@ paths:
       - Ledgers
 components:
   schemas:
+    MetaData:
+      title: MetaData
+      required:
+      - project_owner
+      type: object
+      properties:
+        project_owner:
+          type: string
+      example:
+        project_owner: Blnk Tech
     Ledger:
       title: Ledger
       required:
@@ -158,16 +168,6 @@ components:
         name: Customer wallets Ledger
         meta_data:
           project_owner: Blnk Tech
-    MetaData:
-      title: MetaData
-      required:
-      - project_owner
-      type: object
-      properties:
-        project_owner:
-          type: string
-      example:
-        project_owner: Blnk Tech
     Createledger:
       title: Createledger
       required:

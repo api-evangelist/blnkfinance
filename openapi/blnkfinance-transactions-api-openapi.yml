@@ -226,6 +226,34 @@ paths:
       - Transactions
 components:
   schemas:
+    Destination:
+      title: Destination
+      required:
+      - identifier
+      - distribution
+      - narration
+      type: object
+      properties:
+        identifier:
+          type: string
+        distribution:
+          type: string
+        narration:
+          type: string
+      example:
+        identifier: bln_f2073f6b-905a-4e3e-b5a2-8d1b3dc2fb7f
+        distribution: 20%
+        narration: For groceries
+    UpdateInflightTransactionRequest:
+      title: UpdateInflightTransactionRequest
+      required:
+      - status
+      type: object
+      properties:
+        status:
+          type: string
+      example:
+        status: void
     RecordTransactionRequest:
       title: RecordTransactionRequest
       required:
@@ -300,125 +328,6 @@ components:
         destination: '@inflighttest7'
         allow_over_draft: true
         inflight: true
-    Source:
-      title: Source
-      required:
-      - identifier
-      - distribution
-      - narration
-      type: object
-      properties:
-        identifier:
-          type: string
-        distribution:
-          type: string
-        narration:
-          type: string
-      example:
-        identifier: bln_f2073f6b-905a-4e3e-b5a2-8d1b3dc2fb7f
-        distribution: 10%
-        narration: Monthly contribution
-    RecordTransaction:
-      title: RecordTransaction
-      required:
-      - amount
-      - id
-      - allow_overdraft
-      - infligt
-      - source
-      - destination
-      - reference
-      - currency
-      - description
-      - status
-      - hash
-      - group_ids
-      - created_at
-      - scheduled_for
-      type: object
-      properties:
-        amount:
-          type: integer
-          format: int32
-        id:
-          type: string
-        allow_overdraft:
-          type: boolean
-        infligt:
-          type: boolean
-        source:
-          type: string
-        destination:
-          type: string
-        reference:
-          type: string
-        currency:
-          type: string
-        description:
-          type: string
-        status:
-          type: string
-        hash:
-          type: string
-        group_ids:
-          type:
-          - string
-          - 'null'
-        created_at:
-          type: string
-        scheduled_for:
-          type: string
-        inflight_expiry_date:
-          type: string
-          description: RFC3339 datetime with offset when unset shown as zero time.
-        inflight_commit_date:
-          type: string
-          description: RFC3339 datetime with offset when unset shown as zero time; automatic commit when inflight.
-      example:
-        amount: 74000
-        id: txn_d0440bb5-e2c2-4937-bb4c-e91b50b7df22
-        allow_overdraft: true
-        infligt: true
-        source: '@inflighttest6'
-        destination: '@inflighttest7'
-        reference: reference
-        currency: NGN
-        description: ''
-        status: INFLIGHT
-        hash: 89ba8954cd8e9215feed757be7cebe0a3ec9440be22139a5ba6a0499a52f4593
-        group_ids: null
-        created_at: '0001-01-01T00:00:00Z'
-        scheduled_for: '0001-01-01T00:00:00Z'
-        inflight_expiry_date: '0001-01-01T00:00:00Z'
-        inflight_commit_date: '0001-01-01T00:00:00Z'
-    UpdateInflightTransactionRequest:
-      title: UpdateInflightTransactionRequest
-      required:
-      - status
-      type: object
-      properties:
-        status:
-          type: string
-      example:
-        status: void
-    Destination:
-      title: Destination
-      required:
-      - identifier
-      - distribution
-      - narration
-      type: object
-      properties:
-        identifier:
-          type: string
-        distribution:
-          type: string
-        narration:
-          type: string
-      example:
-        identifier: bln_f2073f6b-905a-4e3e-b5a2-8d1b3dc2fb7f
-        distribution: 20%
-        narration: For groceries
     UpdateInflightTransaction:
       title: UpdateInflightTransaction
       required:
@@ -493,6 +402,97 @@ components:
         scheduled_for: '0001-01-01T00:00:00Z'
         inflight_expiry_date: '0001-01-01T00:00:00Z'
         inflight_commit_date: '0001-01-01T00:00:00Z'
+    RecordTransaction:
+      title: RecordTransaction
+      required:
+      - amount
+      - id
+      - allow_overdraft
+      - infligt
+      - source
+      - destination
+      - reference
+      - currency
+      - description
+      - status
+      - hash
+      - group_ids
+      - created_at
+      - scheduled_for
+      type: object
+      properties:
+        amount:
+          type: integer
+          format: int32
+        id:
+          type: string
+        allow_overdraft:
+          type: boolean
+        infligt:
+          type: boolean
+        source:
+          type: string
+        destination:
+          type: string
+        reference:
+          type: string
+        currency:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+        hash:
+          type: string
+        group_ids:
+          type:
+          - string
+          - 'null'
+        created_at:
+          type: string
+        scheduled_for:
+          type: string
+        inflight_expiry_date:
+          type: string
+          description: RFC3339 datetime with offset when unset shown as zero time.
+        inflight_commit_date:
+          type: string
+          description: RFC3339 datetime with offset when unset shown as zero time; automatic commit when inflight.
+      example:
+        amount: 74000
+        id: txn_d0440bb5-e2c2-4937-bb4c-e91b50b7df22
+        allow_overdraft: true
+        infligt: true
+        source: '@inflighttest6'
+        destination: '@inflighttest7'
+        reference: reference
+        currency: NGN
+        description: ''
+        status: INFLIGHT
+        hash: 89ba8954cd8e9215feed757be7cebe0a3ec9440be22139a5ba6a0499a52f4593
+        group_ids: null
+        created_at: '0001-01-01T00:00:00Z'
+        scheduled_for: '0001-01-01T00:00:00Z'
+        inflight_expiry_date: '0001-01-01T00:00:00Z'
+        inflight_commit_date: '0001-01-01T00:00:00Z'
+    Source:
+      title: Source
+      required:
+      - identifier
+      - distribution
+      - narration
+      type: object
+      properties:
+        identifier:
+          type: string
+        distribution:
+          type: string
+        narration:
+          type: string
+      example:
+        identifier: bln_f2073f6b-905a-4e3e-b5a2-8d1b3dc2fb7f
+        distribution: 10%
+        narration: Monthly contribution
   securitySchemes:
     basic:
       type: http

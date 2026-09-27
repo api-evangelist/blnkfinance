@@ -286,54 +286,6 @@ paths:
       - Identities
 components:
   schemas:
-    CreateIdentityRequest:
-      title: CreateIdentityRequest
-      required:
-      - identity_type
-      - name
-      - category
-      - street
-      - country
-      - state
-      - post_code
-      - city
-      - created_at
-      - meta_data
-      type: object
-      properties:
-        identity_type:
-          type: string
-        name:
-          type: string
-        category:
-          type: string
-        street:
-          type: string
-        country:
-          type: string
-        state:
-          type: string
-        post_code:
-          type: string
-        city:
-          type: string
-        created_at:
-          type: string
-        meta_data:
-          $ref: '#/components/schemas/MetaData2'
-      example:
-        identity_type: organization
-        name: Blnk
-        category: fintech
-        street: 10 Aso Villa Way
-        country: Nigeria
-        state: Lagos
-        post_code: '101001'
-        city: Lagos
-        created_at: '2023-10-16T10:00:00Z'
-        meta_data:
-          verified: true
-          reference: XYZ123456789
     GetIdentity:
       title: GetIdentity
       required:
@@ -418,6 +370,54 @@ components:
         meta_data:
           reference: XYZ123456789
           verified: true
+    CreateIdentityRequest:
+      title: CreateIdentityRequest
+      required:
+      - identity_type
+      - name
+      - category
+      - street
+      - country
+      - state
+      - post_code
+      - city
+      - created_at
+      - meta_data
+      type: object
+      properties:
+        identity_type:
+          type: string
+        name:
+          type: string
+        category:
+          type: string
+        street:
+          type: string
+        country:
+          type: string
+        state:
+          type: string
+        post_code:
+          type: string
+        city:
+          type: string
+        created_at:
+          type: string
+        meta_data:
+          $ref: '#/components/schemas/MetaData2'
+      example:
+        identity_type: organization
+        name: Blnk
+        category: fintech
+        street: 10 Aso Villa Way
+        country: Nigeria
+        state: Lagos
+        post_code: '101001'
+        city: Lagos
+        created_at: '2023-10-16T10:00:00Z'
+        meta_data:
+          verified: true
+          reference: XYZ123456789
     UpdateIdentityRequest:
       title: UpdateIdentityRequest
       required:
@@ -574,6 +574,16 @@ components:
         meta_data:
           reference: XYZ123456789
           verified: true
+    UpdateIdentity:
+      title: UpdateIdentity
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: Identity updated successfully
     MetaData2:
       title: MetaData2
       required:
@@ -588,16 +598,6 @@ components:
       example:
         verified: true
         reference: XYZ123456789
-    UpdateIdentity:
-      title: UpdateIdentity
-      required:
-      - message
-      type: object
-      properties:
-        message:
-          type: string
-      example:
-        message: Identity updated successfully
   securitySchemes:
     basic:
       type: http

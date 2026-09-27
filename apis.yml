@@ -41,17 +41,18 @@ x-docs-platform-checked: 2026-09-20
 x-docs-hosting: vercel
 tags:
 - Fintech
-- Financial-Services
+- Financial Services
 - Ledger
 - double-entry-accounting
 - Payments
 - Wallets
 - Lending
 - Banking Infrastructure
-- Open-Source
+- Open Source
 - MCP
 - AI Agents
 - Developer Tools
+- A2A
 tags_raw:
 - fintech
 - financial-services
@@ -65,6 +66,9 @@ tags_raw:
 - mcp
 - ai-agents
 - developer-tools
+- Financial-Services
+- Open-Source
+- A2A
 apis:
 - name: Blnk Cloud API
   description: >-
@@ -74,14 +78,14 @@ apis:
   baseURL: https://api.cloud.blnkfinance.com
   tags:
   - Fintech
-  - Financial-Services
+  - Financial Services
   - Ledger
   - double-entry-accounting
   - Payments
   - Wallets
   - Lending
   - Banking Infrastructure
-  - Open-Source
+  - Open Source
   - MCP
   - AI Agents
   - Developer Tools
@@ -98,6 +102,8 @@ apis:
   - mcp
   - ai-agents
   - developer-tools
+  - Financial-Services
+  - Open-Source
   properties:
   - type: Documentation
     url: https://docs.blnkfinance.com/cloud/reference/overview.md
@@ -136,14 +142,14 @@ apis:
   baseURL: https://api.cloud.blnkfinance.com
   tags:
   - Fintech
-  - Financial-Services
+  - Financial Services
   - Ledger
   - double-entry-accounting
   - Payments
   - Wallets
   - Lending
   - Banking Infrastructure
-  - Open-Source
+  - Open Source
   - MCP
   - AI Agents
   - Developer Tools
@@ -160,6 +166,8 @@ apis:
   - mcp
   - ai-agents
   - developer-tools
+  - Financial-Services
+  - Open-Source
   properties:
   - type: Documentation
     url: https://docs.blnkfinance.com/watch/reference/overview.md
@@ -497,3 +505,10 @@ x-enrichment:
   status: enriched
   artifacts_added: 45
   pass: local-v1
+x-a2a:
+  verified: true
+  probed: '2026-09-26'
+  url: "https://docs.blnkfinance.com/.well-known/agent-card.json"
+  grade: "conformant"
+  protocol_version: "0.3"
+  control: 404
