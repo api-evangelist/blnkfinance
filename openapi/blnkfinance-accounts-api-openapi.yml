@@ -308,16 +308,6 @@ paths:
       - Accounts
 components:
   schemas:
-    MetaData:
-      title: MetaData
-      required:
-      - project_owner
-      type: object
-      properties:
-        project_owner:
-          type: string
-      example:
-        project_owner: Blnk Tech
     GetAccount:
       title: GetAccount
       required:
@@ -409,6 +399,28 @@ components:
           city: Lagos
           created_at: '2023-10-16T10:00:00Z'
           meta_data: null
+    CreateAccountRequest:
+      title: CreateAccountRequest
+      required:
+      - bank_name
+      - number
+      - balance_id
+      - identity_id
+      type: object
+      properties:
+        bank_name:
+          type: string
+        number:
+          type: string
+        balance_id:
+          type: string
+        identity_id:
+          type: string
+      example:
+        bank_name: Bknk bank
+        number: '30888334'
+        balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
+        identity_id: idt_0b5f333d-e0b8-4422-8e0e-5d41a767f1db
     Ledger:
       title: Ledger
       required:
@@ -432,89 +444,82 @@ components:
         created_at: '2024-02-20T05:28:03.563132Z'
         meta_data:
           project_owner: Blnk Tech
-    Balance:
-      title: Balance
+    MetaData:
+      title: MetaData
       required:
-      - balance_id
-      - balance
-      - credit_balance
-      - debit_balance
-      - currency
-      - ledger_id
-      - identity_id
-      - created_at
-      - meta_data
+      - project_owner
       type: object
       properties:
-        balance_id:
+        project_owner:
           type: string
-        balance:
-          type: integer
-          format: int32
-        credit_balance:
-          type: integer
-          format: int32
-        debit_balance:
-          type: integer
-          format: int32
+      example:
+        project_owner: Blnk Tech
+    CreateAccount:
+      title: CreateAccount
+      required:
+      - account_id
+      - name
+      - number
+      - bank_name
+      - currency
+      - created_at
+      - balance_id
+      - identity_id
+      - ledger_id
+      - meta_data
+      - ledger
+      - balance
+      - identity
+      type: object
+      properties:
+        account_id:
+          type: string
+        name:
+          type: string
+        number:
+          type: string
+        bank_name:
+          type: string
         currency:
           type: string
-        ledger_id:
+        created_at:
+          type: string
+        balance_id:
           type: string
         identity_id:
           type: string
-        created_at:
+        ledger_id:
           type: string
         meta_data:
           type:
           - string
           - 'null'
+        ledger:
+          type:
+          - string
+          - 'null'
+        balance:
+          type:
+          - string
+          - 'null'
+        identity:
+          type:
+          - string
+          - 'null'
       example:
-        balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
-        balance: 30300
-        credit_balance: 30600
-        debit_balance: 300
+        account_id: acc_463b25b8-7b24-4e8b-aa49-7844d9074019
+        name: Chijioke Adeola
+        number: '294364850431'
+        bank_name: Blnk Bank
         currency: NGN
-        ledger_id: ldg_073f7ffe-9dfd-42ce-aa50-d1dca1788adc
-        identity_id: ''
-        created_at: '2024-02-20T05:33:01.3116Z'
-        meta_data: null
-    CreateAccountRequest:
-      title: CreateAccountRequest
-      required:
-      - bank_name
-      - number
-      - balance_id
-      - identity_id
-      type: object
-      properties:
-        bank_name:
-          type: string
-        number:
-          type: string
-        balance_id:
-          type: string
-        identity_id:
-          type: string
-      example:
-        bank_name: Bknk bank
-        number: '30888334'
+        created_at: '2024-02-20T05:35:55.720731136Z'
         balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
         identity_id: idt_0b5f333d-e0b8-4422-8e0e-5d41a767f1db
-    MetaData2:
-      title: MetaData2
-      required:
-      - verified
-      - reference
-      type: object
-      properties:
-        verified:
-          type: boolean
-        reference:
-          type: string
-      example:
-        verified: true
-        reference: XYZ123456789
+        ledger_id: ldg_073f7ffe-9dfd-42ce-aa50-d1dca1788adc
+        meta_data: null
+        ledger: null
+        balance: null
+        identity: null
     Identity:
       title: Identity
       required:
@@ -599,6 +604,67 @@ components:
         city: Lagos
         created_at: '2023-10-16T10:00:00Z'
         meta_data: null
+    Balance:
+      title: Balance
+      required:
+      - balance_id
+      - balance
+      - credit_balance
+      - debit_balance
+      - currency
+      - ledger_id
+      - identity_id
+      - created_at
+      - meta_data
+      type: object
+      properties:
+        balance_id:
+          type: string
+        balance:
+          type: integer
+          format: int32
+        credit_balance:
+          type: integer
+          format: int32
+        debit_balance:
+          type: integer
+          format: int32
+        currency:
+          type: string
+        ledger_id:
+          type: string
+        identity_id:
+          type: string
+        created_at:
+          type: string
+        meta_data:
+          type:
+          - string
+          - 'null'
+      example:
+        balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
+        balance: 30300
+        credit_balance: 30600
+        debit_balance: 300
+        currency: NGN
+        ledger_id: ldg_073f7ffe-9dfd-42ce-aa50-d1dca1788adc
+        identity_id: ''
+        created_at: '2024-02-20T05:33:01.3116Z'
+        meta_data: null
+    MetaData2:
+      title: MetaData2
+      required:
+      - verified
+      - reference
+      type: object
+      properties:
+        verified:
+          type: boolean
+        reference:
+          type: string
+      example:
+        verified: true
+        reference: XYZ123456789
     UpdateAccountRequest:
       title: UpdateAccountRequest
       required:
@@ -621,72 +687,6 @@ components:
         number: '30888334'
         balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
         identity_id: idt_0b5f333d-e0b8-4422-8e0e-5d41a767f1db
-    CreateAccount:
-      title: CreateAccount
-      required:
-      - account_id
-      - name
-      - number
-      - bank_name
-      - currency
-      - created_at
-      - balance_id
-      - identity_id
-      - ledger_id
-      - meta_data
-      - ledger
-      - balance
-      - identity
-      type: object
-      properties:
-        account_id:
-          type: string
-        name:
-          type: string
-        number:
-          type: string
-        bank_name:
-          type: string
-        currency:
-          type: string
-        created_at:
-          type: string
-        balance_id:
-          type: string
-        identity_id:
-          type: string
-        ledger_id:
-          type: string
-        meta_data:
-          type:
-          - string
-          - 'null'
-        ledger:
-          type:
-          - string
-          - 'null'
-        balance:
-          type:
-          - string
-          - 'null'
-        identity:
-          type:
-          - string
-          - 'null'
-      example:
-        account_id: acc_463b25b8-7b24-4e8b-aa49-7844d9074019
-        name: Chijioke Adeola
-        number: '294364850431'
-        bank_name: Blnk Bank
-        currency: NGN
-        created_at: '2024-02-20T05:35:55.720731136Z'
-        balance_id: bln_0be360ca-86fe-457d-be43-daa3f966d8f0
-        identity_id: idt_0b5f333d-e0b8-4422-8e0e-5d41a767f1db
-        ledger_id: ldg_073f7ffe-9dfd-42ce-aa50-d1dca1788adc
-        meta_data: null
-        ledger: null
-        balance: null
-        identity: null
   securitySchemes:
     basic:
       type: http

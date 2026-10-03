@@ -286,6 +286,16 @@ paths:
       - Identities
 components:
   schemas:
+    UpdateIdentity:
+      title: UpdateIdentity
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: Identity updated successfully
     GetIdentity:
       title: GetIdentity
       required:
@@ -367,6 +377,90 @@ components:
         post_code: '101001'
         city: Lagos
         created_at: '2023-10-16T10:00:00Z'
+        meta_data:
+          reference: XYZ123456789
+          verified: true
+    CreateIdentity:
+      title: CreateIdentity
+      required:
+      - identity_id
+      - identity_type
+      - organization_name
+      - category
+      - first_name
+      - last_name
+      - other_names
+      - gender
+      - dob
+      - email_address
+      - phone_number
+      - nationality
+      - street
+      - country
+      - state
+      - post_code
+      - city
+      - created_at
+      - meta_data
+      type: object
+      properties:
+        identity_id:
+          type: string
+        identity_type:
+          type: string
+        organization_name:
+          type: string
+        category:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        other_names:
+          type: string
+        gender:
+          type: string
+        dob:
+          type: string
+        email_address:
+          type: string
+        phone_number:
+          type: string
+        nationality:
+          type: string
+        street:
+          type: string
+        country:
+          type: string
+        state:
+          type: string
+        post_code:
+          type: string
+        city:
+          type: string
+        created_at:
+          type: string
+        meta_data:
+          $ref: '#/components/schemas/MetaData2'
+      example:
+        identity_id: idt_0b5f333d-e0b8-4422-8e0e-5d41a767f1db
+        identity_type: organization
+        organization_name: ''
+        category: fintech
+        first_name: ''
+        last_name: ''
+        other_names: ''
+        gender: ''
+        dob: '0001-01-01T00:00:00Z'
+        email_address: ''
+        phone_number: ''
+        nationality: ''
+        street: 10 Aso Villa Way
+        country: Nigeria
+        state: Lagos
+        post_code: '101001'
+        city: Lagos
+        created_at: '2024-02-20T05:27:44.748526423Z'
         meta_data:
           reference: XYZ123456789
           verified: true
@@ -490,100 +584,6 @@ components:
         meta_data:
           verified: true
           reference: XYZ123456789
-    CreateIdentity:
-      title: CreateIdentity
-      required:
-      - identity_id
-      - identity_type
-      - organization_name
-      - category
-      - first_name
-      - last_name
-      - other_names
-      - gender
-      - dob
-      - email_address
-      - phone_number
-      - nationality
-      - street
-      - country
-      - state
-      - post_code
-      - city
-      - created_at
-      - meta_data
-      type: object
-      properties:
-        identity_id:
-          type: string
-        identity_type:
-          type: string
-        organization_name:
-          type: string
-        category:
-          type: string
-        first_name:
-          type: string
-        last_name:
-          type: string
-        other_names:
-          type: string
-        gender:
-          type: string
-        dob:
-          type: string
-        email_address:
-          type: string
-        phone_number:
-          type: string
-        nationality:
-          type: string
-        street:
-          type: string
-        country:
-          type: string
-        state:
-          type: string
-        post_code:
-          type: string
-        city:
-          type: string
-        created_at:
-          type: string
-        meta_data:
-          $ref: '#/components/schemas/MetaData2'
-      example:
-        identity_id: idt_0b5f333d-e0b8-4422-8e0e-5d41a767f1db
-        identity_type: organization
-        organization_name: ''
-        category: fintech
-        first_name: ''
-        last_name: ''
-        other_names: ''
-        gender: ''
-        dob: '0001-01-01T00:00:00Z'
-        email_address: ''
-        phone_number: ''
-        nationality: ''
-        street: 10 Aso Villa Way
-        country: Nigeria
-        state: Lagos
-        post_code: '101001'
-        city: Lagos
-        created_at: '2024-02-20T05:27:44.748526423Z'
-        meta_data:
-          reference: XYZ123456789
-          verified: true
-    UpdateIdentity:
-      title: UpdateIdentity
-      required:
-      - message
-      type: object
-      properties:
-        message:
-          type: string
-      example:
-        message: Identity updated successfully
     MetaData2:
       title: MetaData2
       required:

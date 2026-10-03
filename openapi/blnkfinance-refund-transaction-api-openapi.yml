@@ -99,6 +99,16 @@ paths:
       - Refund Transaction
 components:
   schemas:
+    MetaData1:
+      title: MetaData1
+      required:
+      - refunded_transaction_id
+      type: object
+      properties:
+        refunded_transaction_id:
+          type: string
+      example:
+        refunded_transaction_id: txn_5bbbe4d3-2d82-4da1-8191-aaa491d025de
     RefundTransaction:
       title: RefundTransaction
       required:
@@ -208,16 +218,6 @@ components:
         meta_data:
           refunded_transaction_id: txn_5bbbe4d3-2d82-4da1-8191-aaa491d025de
         group_ids: null
-    MetaData1:
-      title: MetaData1
-      required:
-      - refunded_transaction_id
-      type: object
-      properties:
-        refunded_transaction_id:
-          type: string
-      example:
-        refunded_transaction_id: txn_5bbbe4d3-2d82-4da1-8191-aaa491d025de
   securitySchemes:
     basic:
       type: http

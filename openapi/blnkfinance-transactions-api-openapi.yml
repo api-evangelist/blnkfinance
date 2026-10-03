@@ -226,24 +226,80 @@ paths:
       - Transactions
 components:
   schemas:
-    Destination:
-      title: Destination
+    UpdateInflightTransaction:
+      title: UpdateInflightTransaction
       required:
-      - identifier
-      - distribution
-      - narration
+      - amount
+      - precision
+      - transaction_id
+      - parent_transaction
+      - allow_overdraft
+      - infligt
+      - source
+      - destination
+      - reference
+      - currency
+      - description
+      - status
+      - hash
+      - created_at
+      - scheduled_for
       type: object
       properties:
-        identifier:
+        amount:
+          type: integer
+          format: int32
+        precision:
+          type: integer
+          format: int32
+        transaction_id:
           type: string
-        distribution:
+        parent_transaction:
           type: string
-        narration:
+        allow_overdraft:
+          type: boolean
+        infligt:
+          type: boolean
+        source:
+          type: string
+        destination:
+          type: string
+        reference:
+          type: string
+        currency:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+        hash:
+          type: string
+        created_at:
+          type: string
+        scheduled_for:
+          type: string
+        inflight_expiry_date:
+          type: string
+        inflight_commit_date:
           type: string
       example:
-        identifier: bln_f2073f6b-905a-4e3e-b5a2-8d1b3dc2fb7f
-        distribution: 20%
-        narration: For groceries
+        amount: 74000
+        precision: 0
+        transaction_id: txn_bd9ab37f-e353-450d-8210-1958bd50254a
+        parent_transaction: txn_bd9ab37f-e353-450d-8210-1958bd50254a
+        allow_overdraft: false
+        infligt: false
+        source: bln_8ab15e8f-da33-428f-b3f8-ab3d1c1dda09
+        destination: bln_76ceff93-fcac-47e0-84ee-88e086359064
+        reference: reference
+        currency: NGN
+        description: ''
+        status: APPLIED
+        hash: 032af5e26c8a2c2690f1bb70bdd7c044bbdf9c7f5576fc0f693200baf65a9ee3
+        created_at: '2024-04-07T08:20:06.494307542Z'
+        scheduled_for: '0001-01-01T00:00:00Z'
+        inflight_expiry_date: '0001-01-01T00:00:00Z'
+        inflight_commit_date: '0001-01-01T00:00:00Z'
     UpdateInflightTransactionRequest:
       title: UpdateInflightTransactionRequest
       required:
@@ -328,80 +384,24 @@ components:
         destination: '@inflighttest7'
         allow_over_draft: true
         inflight: true
-    UpdateInflightTransaction:
-      title: UpdateInflightTransaction
+    Source:
+      title: Source
       required:
-      - amount
-      - precision
-      - transaction_id
-      - parent_transaction
-      - allow_overdraft
-      - infligt
-      - source
-      - destination
-      - reference
-      - currency
-      - description
-      - status
-      - hash
-      - created_at
-      - scheduled_for
+      - identifier
+      - distribution
+      - narration
       type: object
       properties:
-        amount:
-          type: integer
-          format: int32
-        precision:
-          type: integer
-          format: int32
-        transaction_id:
+        identifier:
           type: string
-        parent_transaction:
+        distribution:
           type: string
-        allow_overdraft:
-          type: boolean
-        infligt:
-          type: boolean
-        source:
-          type: string
-        destination:
-          type: string
-        reference:
-          type: string
-        currency:
-          type: string
-        description:
-          type: string
-        status:
-          type: string
-        hash:
-          type: string
-        created_at:
-          type: string
-        scheduled_for:
-          type: string
-        inflight_expiry_date:
-          type: string
-        inflight_commit_date:
+        narration:
           type: string
       example:
-        amount: 74000
-        precision: 0
-        transaction_id: txn_bd9ab37f-e353-450d-8210-1958bd50254a
-        parent_transaction: txn_bd9ab37f-e353-450d-8210-1958bd50254a
-        allow_overdraft: false
-        infligt: false
-        source: bln_8ab15e8f-da33-428f-b3f8-ab3d1c1dda09
-        destination: bln_76ceff93-fcac-47e0-84ee-88e086359064
-        reference: reference
-        currency: NGN
-        description: ''
-        status: APPLIED
-        hash: 032af5e26c8a2c2690f1bb70bdd7c044bbdf9c7f5576fc0f693200baf65a9ee3
-        created_at: '2024-04-07T08:20:06.494307542Z'
-        scheduled_for: '0001-01-01T00:00:00Z'
-        inflight_expiry_date: '0001-01-01T00:00:00Z'
-        inflight_commit_date: '0001-01-01T00:00:00Z'
+        identifier: bln_f2073f6b-905a-4e3e-b5a2-8d1b3dc2fb7f
+        distribution: 10%
+        narration: Monthly contribution
     RecordTransaction:
       title: RecordTransaction
       required:
@@ -475,8 +475,8 @@ components:
         scheduled_for: '0001-01-01T00:00:00Z'
         inflight_expiry_date: '0001-01-01T00:00:00Z'
         inflight_commit_date: '0001-01-01T00:00:00Z'
-    Source:
-      title: Source
+    Destination:
+      title: Destination
       required:
       - identifier
       - distribution
@@ -491,8 +491,8 @@ components:
           type: string
       example:
         identifier: bln_f2073f6b-905a-4e3e-b5a2-8d1b3dc2fb7f
-        distribution: 10%
-        narration: Monthly contribution
+        distribution: 20%
+        narration: For groceries
   securitySchemes:
     basic:
       type: http
