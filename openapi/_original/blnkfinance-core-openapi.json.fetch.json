@@ -1,0 +1,12 @@
+{
+ "url": "https://docs.blnkfinance.com/openapi.json",
+ "requested_url": "https://docs.blnkfinance.com/openapi.json",
+ "status": 200,
+ "content_type": "application/json",
+ "bytes": 127254,
+ "sha256": "fda16d3864f91d8d51444fab2f07b1f5558534715d0df103a58c0418a2c89b65",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the archived file is byte-identical to what the provider serves."
+}
